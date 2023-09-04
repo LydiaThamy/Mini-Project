@@ -13,13 +13,13 @@ import jakarta.json.JsonArrayBuilder;
 import mini_project.server.service.ShopService;
 
 @RestController
-@RequestMapping("/api/shop")
+@RequestMapping("/api")
 public class ShopController {
     
     @Autowired
     private ShopService service;
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public ResponseEntity<String> getCategories() {
 
         List<String> categories = service.getCategories();

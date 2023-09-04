@@ -10,7 +10,7 @@ export class ClientService {
   constructor(private http: HttpClient) { }
 
   getCategories(): Observable<any> {
-    return this.http.get("/api/shops/category")
+    return this.http.get("/api/categories")
   }
 
   constructor() { }

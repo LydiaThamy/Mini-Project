@@ -12,7 +12,7 @@ public class SqlRepository {
     @Autowired
     private JdbcTemplate template;
 
-    public static final String GET_CATEGORIES_SQL = "select category from category";
+    public static final String GET_CATEGORIES_SQL = "select distinct category from business";
 
     public List<String> getCategories() {
         return template.queryForList(GET_CATEGORIES_SQL, String.class);
