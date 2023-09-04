@@ -1,10 +1,47 @@
 <!-- search bar -->
 
-<p>home works!</p>
+<div class="bar">
+    <form [formGroup]="searchForm" (ngSubmit)="search">
+
+        <div class="category">
+            <p><label for="category">Category</label></p>
+                <select id="category" formControlName="category">
+                    <option value="" disabled selected>Choose type of business</option>
+                    <option *ngFor="let c of categories" value="{{c}}">{{c | titlecase}}</option>
+                    <!-- <option value="babysitting">Babysitting</option>
+                    <option value="beauty">Beauty</option>
+                    <option value="food">Food</option>
+                    <option value="manicure">Manicure</option>
+                    <option value="pet care">Pet Care</option>
+                    <option value="tailor">Tailor</option>
+                    <option value="tuition">Tuition</option> -->
+                </select>
+        </div>
+
+        <br>
+
+        <div class="region">
+            <p><label for="region">Region</label></p>
+                <select id="region" formControlName="region">
+                    <option value="" disabled selected>Choose location of business</option>
+                    <option value="anywhere">I'm flexible</option>
+                    <option value="central">Central</option>
+                    <option value="east">East</option>
+                    <option value="north">North</option>
+                    <option value="northeast">Northeast</option>
+                    <option value="west">West</option>
+                </select>
+            </div>
+
+            <br>
+
+            <button type="submit">Search</button>
+    </form>
+
+</div>
 
 <!-- categories -->
 <div *ngFor="let c of categories" (click)="searchCategory(c)">
-    
     <p>{{c | titlecase}}</p>
 </div>
 
