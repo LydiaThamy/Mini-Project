@@ -1,1 +1,11 @@
+<!-- search bar -->
+
 <p>home works!</p>
+
+<!-- categories -->
+<div *ngFor="let c of categories" (click)="searchCategory(c)">
+    
+    <p>{{c | titlecase}}</p>
+</div>
+
+<!-- popular searches? -->
