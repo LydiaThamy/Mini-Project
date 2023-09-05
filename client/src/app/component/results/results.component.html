@@ -1,0 +1,8 @@
+<div *ngFor="let b of businesses" (click)="searchBusiness(b)">
+    <img [src]="b.logo" width="300px">
+    <h3>{{b.businessName}}</h3>
+    <p>{{b.address}}</p>
+    <p>{{b.phone}}</p>
+    <p>{{b.email}}</p>
+    <a [href]="b.website">{{b.website}}</a>
+</div>
