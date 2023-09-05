@@ -21,6 +21,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // this.region = this.route.snapshot.queryParams['region']
     this.category = this.route.snapshot.queryParams['category']
+    this.keyword = this.route.snapshot.queryParams['keyword']
     
     if (this.category !== undefined) {
       this.getBusinessesByCategory()
@@ -46,6 +47,22 @@ export class ResultsComponent implements OnInit, OnDestroy {
       })
   }
 
+  getBusinesses(): void {
+    this.sub$ = this.service.searchKeyword(this.keyword)
+      .subscribe(data => {
+        data.forEach((e: any) => {
+          this.businesses.push({
+            businessId: e['businessId'],
+            businessName: e['businessName'],
+            address: e['address'],
+            phone: e['phone'],
+            email: e['email'],
+            website: e['website'],
+            logo: e['logo']
+          })
+        });
+      })
+  }
 
   searchBusiness(business: Business): void {
 

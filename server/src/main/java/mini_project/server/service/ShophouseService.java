@@ -18,6 +18,19 @@ public class ShophouseService {
     @Autowired
     private SqlRepository sqlRepo;
 
+    public Optional<JsonArray> autocompleteKeyword(String keyword) {
+        
+        Optional<List<String>> result = sqlRepo.autocompleteKeyword(keyword);
+        if (result.isEmpty())
+            return Optional.empty();
+
+        List<String> autocomplete = result.get();
+        JsonArrayBuilder json = Json.createArrayBuilder();
+        for(String c: autocomplete)
+            json.add(c);
+
+        return Optional.of(json.build());
+    }
 
     public JsonArray getCategories() {
 

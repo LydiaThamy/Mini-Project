@@ -1,48 +1,59 @@
 <!-- search bar -->
 
 <div class="bar">
-    <form [formGroup]="searchForm" (ngSubmit)="search">
+    <form [formGroup]="searchForm" (ngSubmit)="searchKeyword()">
 
-        <div class="category">
+        <!-- <div class="category">
             <p><label for="category">Category</label></p>
-                <select id="category" formControlName="category">
-                    <option value="" disabled selected>Choose type of business</option>
-                    <option *ngFor="let c of categories" value="{{c}}">{{c | titlecase}}</option>
-                    <!-- <option value="babysitting">Babysitting</option>
-                    <option value="beauty">Beauty</option>
-                    <option value="food">Food</option>
-                    <option value="manicure">Manicure</option>
-                    <option value="pet care">Pet Care</option>
-                    <option value="tailor">Tailor</option>
-                    <option value="tuition">Tuition</option> -->
-                </select>
+            <select id="category" formControlName="category">
+                <option value="" disabled selected>Choose type of business</option>
+                <option *ngFor="let c of categories" value="{{c}}">{{c | titlecase}}</option>
+            </select>
         </div>
 
         <br>
 
         <div class="region">
             <p><label for="region">Region</label></p>
-                <select id="region" formControlName="region">
-                    <option value="" disabled selected>Choose location of business</option>
-                    <option value="anywhere">I'm flexible</option>
-                    <option value="central">Central</option>
-                    <option value="east">East</option>
-                    <option value="north">North</option>
-                    <option value="northeast">Northeast</option>
-                    <option value="west">West</option>
-                </select>
-            </div>
+            <select id="region" formControlName="region">
+                <option value="" disabled selected>Choose location of business</option>
+                <option value="anywhere">I'm flexible</option>
+                <option value="central">Central</option>
+                <option value="east">East</option>
+                <option value="north">North</option>
+                <option value="northeast">Northeast</option>
+                <option value="west">West</option>
+            </select>
+        </div>  -->
 
-            <br>
+        <!-- <div class="keyword">
+            <label for="keyword">Keyword</label>
+            <input type="text" formControlName="keyword">
+        </div> -->
 
-            <button type="submit">Search</button>
+        <mat-form-field class="keyword">
+            <mat-label>Keyword</mat-label>
+            <input type="text" placeholder="Search for a business, address or region" aria-label="Search" matInput
+                formControlName="keyword" [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let a of autocomplete" [value]="a">
+                    {{a}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <br>
+
+        <button type="submit">Search</button>
     </form>
 
 </div>
 
 <!-- categories -->
-<div *ngFor="let c of categories" (click)="searchCategory(c)">
-    <p>{{c | titlecase}}</p>
+<div class="categories">
+    <button *ngFor="let c of categories" (click)="searchCategory(c)">
+        {{c | titlecase}}
+    </button>
 </div>
 
 <!-- popular searches? -->

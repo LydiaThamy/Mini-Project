@@ -19,6 +19,18 @@ public class ShophouseController {
     @Autowired
     private ShophouseService service;
 
+    @GetMapping("/")
+    public ResponseEntity<String> autocompleteKeyword(@RequestParam String keyword) {
+
+        if (keyword.length() < 1)
+            return ResponseEntity.ok().build();
+        
+        Optional<JsonArray> result = service.autocompleteKeyword(keyword);
+        if (result.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(result.get().toString());
+    }
 
     @GetMapping("/categories")
     public ResponseEntity<String> getCategories() {
