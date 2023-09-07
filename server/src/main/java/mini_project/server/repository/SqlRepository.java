@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import mini_project.server.model.Business;
+import mini_project.server.model.Search;
 
 @Repository
 public class SqlRepository {
@@ -17,18 +18,21 @@ public class SqlRepository {
     @Autowired
     private JdbcTemplate template;
 
+    // autocomplete
     public static final String GET_NAMES_SQL_BY_KEYWORD = "select distinct business_name from business where business_name like ?";
     public static final String GET_ADDRESSES_SQL_BY_KEYWORD = "select distinct address from business where address like ?";
-    public static final String GET_REGIONS_SQL_BY_KEYWORD = "select distinct region from business where region like ?";
+    // category
     public static final String GET_CATEGORIES_SQL = "select distinct category from business";
-    public static final String GET_BUSINESSES_SQL = "select * from business where business_name like ? or address like ? or region like ?";
+    // search by category
     public static final String GET_BUSINESSES_SQL_BY_CATEGORY = "select * from business where category = ?";
-    // public static final String GET_BUSINESSES_SQL_BY_REGION = "select * from business where category = ? and region = ?";
+    // search by keyword
+    public static final String GET_BUSINESSES_SQL = "select * from business where business_name like ? or address like ?";
+    // get business by id
+    public static final String GET_BUSINESS_SQL_BY_ID = "select * from business where business_id = ?";
 
-    public Optional<List<String>> autocompleteKeyword(String keyword) {
+    public List<String> autocompleteKeyword(String keyword) {
 
         String wildcard = "%" + keyword + "%";
-
         List<String> autocomplete = new LinkedList<>();
 
         // name
@@ -36,32 +40,12 @@ public class SqlRepository {
         if (!names.isEmpty())
             autocomplete.addAll(names);
 
-        // template.queryForStream(GET_NAMES_SQL_BY_KEYWORD, new
-        // BeanPropertyRowMapper<>(String.class), keyword)
-        // .forEach(data -> autocomplete.add(data));
-
         // address
         List<String> addresses = template.queryForList(GET_ADDRESSES_SQL_BY_KEYWORD, String.class, wildcard);
         if (!addresses.isEmpty())
             autocomplete.addAll(addresses);
 
-        // template.queryForStream(GET_ADDRESSES_SQL_BY_KEYWORD, new
-        // BeanPropertyRowMapper<>(String.class), keyword)
-        // .forEach(data -> autocomplete.add(data));
-
-        // region
-        List<String> regions = template.queryForList(GET_REGIONS_SQL_BY_KEYWORD, String.class, wildcard);
-        if (!regions.isEmpty())
-            autocomplete.addAll(regions);
-
-        // template.queryForStream(GET_REGIONS_SQL_BY_KEYWORD, new
-        // BeanPropertyRowMapper<>(String.class), keyword)
-        // .forEach(data -> autocomplete.add(data));
-
-        if (autocomplete.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(autocomplete);
+        return autocomplete;
     }
 
     public List<String> getCategories() {
@@ -84,8 +68,8 @@ public class SqlRepository {
 
         List<Business> result;
 
-            result = template.query(GET_BUSINESSES_SQL_BY_CATEGORY, new BeanPropertyRowMapper<>(Business.class),
-                    category);
+        result = template.query(GET_BUSINESSES_SQL_BY_CATEGORY, new BeanPropertyRowMapper<>(Business.class),
+                category);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -94,9 +78,9 @@ public class SqlRepository {
     }
 
     // public Optional<List<Business>> getBusinesses(String category, Optional<String> region) {
-
+        
     //     List<Business> result;
-
+        
     //     if (region.isEmpty()) {
     //         result = template.query(GET_BUSINESSES_SQL_BY_CATEGORY, new BeanPropertyRowMapper<>(Business.class),
     //                 category);
@@ -108,7 +92,7 @@ public class SqlRepository {
 
     //     if (result.isEmpty())
     //         return Optional.empty();
-
+        
     //     return Optional.of(result);
     // }
 }

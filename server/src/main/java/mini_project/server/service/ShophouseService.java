@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
+import mini_project.server.model.Search;
+import mini_project.server.repository.GoogleRepository;
 import mini_project.server.repository.SqlRepository;
 
 @Service
@@ -23,16 +27,13 @@ public class ShophouseService {
 
     public JsonArray autocompleteKeyword(String keyword) {
         
-        Optional<List<String>> result = sqlRepo.autocompleteKeyword(keyword);
-        if (result.isEmpty())
-            return Optional.empty();
+        List<String> autocomplete = sqlRepo.autocompleteKeyword(keyword);
 
-        List<String> autocomplete = result.get();
         JsonArrayBuilder json = Json.createArrayBuilder();
         for(String c: autocomplete)
             json.add(c);
 
-        return Optional.of(json.build());
+        return json.build();
     }
 
     public JsonArray getCategories() {
@@ -45,9 +46,9 @@ public class ShophouseService {
         return json.build();
     }
 
-    public Optional<JsonArray> getBusinesses(String keyword) {
+    public Optional<JsonArray> getBusinesses(Search search) {
 
-        Optional<List<Business>> result = sqlRepo.getBusinesses(keyword);
+        Optional<List<Business>> result = sqlRepo.getBusinesses(search);
         if (result.isEmpty())
             return Optional.empty();
         List<Business> businesses = result.get();
