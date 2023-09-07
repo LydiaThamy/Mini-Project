@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { environment } from 'src/app/environment/environment'
 import { ActivatedRoute } from '@angular/router';
-import { ClientService } from 'src/app/service/client.service';
+import { ClientService } from 'app/service/client.service';
 import { Subscription } from "rxjs";
-import { Business } from 'src/app/interface/Business';
+import { Business } from 'app/interface/Business';
 import { } from 'googlemaps';
 
 @Component({

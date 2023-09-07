@@ -1,9 +1,9 @@
-import { ClientService } from 'src/app/service/client.service';
+import { ClientService } from 'app/service/client.service';
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from "rxjs";
-import { Business } from 'src/app/interface/Business';
-import { Search } from 'src/app/interface/Search';
+import { Business } from 'app/interface/Business';
+import { Search } from 'app/interface/Search';
 
 @Component({
   selector: 'app-results',
