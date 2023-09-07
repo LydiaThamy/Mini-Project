@@ -18,7 +18,10 @@ public class ShophouseService {
     @Autowired
     private SqlRepository sqlRepo;
 
-    public Optional<JsonArray> autocompleteKeyword(String keyword) {
+    @Autowired
+    private GoogleRepository googleRepo;
+
+    public JsonArray autocompleteKeyword(String keyword) {
         
         Optional<List<String>> result = sqlRepo.autocompleteKeyword(keyword);
         if (result.isEmpty())
@@ -97,19 +100,9 @@ public class ShophouseService {
     //         return Optional.empty();
     //     List<Business> businesses = result.get();
 
-    //     JsonArrayBuilder json = Json.createArrayBuilder();
-    //     for (Business b: businesses)
-    //         json.add(
-    //             Json.createObjectBuilder()
-    //                 .add("businessId", b.getBusinessId())
-    //                 .add("businessName", b.getBusinessName())
-    //                 .add("address", b.getAddress())
-    //                 .add("phone", b.getPhone())
-    //                 .add("email", b.getEmail())
-    //                 .add("website", b.getWebsite())
-    //                 .add("logo", b.getLogo())
-    //                 .build()
-    //         );
+    public ResponseEntity<String> getGeocode(String address) {
+        return googleRepo.getGeocode(address);
+    }
 
     //     return Optional.of(json.build());
     // }

@@ -1,6 +1,6 @@
 export interface Business{
 
-    businessId: string,
+    businessId: number,
     businessName: string,
     address: string,
     phone: string,

@@ -57,13 +57,9 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    // @GetMapping("/businesses")
-    // public ResponseEntity<String> getBusinesses(@RequestParam String category, @RequestParam(required = false) String region) {
-
-    //     Optional<JsonArray> result = service.getBusinesses(category, Optional.ofNullable(region));
-    //     if (result.isEmpty())
-    //         return ResponseEntity.notFound().build();
-
-    //     return ResponseEntity.ok(result.get().toString());
-    // }
+    @GetMapping("/geocode")
+    public ResponseEntity<String> getGeocode(@RequestParam String address) {
+        ResponseEntity<String> result = service.getGeocode(address);
+        return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
+    }
 }

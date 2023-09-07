@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
 import { ErrorComponent } from './component/error/error.component';
-import { ResultsComponent } from './component/results/results.component';
+import { BusinessComponent } from './component/business/business.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'results', component: ResultsComponent},
+  {path: 'business/:id', component: BusinessComponent},
   {path: '**', component: ErrorComponent, pathMatch: 'full'}
 ];
 
