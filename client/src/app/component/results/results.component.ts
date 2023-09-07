@@ -1,38 +1,42 @@
 import { ClientService } from 'src/app/service/client.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from "rxjs";
 import { Business } from 'src/app/interface/Business';
+import { Search } from 'src/app/interface/Search';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
-export class ResultsComponent implements OnInit, OnDestroy {
+export class ResultsComponent implements OnChanges, OnDestroy {
 
-  category!: string
+  @Input() category!: string
+  @Input() search!: Search
   // region?: string
-  keyword!: string
-  sub$!: Subscription
-  businesses: Business[] = []
-  constructor(private route: ActivatedRoute, private service: ClientService) {}
 
-  ngOnInit(): void {
-    // this.region = this.route.snapshot.queryParams['region']
-    this.category = this.route.snapshot.queryParams['category']
-    this.keyword = this.route.snapshot.queryParams['keyword']
-    
-    if (this.category !== undefined) {
+  sub$!: Subscription
+  businesses!: Business[]
+
+  constructor(private service: ClientService, private router: Router) { }
+
+  ngOnChanges(): void {
+    if (this.category.length >= 1) {
       this.getBusinessesByCategory()
-    } else {
+    }
+
+    if (this.search.keyword !== undefined) {
       this.getBusinesses()
     }
   }
 
   getBusinessesByCategory(): void {
+    this.businesses = []
+
     this.sub$ = this.service.searchCategory(this.category)
-      .subscribe(data => {
+      .subscribe({
+        next: data => {
         data.forEach((e: any) => {
           this.businesses.push({
             businessId: e['businessId'],
@@ -43,34 +47,40 @@ export class ResultsComponent implements OnInit, OnDestroy {
             website: e['website'],
             logo: e['logo']
           })
-        });
-      })
+        })
+      },
+    complete: () => {this.category = ''}
+    })
   }
 
   getBusinesses(): void {
-    this.sub$ = this.service.searchKeyword(this.keyword)
-      .subscribe(data => {
-        data.forEach((e: any) => {
-          this.businesses.push({
-            businessId: e['businessId'],
-            businessName: e['businessName'],
-            address: e['address'],
-            phone: e['phone'],
-            email: e['email'],
-            website: e['website'],
-            logo: e['logo']
+    this.businesses = []
+
+    this.sub$ = this.service.searchBusinesses(this.search)
+      .subscribe({
+        next: data => {
+          data.forEach((e: any) => {
+            this.businesses.push({
+              businessId: e['businessId'],
+              businessName: e['businessName'],
+              address: e['address'],
+              phone: e['phone'],
+              email: e['email'],
+              website: e['website'],
+              logo: e['logo']
+            })
           })
-        });
+        },
+        complete: () => {this.search = {}}
       })
   }
 
-  searchBusiness(business: Business): void {
-
+  searchBusiness(id: number): void {
+    this.router.navigate(['/business', id])
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe()
   }
-
 
 }

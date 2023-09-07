@@ -52,18 +52,6 @@ public class SqlRepository {
         return template.queryForList(GET_CATEGORIES_SQL, String.class);
     }
 
-    public Optional<List<Business>> getBusinesses(String keyword) {
-
-        String wildcard = "%" + keyword + "%";
-
-        List<Business> result = template.query(GET_BUSINESSES_SQL, new BeanPropertyRowMapper<>(Business.class), wildcard, wildcard, wildcard);
-
-        if (result.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(result);
-    }
-
     public Optional<List<Business>> getBusinessesByCategory(String category) {
 
         List<Business> result;
@@ -77,22 +65,40 @@ public class SqlRepository {
         return Optional.of(result);
     }
 
-    // public Optional<List<Business>> getBusinesses(String category, Optional<String> region) {
-        
-    //     List<Business> result;
-        
-    //     if (region.isEmpty()) {
-    //         result = template.query(GET_BUSINESSES_SQL_BY_CATEGORY, new BeanPropertyRowMapper<>(Business.class),
-    //                 category);
+    public Optional<List<Business>> getBusinesses(Search search) {
 
-    //     } else {
-    //         result = template.query(GET_BUSINESSES_SQL_BY_REGION, new BeanPropertyRowMapper<>(Business.class), category,
-    //                 region.get());
-    //     }
-
-    //     if (result.isEmpty())
-    //         return Optional.empty();
+        StringBuilder sqlBuilder = new StringBuilder(GET_BUSINESSES_SQL); 
         
-    //     return Optional.of(result);
-    // }
+        String keyword = "%" + search.getKeyword() + "%";
+        String[] category = search.getCategory();
+        String[] region = search.getRegion();
+
+        // if (search.getCategory().length > 0) {
+           for (String c:category) {
+            sqlBuilder.append(" and category = " + c);
+           }
+        // }
+
+        // if (search.getRegion().length > 0) {
+           for (String r:region) {
+            sqlBuilder.append(" and region = " + r);
+           }
+        // }
+        
+        List<Business> result = new LinkedList<>();
+        result = template.query(sqlBuilder.toString(), new BeanPropertyRowMapper<>(Business.class), keyword, keyword);
+
+        if (result.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(result);
+    }
+
+    public Optional<Business> getBusinessById(Integer id) {
+        return Optional.ofNullable(
+            template.query(GET_BUSINESS_SQL_BY_ID, new BeanPropertyRowMapper<>(Business.class), id).get(0)
+        )
+        
+        ;
+    }
 }

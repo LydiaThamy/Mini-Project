@@ -16,5 +16,7 @@ public class Business {
     String email;
     String website;
     String logo;
+    String region;
+    String category;
 
 }

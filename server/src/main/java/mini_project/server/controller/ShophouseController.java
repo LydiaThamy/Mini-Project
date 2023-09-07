@@ -40,10 +40,10 @@ public class ShophouseController {
         return ResponseEntity.ok(json);
     }
 
-        if (keyword.length() < 1)
-            return ResponseEntity.ok().build();
+    @GetMapping("/category/{category}")
+    public ResponseEntity<String> getBusinessesByCategory(@PathVariable String category) {
 
-        Optional<JsonArray> result = service.autocompleteKeyword(keyword);
+        Optional<JsonArray> result = service.getBusinessesByCategory(category);
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
 
@@ -51,19 +51,29 @@ public class ShophouseController {
     }
 
     @GetMapping("/businesses")
-    public ResponseEntity<String> getBusinesses(@RequestParam String keyword) {
+    public ResponseEntity<String> getBusinesses(@ModelAttribute Search search) {
 
-        Optional<JsonArray> result = service.getBusinesses(keyword);
+        Optional<JsonArray> result = service.getBusinesses(search);
+
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/category")
-    public ResponseEntity<String> getBusinessesByCategory(@RequestParam String c) {
+    @GetMapping("/business/{id}")
+    public ResponseEntity<String> getBusinessById(@PathVariable String id) {
 
-        Optional<JsonArray> result = service.getBusinessesByCategory(c);
+        Integer businessId;
+        try {
+            businessId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Business Id must be a number");
+        }
+
+        Optional<JsonObject> result = service.getBusinessById(businessId);
+
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
 

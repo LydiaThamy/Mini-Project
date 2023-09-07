@@ -94,17 +94,30 @@ public class ShophouseService {
         return Optional.of(json.build());
     }
 
-    // public Optional<JsonArray> getBusinesses(String category, Optional<String> region) {
+    public Optional<JsonObject> getBusinessById(Integer id) {
 
-    //     Optional<List<Business>> result = sqlRepo.getBusinesses(category, region);
-    //     if (result.isEmpty())
-    //         return Optional.empty();
-    //     List<Business> businesses = result.get();
+        Optional<Business> result = sqlRepo.getBusinessById(id);
+
+        if (result.isEmpty())
+            return Optional.empty();
+
+        Business b = result.get();
+
+         JsonObject json = Json.createObjectBuilder()
+                    .add("businessId", b.getBusinessId())
+                    .add("businessName", b.getBusinessName())
+                    .add("address", b.getAddress())
+                    .add("phone", b.getPhone())
+                    .add("email", b.getEmail())
+                    .add("website", b.getWebsite())
+                    .add("logo", b.getLogo())
+                    .build();
+
+        return Optional.of(json);
+    }
 
     public ResponseEntity<String> getGeocode(String address) {
         return googleRepo.getGeocode(address);
     }
 
-    //     return Optional.of(json.build());
-    // }
 }
