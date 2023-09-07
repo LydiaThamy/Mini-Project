@@ -19,9 +19,19 @@ USE shophouse;
 --     constraint		pk_category_id		primary key(category_id)
 -- );
 
-CREATE TABLE business_category(
-	business_id		int		not null,
-    category_id		int		not null,
-    constraint		fk_business_id		foreign key(business_id)	references	business(business_id),
-    constraint		fk_category_id		foreign key(category_id)	references	category(category_id)
+-- CREATE TABLE business_category(
+-- 	business_id		int		not null,
+--     category_id		int		not null,
+--     constraint		fk_business_id		foreign key(business_id)	references	business(business_id),
+--     constraint		fk_category_id		foreign key(category_id)	references	category(category_id)
+-- )
+
+CREATE TABLE service(
+	service_id	int auto_increment 	not null,
+    title		varchar(128)		not null,
+    description	varchar(258),
+    price		decimal				not null,
+    business_id	int					not null,
+    constraint 	pk_service_id		primary key(service_id),
+    constraint 	fk_business_id		foreign key(business_id)	references business(business_id)
 )
