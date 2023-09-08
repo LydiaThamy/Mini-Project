@@ -14,6 +14,7 @@ import { ResultsComponent } from './component/results/results.component';
 import { HeaderComponent } from './component/header/header.component';
 import { BusinessComponent } from './component/business/business.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { CartComponent } from './component/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ErrorComponent,
     ResultsComponent,
     HeaderComponent,
-    BusinessComponent
+    CartComponent,
   ],
   imports: [
     BrowserModule,

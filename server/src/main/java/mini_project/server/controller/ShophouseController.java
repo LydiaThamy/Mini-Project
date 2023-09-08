@@ -142,9 +142,15 @@ public class ShophouseController {
 
     @GetMapping("/cart/{customerId}")
     public ResponseEntity<String> getCartByCustomerId(@PathVariable String customerId) {
-        Optional<JsonObject> result = service.getCart(customerId);
+        Optional<JsonArray> result = service.getCart(customerId);
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(result.get().toString());
+    }
+
+    @PostMapping("/add-to-cart/{customerId}")
+    public ResponseEntity<String> updateCart(@PathVariable String customerId, @RequestBody Map<String, String> payload) {
+        service.addToCart(customerId, payload.get("serviceId"));
+        return ResponseEntity.ok().build();
     }
 }

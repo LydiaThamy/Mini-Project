@@ -1,0 +1,20 @@
+<app-header></app-header>
+
+<h1>Shopping Cart</h1>
+<div class="cart" *ngIf="cart.length > 0; else empty">
+    <div *ngFor="let item of cart as Item" id="item.serviceId">
+        <table>
+            <tr>
+                <td>{{item.serviceId}}</td>
+                <td>{{item.quantity}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- checkout -->
+<button routerLink="/checkout">checkout</button>
+
+<ng-template #empty>
+    <h2>Your cart is empty. Add something to it now!</h2>
+</ng-template>
