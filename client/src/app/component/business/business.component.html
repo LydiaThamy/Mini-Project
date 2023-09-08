@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="address">
+<div class="address" *ngIf="biz !== undefined">
     <h2>Location</h2>
     <p>Address: {{biz.address}}</p>
     <div id="map"></div>
