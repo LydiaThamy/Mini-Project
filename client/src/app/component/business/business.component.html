@@ -1,4 +1,4 @@
-<div class="business">
+<div class="business" *ngIf="biz !== undefined">
     <h1>{{biz.businessName}}</h1>
     <img [src]="biz.logo" width="300px">
     <p>Phone: {{biz.phone}}</p>

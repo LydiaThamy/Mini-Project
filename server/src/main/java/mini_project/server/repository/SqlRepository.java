@@ -89,8 +89,7 @@ public class SqlRepository {
            }
         // }
         
-        List<Business> result = new LinkedList<>();
-        result = template.query(sqlBuilder.toString(), new BeanPropertyRowMapper<>(Business.class), keyword, keyword);
+        List<Business> result = template.query(sqlBuilder.toString(), new BeanPropertyRowMapper<>(Business.class), keyword, keyword);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -105,11 +104,11 @@ public class SqlRepository {
     }
 
     public List<Service> getServicesByBusinessId(Integer id) {
-        return template.queryForList(GET_SERVICES_SQL_BY_BUSINESS_ID, Service.class, id);
+        return template.query(GET_SERVICES_SQL_BY_BUSINESS_ID, new BeanPropertyRowMapper<>(Service.class), id);
     }
 
     public List<Review> getReviewsByBusinessId(Integer id) {
-        return template.queryForList(GET_REVIEWS_SQL_BY_BUSINESS_ID, Review.class, id);
+        return template.query(GET_REVIEWS_SQL_BY_BUSINESS_ID, new BeanPropertyRowMapper<>(Review.class), id);
     }
 
 }

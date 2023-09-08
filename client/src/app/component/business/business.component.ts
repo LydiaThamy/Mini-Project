@@ -37,6 +37,8 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBusinessById()
+    this.getServicesByBusinessId()
+    this.getReviewsByBusinessId()
   }
 
   initMap(): void {
@@ -70,12 +72,14 @@ export class BusinessComponent implements OnInit, OnDestroy {
           this.add$ = this.service.getGeocode(this.biz.address)
             .subscribe({
               next: data => {
+                console.log(this.biz.address)
+                console.log(JSON.stringify(data))
                 this.address.lat = data.results[0].geometry.location.lat as number,
                 this.address.lng = data.results[0].geometry.location.lng as number
 
                 this.initMap()
               },
-              error: (e) => alert(e)
+              error: (e) => alert(JSON.stringify(e))
             })
           }
         })
