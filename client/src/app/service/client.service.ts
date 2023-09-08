@@ -44,6 +44,14 @@ export class ClientService {
     return this.http.get(`/api/shophouse/business/${id}`)
   }
 
+  getServicesByBusinessId(id: number): Observable<any> {
+    return this.http.get(`/api/shophouse/business/${id}/services`)
+  }
+
+  getReviewsByBusinessId(id: number): Observable<any> {
+    return this.http.get(`/api/shophouse/business/${id}/reviews`)
+  }
+
   getGeocode(address: string): Observable<any> {
     const httpParams = new HttpParams()
       .set("address", address)

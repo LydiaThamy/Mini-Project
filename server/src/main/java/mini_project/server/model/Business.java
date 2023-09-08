@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Business {
     
-    String businessId;
+    Integer businessId;
     String businessName;
     String address;
     String phone;

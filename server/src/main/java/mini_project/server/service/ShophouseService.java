@@ -12,13 +12,14 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
+import mini_project.server.model.Review;
 import mini_project.server.model.Search;
 import mini_project.server.repository.GoogleRepository;
 import mini_project.server.repository.SqlRepository;
 
 @Service
 public class ShophouseService {
-    
+
     @Autowired
     private SqlRepository sqlRepo;
 
@@ -26,11 +27,11 @@ public class ShophouseService {
     private GoogleRepository googleRepo;
 
     public JsonArray autocompleteKeyword(String keyword) {
-        
+
         List<String> autocomplete = sqlRepo.autocompleteKeyword(keyword);
 
         JsonArrayBuilder json = Json.createArrayBuilder();
-        for(String c: autocomplete)
+        for (String c : autocomplete)
             json.add(c);
 
         return json.build();
@@ -40,7 +41,7 @@ public class ShophouseService {
 
         List<String> categories = sqlRepo.getCategories();
         JsonArrayBuilder json = Json.createArrayBuilder();
-        for(String c: categories)
+        for (String c : categories)
             json.add(c);
 
         return json.build();
@@ -54,18 +55,17 @@ public class ShophouseService {
         List<Business> businesses = result.get();
 
         JsonArrayBuilder json = Json.createArrayBuilder();
-        for (Business b: businesses)
+        for (Business b : businesses)
             json.add(
-                Json.createObjectBuilder()
-                    .add("businessId", b.getBusinessId())
-                    .add("businessName", b.getBusinessName())
-                    .add("address", b.getAddress())
-                    .add("phone", b.getPhone())
-                    .add("email", b.getEmail())
-                    .add("website", b.getWebsite())
-                    .add("logo", b.getLogo())
-                    .build()
-            );
+                    Json.createObjectBuilder()
+                            .add("businessId", b.getBusinessId())
+                            .add("businessName", b.getBusinessName())
+                            .add("address", b.getAddress())
+                            .add("phone", b.getPhone())
+                            .add("email", b.getEmail())
+                            .add("website", b.getWebsite())
+                            .add("logo", b.getLogo())
+                            .build());
 
         return Optional.of(json.build());
     }
@@ -78,18 +78,17 @@ public class ShophouseService {
         List<Business> businesses = result.get();
 
         JsonArrayBuilder json = Json.createArrayBuilder();
-        for (Business b: businesses)
+        for (Business b : businesses)
             json.add(
-                Json.createObjectBuilder()
-                    .add("businessId", b.getBusinessId())
-                    .add("businessName", b.getBusinessName())
-                    .add("address", b.getAddress())
-                    .add("phone", b.getPhone())
-                    .add("email", b.getEmail())
-                    .add("website", b.getWebsite())
-                    .add("logo", b.getLogo())
-                    .build()
-            );
+                    Json.createObjectBuilder()
+                            .add("businessId", b.getBusinessId())
+                            .add("businessName", b.getBusinessName())
+                            .add("address", b.getAddress())
+                            .add("phone", b.getPhone())
+                            .add("email", b.getEmail())
+                            .add("website", b.getWebsite())
+                            .add("logo", b.getLogo())
+                            .build());
 
         return Optional.of(json.build());
     }
@@ -103,17 +102,58 @@ public class ShophouseService {
 
         Business b = result.get();
 
-         JsonObject json = Json.createObjectBuilder()
-                    .add("businessId", b.getBusinessId())
-                    .add("businessName", b.getBusinessName())
-                    .add("address", b.getAddress())
-                    .add("phone", b.getPhone())
-                    .add("email", b.getEmail())
-                    .add("website", b.getWebsite())
-                    .add("logo", b.getLogo())
-                    .build();
+        JsonObject json = Json.createObjectBuilder()
+                .add("businessId", b.getBusinessId())
+                .add("businessName", b.getBusinessName())
+                .add("address", b.getAddress())
+                .add("phone", b.getPhone())
+                .add("email", b.getEmail())
+                .add("website", b.getWebsite())
+                .add("logo", b.getLogo())
+                .build();
 
         return Optional.of(json);
+    }
+
+    public Optional<JsonArray> getServicesByBusinessId(Integer id) {
+
+        List<mini_project.server.model.Service> result = sqlRepo.getServicesByBusinessId(id);
+
+        if (result.isEmpty())
+            return Optional.empty();
+
+        JsonArrayBuilder json = Json.createArrayBuilder();
+
+        for (mini_project.server.model.Service s : result)
+            json.add(Json.createObjectBuilder()
+                            .add("serviceId", s.getServiceId())
+                            .add("title", s.getTitle())
+                            .add("description", s.getDescription())
+                            .add("price", s.getPrice())
+                            .build());
+
+        return Optional.of(json.build());
+    }
+
+    public Optional<JsonArray> getReviewsByBusinessId(Integer id) {
+
+        List<Review> result = sqlRepo.getReviewsByBusinessId(id);
+
+        if (result.isEmpty())
+            return Optional.empty();
+
+        JsonArrayBuilder json = Json.createArrayBuilder();
+
+        for (Review r : result)
+            json.add(Json.createObjectBuilder()
+                            .add("reviewId", r.getReviewId())
+                            .add("reviewer", r.getReviewer())
+                            .add("content", r.getContent())
+                            .add("rating", r.getRating())
+                            .add("reviewDate", r.getReviewDate().toString())
+                            .build());
+
+        return Optional.of(json.build());
     }
 
     public ResponseEntity<String> getGeocode(String address) {

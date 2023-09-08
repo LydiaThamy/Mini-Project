@@ -10,7 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import mini_project.server.model.Business;
+import mini_project.server.model.Review;
 import mini_project.server.model.Search;
+import mini_project.server.model.Service;
 
 @Repository
 public class SqlRepository {
@@ -29,6 +31,8 @@ public class SqlRepository {
     public static final String GET_BUSINESSES_SQL = "select * from business where business_name like ? or address like ?";
     // get business by id
     public static final String GET_BUSINESS_SQL_BY_ID = "select * from business where business_id = ?";
+    public static final String GET_SERVICES_SQL_BY_BUSINESS_ID = "select * from service where business_id = ?";
+    public static final String GET_REVIEWS_SQL_BY_BUSINESS_ID = "select * from review where business_id = ?";
 
     public List<String> autocompleteKeyword(String keyword) {
 
@@ -97,8 +101,15 @@ public class SqlRepository {
     public Optional<Business> getBusinessById(Integer id) {
         return Optional.ofNullable(
             template.query(GET_BUSINESS_SQL_BY_ID, new BeanPropertyRowMapper<>(Business.class), id).get(0)
-        )
-        
-        ;
+        );
     }
+
+    public List<Service> getServicesByBusinessId(Integer id) {
+        return template.queryForList(GET_SERVICES_SQL_BY_BUSINESS_ID, Service.class, id);
+    }
+
+    public List<Review> getReviewsByBusinessId(Integer id) {
+        return template.queryForList(GET_REVIEWS_SQL_BY_BUSINESS_ID, Review.class, id);
+    }
+
 }

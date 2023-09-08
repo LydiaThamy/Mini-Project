@@ -4,6 +4,8 @@ import { ClientService } from 'app/service/client.service';
 import { Subscription } from "rxjs";
 import { Business } from 'app/interface/Business';
 import { } from 'googlemaps';
+import { Service } from 'app/interface/Service';
+import { Review } from 'app/interface/Review';
 
 @Component({
   selector: 'app-business',
@@ -12,16 +14,24 @@ import { } from 'googlemaps';
 })
 export class BusinessComponent implements OnInit, OnDestroy {
 
-  id: number = this.route.snapshot.params['id']
-  @ViewChild('map') mapElement: any;
+  biz!: Business
+  businessId: number = this.route.snapshot.params['id']
 
-  sub$!: Subscription
-  business!: Business
+  svcs: Service[] = []
+  rvws: Review[] = []
+  
+  biz$!: Subscription
+  svc$!:Subscription
+  rvw$!: Subscription
+  
+  add$!: Subscription
+  @ViewChild('map') mapElement: any;
   address: any = {
     lat: 0,
     lng: 0
   }
-  data!: any
+
+  cart: number[] = []
 
   constructor(private route: ActivatedRoute, private service: ClientService) { }
 
@@ -43,10 +53,10 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getBusinessById(): void {
-    this.sub$ = this.service.getBusinessById(this.id)
+    this.biz$ = this.service.getBusinessById(this.businessId)
       .subscribe({
         next: e => {
-            this.business = {
+            this.biz = {
             businessId: e['businessId'],
             businessName: e['businessName'],
             address: e['address'],
@@ -57,24 +67,60 @@ export class BusinessComponent implements OnInit, OnDestroy {
           }
         },
         complete: () => {
-          let add$: Subscription = this.service.getGeocode(this.business.address)
+          this.add$ = this.service.getGeocode(this.biz.address)
             .subscribe({
               next: data => {
-                this.data = JSON.stringify(data)
-                
                 this.address.lat = data.results[0].geometry.location.lat as number,
                 this.address.lng = data.results[0].geometry.location.lng as number
 
                 this.initMap()
               },
-              error: (e) => alert(e),
-              complete: () => add$.unsubscribe()
+              error: (e) => alert(e)
             })
           }
         })
   }
 
+  getServicesByBusinessId(): void {
+    this.svc$ = this.service.getServicesByBusinessId(this.businessId)
+      .subscribe({
+        next: (data) => 
+            data.array.forEach((e:any) => {
+              this.svcs.push({
+                serviceId: e['serviceId'],
+                title: e['title'],
+                description: e['description'],
+                price: e['price']
+              })
+            })
+      })
+  }
+
+  getReviewsByBusinessId(): void {
+    this.rvw$ = this.service.getReviewsByBusinessId(this.businessId)
+      .subscribe({
+        next: (data) => 
+            data.array.forEach((e:any) => {
+              this.rvws.push({
+                reviewId: e['reviewId'],
+                reviewer: e['reviewer'],
+                content: e['content'],
+                rating: e['rating'],
+                reviewDate: e['reviewDate']
+              })
+            })
+      })
+  }
+
+  addToCart(serviceId: number) {
+    this.cart.push(serviceId)
+    // call server to add cart details to cart
+  }
+
   ngOnDestroy(): void {
-    this.sub$.unsubscribe()
+    this.biz$.unsubscribe()
+    this.add$.unsubscribe()
+    this.svc$.unsubscribe()
+    this.rvw$.unsubscribe()
   }
 }
