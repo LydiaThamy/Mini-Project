@@ -1,5 +1,6 @@
 package mini_project.server.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
+import mini_project.server.repository.GeoapifyRepository;
 import mini_project.server.repository.GoogleRepository;
 import mini_project.server.repository.MongoRespository;
 import mini_project.server.repository.SqlRepository;
@@ -27,6 +29,9 @@ public class ShophouseService {
 
     @Autowired
     private GoogleRepository googleRepo;
+
+    @Autowired
+    private GeoapifyRepository geoapifyRepo;
 
     @Autowired
     private MongoRespository mongoRepo;
@@ -161,7 +166,8 @@ public class ShophouseService {
         return Optional.of(json.build());
     }
 
-    public ResponseEntity<String> getGeocode(String address) {
+    public String getGeocode(String address) throws IOException, InterruptedException {
+        // return geoapifyRepo.getGeocode(address);
         return googleRepo.getGeocode(address);
     }
 

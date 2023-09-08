@@ -1,5 +1,6 @@
 package mini_project.server.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,8 +121,13 @@ public class ShophouseController {
 
     @GetMapping("/geocode")
     public ResponseEntity<String> getGeocode(@RequestParam String address) {
-        ResponseEntity<String> result = service.getGeocode(address);
-        return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
+        String result;
+        try {
+            result = service.getGeocode(address);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/cart/{customerId}")

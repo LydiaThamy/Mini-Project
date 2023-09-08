@@ -80,11 +80,12 @@ export class BusinessComponent implements OnInit, OnDestroy {
       .subscribe({
         next: data => {
           console.log(JSON.stringify(data))
-          if (data.status !== "ZERO_RESULTS") {
+            // this.address.lat = data.features[0].properties.lat as number,
+            //   this.address.lng = data.features[0].properties.lon as number
             this.address.lat = data.results[0].geometry.location.lat as number,
               this.address.lng = data.results[0].geometry.location.lng as number
+
             this.initMap()
-          }
         }
       })
   }
@@ -93,7 +94,6 @@ export class BusinessComponent implements OnInit, OnDestroy {
     this.svc$ = this.service.getServicesByBusinessId(this.businessId)
       .subscribe({
         next: (data) => {
-          console.log(JSON.stringify(data))
           data.forEach((e: any) => {
             this.svcs.push({
               serviceId: e['serviceId'],

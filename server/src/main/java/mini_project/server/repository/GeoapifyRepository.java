@@ -4,26 +4,36 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+// import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Repository
-public class GoogleRepository {
+public class GeoapifyRepository {
 
-    @Value("${google.geocoding.api.key}")
+    @Value("${geoapify.geocoding.api.key}")
     private String apiKey;
 
     public String getGeocode(String address) throws IOException, InterruptedException {
+        // public ResponseEntity<String> getGeocode(String address) {
+        // RestTemplate template = new RestTemplate();
         String url = UriComponentsBuilder
-            .fromUriString("https://maps.googleapis.com/maps/api/geocode/json")
-            .queryParam("address", address.toLowerCase())
-            .queryParam("key", apiKey)
-            .toUriString();
+        .fromUriString("https://api.geoapify.com/v1/geocode/search")
+        .queryParam("text", address.trim().toLowerCase())
+        .queryParam("apiKey", apiKey)
+        .toUriString();
+
+        // RequestEntity req =
+        // RequestEntity.get(url).accept(MediaType.APPLICATION_JSON).build();
+        // // return template.getForEntity(url, String.class).getBody();
+        // return template.exchange(req, String.class).getBody();
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -32,6 +42,5 @@ public class GoogleRepository {
                 .build();
 
         return client.send(request, BodyHandlers.ofString()).body();
-    }    
+    }
 }
-
