@@ -10,7 +10,7 @@ import { ulid } from 'ulid'
 export class ClientService {
 
   customerId: string = this.getCustomerId()
-  // cart!: Cart
+
   constructor(private http: HttpClient) {}
 
   getCustomerId(): string {
@@ -35,6 +35,10 @@ export class ClientService {
     localStorage.setItem('customerId', JSON.stringify(customerId))
 
     return cId
+  }
+
+  getCart(): Observable<any> {
+    return this.http.get(`/api/shophouse/cart/${this.customerId}`)
   }
 
   getCategories(): Observable<any> {

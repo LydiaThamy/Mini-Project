@@ -3,6 +3,7 @@ package mini_project.server.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
 import mini_project.server.repository.GoogleRepository;
+import mini_project.server.repository.MongoRespository;
 import mini_project.server.repository.SqlRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class ShophouseService {
 
     @Autowired
     private GoogleRepository googleRepo;
+
+    @Autowired
+    private MongoRespository mongoRepo;
 
     public JsonArray autocompleteKeyword(String keyword) {
 
@@ -126,11 +131,11 @@ public class ShophouseService {
 
         for (mini_project.server.model.Service s : result)
             json.add(Json.createObjectBuilder()
-                            .add("serviceId", s.getServiceId())
-                            .add("title", s.getTitle())
-                            .add("description", s.getDescription())
-                            .add("price", s.getPrice())
-                            .build());
+                    .add("serviceId", s.getServiceId())
+                    .add("title", s.getTitle())
+                    .add("description", s.getDescription())
+                    .add("price", s.getPrice())
+                    .build());
 
         return Optional.of(json.build());
     }
@@ -146,18 +151,40 @@ public class ShophouseService {
 
         for (Review r : result)
             json.add(Json.createObjectBuilder()
-                            .add("reviewId", r.getReviewId())
-                            .add("reviewer", r.getReviewer())
-                            .add("content", r.getContent())
-                            .add("rating", r.getRating())
-                            .add("reviewDate", r.getReviewDate().toString())
-                            .build());
+                    .add("reviewId", r.getReviewId())
+                    .add("reviewer", r.getReviewer())
+                    .add("content", r.getContent())
+                    .add("rating", r.getRating())
+                    .add("reviewDate", r.getReviewDate().toString())
+                    .build());
 
         return Optional.of(json.build());
     }
 
     public ResponseEntity<String> getGeocode(String address) {
         return googleRepo.getGeocode(address);
+    }
+
+    public Optional<JsonObject> getCart(String customerId) {
+        Optional<Document> result = mongoRepo.getCart(customerId);
+        if (result.isEmpty())
+            return Optional.empty();
+
+        Document d = result.get();
+        List<Document> items = d.getList("items", Document.class);
+
+        JsonArrayBuilder jArr = Json.createArrayBuilder();
+        for (Document i : items)
+            jArr.add(
+                    Json.createObjectBuilder()
+                            .add("serviceId", i.getString("service_id"))
+                            .add("quantity", i.getInteger("quantity"))
+                            .build());
+
+        return Optional.of(Json.createObjectBuilder()
+                .add("cId", customerId)
+                .add("items", jArr.build())
+                .build());
     }
 
 }

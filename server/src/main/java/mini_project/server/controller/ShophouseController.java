@@ -61,18 +61,18 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{id}")
-    public ResponseEntity<String> getBusinessById(@PathVariable String id) {
+    @GetMapping("/business/{businessId}")
+    public ResponseEntity<String> getBusinessById(@PathVariable String businessId) {
 
-        Integer businessId;
+        Integer bId;
         try {
-            businessId = Integer.parseInt(id);
+            bId = Integer.parseInt(businessId);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Business Id must be a number");
         }
 
-        Optional<JsonObject> result = service.getBusinessById(businessId);
+        Optional<JsonObject> result = service.getBusinessById(bId);
 
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
@@ -80,18 +80,18 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{id}/services")
-    public ResponseEntity<String> getServicesByBusinessId(@PathVariable String id) {
+    @GetMapping("/business/{businessId}/services")
+    public ResponseEntity<String> getServicesByBusinessId(@PathVariable String businessId) {
 
-        Integer businessId;
+        Integer bId;
         try {
-            businessId = Integer.parseInt(id);
+            bId = Integer.parseInt(businessId);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Business Id must be a number");
         }
 
-        Optional<JsonArray> result = service.getServicesByBusinessId(businessId);
+        Optional<JsonArray> result = service.getServicesByBusinessId(bId);
 
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
@@ -99,18 +99,18 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{id}/reviews")
-    public ResponseEntity<String> getReviewsByBusinessId(@PathVariable String id) {
+    @GetMapping("/business/{businessId}/reviews")
+    public ResponseEntity<String> getReviewsByBusinessId(@PathVariable String businessId) {
 
-        Integer businessId;
+        Integer bId;
         try {
-            businessId = Integer.parseInt(id);
+            bId = Integer.parseInt(businessId);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Business Id must be a number");
         }
 
-        Optional<JsonArray> result = service.getReviewsByBusinessId(businessId);
+        Optional<JsonArray> result = service.getReviewsByBusinessId(bId);
 
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
@@ -122,5 +122,13 @@ public class ShophouseController {
     public ResponseEntity<String> getGeocode(@RequestParam String address) {
         ResponseEntity<String> result = service.getGeocode(address);
         return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
+    }
+
+    @GetMapping("/cart/{customerId}")
+    public ResponseEntity<String> getCartByCustomerId(@PathVariable String customerId) {
+        Optional<JsonObject> result = service.getCart(customerId);
+        if (result.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(result.get().toString());
     }
 }
