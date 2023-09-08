@@ -3,29 +3,49 @@
     <img [src]="biz.logo" width="300px">
     <p>Phone: {{biz.phone}}</p>
     <p>Email: {{biz.email}}</p>
-    <p>Address: {{biz.address}}</p>
-    <div id="map"></div>
 </div>
 
 <div class="services" *ngIf="svcs.length > 0">
     <h2>Services</h2>
     <div *ngFor="let s of svcs" [id]="'sId'+ s.serviceId">
-        <p>{{s.title}}</p>
-        <p>{{s.description}}</p>
-        <p>{{s.price}}</p>
-        <div class="cart" *ngIf="">
-            <button type="button" (click)="addToCart(s.serviceId)">Add to cart</button>
-
-        </div>
+        <table>
+            <td>
+                <tr>{{s.title}}</tr>
+                <tr>{{s.description}}</tr>
+            </td>
+            <td>
+                <tr></tr>
+                <tr>{{s.price}}</tr>
+            </td>
+            <td>
+                <tr>
+                        <button type="button" (click)="addToCart(s.serviceId)">Add to cart</button>
+                </tr>
+            </td>
+        </table>
     </div>
 </div>
 
 <div class="reviews" *ngIf="rvws.length > 0">
     <h2>Reviews</h2>
     <div *ngFor="let r of rvws" [id]="'rId'+ r.reviewId">
-        <p>{{r.reviewer}}</p>
-        <p>{{r.content}}</p>
-        <p>{{r.rating}}/5</p>
-        <p>{{r.reviewDate}}</p>
+        <table>
+            <tr>
+                <td>{{r.reviewer}}</td>
+                <td>Rating: {{r.rating}}/5</td>
+            </tr>
+            <tr>
+                <td>{{r.content}}</td>
+            </tr>
+            <tr>
+                <td>{{r.reviewDate}}</td>
+            </tr>
+        </table>
     </div>
+</div>
+
+<div class="address">
+    <h2>Location</h2>
+    <p>Address: {{biz.address}}</p>
+    <div id="map"></div>
 </div>

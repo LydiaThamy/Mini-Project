@@ -19,11 +19,11 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   svcs: Service[] = []
   rvws: Review[] = []
-  
+
   biz$!: Subscription
-  svc$!:Subscription
+  svc$!: Subscription
   rvw$!: Subscription
-  
+
   add$!: Subscription
   @ViewChild('map') mapElement: any;
   address: any = {
@@ -37,8 +37,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBusinessById()
-    this.getServicesByBusinessId()
-    this.getReviewsByBusinessId()
+
   }
 
   initMap(): void {
@@ -58,7 +57,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
     this.biz$ = this.service.getBusinessById(this.businessId)
       .subscribe({
         next: e => {
-            this.biz = {
+          this.biz = {
             businessId: e['businessId'],
             businessName: e['businessName'],
             address: e['address'],
@@ -69,50 +68,57 @@ export class BusinessComponent implements OnInit, OnDestroy {
           }
         },
         complete: () => {
-          this.add$ = this.service.getGeocode(this.biz.address)
-            .subscribe({
-              next: data => {
-                console.log(this.biz.address)
-                console.log(JSON.stringify(data))
-                this.address.lat = data.results[0].geometry.location.lat as number,
-                this.address.lng = data.results[0].geometry.location.lng as number
+          this.getServicesByBusinessId()
+          this.getReviewsByBusinessId()
+          this.getGeocodedAddress()
+        }
+      })
+  }
 
-                this.initMap()
-              },
-              error: (e) => alert(JSON.stringify(e))
-            })
+  getGeocodedAddress(): void {
+    this.add$ = this.service.getGeocode(this.biz.address)
+      .subscribe({
+        next: data => {
+          console.log(JSON.stringify(data))
+          if (data.status !== "ZERO_RESULTS") {
+            this.address.lat = data.results[0].geometry.location.lat as number,
+              this.address.lng = data.results[0].geometry.location.lng as number
+            this.initMap()
           }
-        })
+        }
+      })
   }
 
   getServicesByBusinessId(): void {
     this.svc$ = this.service.getServicesByBusinessId(this.businessId)
       .subscribe({
-        next: (data) => 
-            data.array.forEach((e:any) => {
-              this.svcs.push({
-                serviceId: e['serviceId'],
-                title: e['title'],
-                description: e['description'],
-                price: e['price']
-              })
+        next: (data) => {
+          console.log(JSON.stringify(data))
+          data.forEach((e: any) => {
+            this.svcs.push({
+              serviceId: e['serviceId'],
+              title: e['title'],
+              description: e['description'],
+              price: e['price']
             })
+          })
+        }
       })
   }
 
   getReviewsByBusinessId(): void {
     this.rvw$ = this.service.getReviewsByBusinessId(this.businessId)
       .subscribe({
-        next: (data) => 
-            data.array.forEach((e:any) => {
-              this.rvws.push({
-                reviewId: e['reviewId'],
-                reviewer: e['reviewer'],
-                content: e['content'],
-                rating: e['rating'],
-                reviewDate: e['reviewDate']
-              })
+        next: (data) =>
+          data.forEach((e: any) => {
+            this.rvws.push({
+              reviewId: e['reviewId'],
+              reviewer: e['reviewer'],
+              content: e['content'],
+              rating: e['rating'],
+              reviewDate: e['reviewDate']
             })
+          })
       })
   }
 
