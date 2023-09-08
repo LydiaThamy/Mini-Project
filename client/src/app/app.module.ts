@@ -15,6 +15,10 @@ import { HeaderComponent } from './component/header/header.component';
 import { BusinessComponent } from './component/business/business.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CartComponent } from './component/cart/cart.component';
+import { LoginComponent } from './component/login/login.component';
+import { CreateAccountComponent } from './component/create-account/create-account.component';
+import { LogoComponent } from './component/logo/logo.component';
+import { CheckoutComponent } from './component/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,12 @@ import { CartComponent } from './component/cart/cart.component';
     ErrorComponent,
     ResultsComponent,
     HeaderComponent,
+    BusinessComponent,
     CartComponent,
+    LoginComponent,
+    CreateAccountComponent,
+    LogoComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
