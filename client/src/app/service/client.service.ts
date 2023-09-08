@@ -2,13 +2,40 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs';
 import { Search } from '../interface/Search';
+import { ulid } from 'ulid'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  constructor(private http: HttpClient) { }
+  customerId: string = this.getCustomerId()
+  // cart!: Cart
+  constructor(private http: HttpClient) {}
+
+  getCustomerId(): string {
+    let retrievedId: string | null = localStorage.getItem('customerId')
+    let cId!: string
+    
+    // if localstorage has no customer ID or timestamp is more than a week
+    if (retrievedId == null || new Date().getTime() - JSON.parse(retrievedId).timestamp as number <= 7 * 24 * 60 * 60 * 1000) {
+      // make new customer ID
+      cId = ulid()
+
+    } else {
+      cId = JSON.parse(retrievedId).cId
+    }
+
+    const customerId = {
+      cId: cId,
+      timestamp: new Date().getTime()
+    }
+
+    // set in localstorage
+    localStorage.setItem('customerId', JSON.stringify(customerId))
+
+    return cId
+  }
 
   getCategories(): Observable<any> {
     return this.http.get("/api/shophouse/categories")
@@ -33,7 +60,7 @@ export class ClientService {
     if (search.region !== undefined)
       httpParam = httpParam.set('region', search.region.toString())
 
-    return this.http.get('/api/shophouse/businesses', {params: httpParam})
+    return this.http.get('/api/shophouse/businesses', { params: httpParam })
   }
 
   searchCategory(category: string): Observable<any> {
@@ -55,6 +82,7 @@ export class ClientService {
   getGeocode(address: string): Observable<any> {
     const httpParams = new HttpParams()
       .set("address", address)
-    return this.http.get("/api/shophouse/geocode", {params: httpParams})
+    return this.http.get("/api/shophouse/geocode", { params: httpParams })
   }
+
 }
