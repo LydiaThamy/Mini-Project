@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1694157763381,
+  "timestamp": 1694189524594,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.d4ace4447e781588.js",
+        "/main.4d8230e9d274709b.js",
         "/manifest.webmanifest",
         "/polyfills.6b9e5e7ae92fe89b.js",
         "/runtime.7ae29a296d479790.js",
@@ -36,7 +36,8 @@
         "/assets/icons/icon-384x384.png",
         "/assets/icons/icon-512x512.png",
         "/assets/icons/icon-72x72.png",
-        "/assets/icons/icon-96x96.png"
+        "/assets/icons/icon-96x96.png",
+        "/assets/icons/shophouse.png"
       ],
       "patterns": []
     }
@@ -51,9 +52,10 @@
     "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
     "/assets/icons/icon-72x72.png": "279825a1ac4377032ae996a1832c641e33ccf1b6",
     "/assets/icons/icon-96x96.png": "592885efcbfee27e5e20be4fa3043589390d2740",
+    "/assets/icons/shophouse.png": "cd297dccd350a50687d1f7d6b5ed9049d810cb5c",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "298a0cd2f821ca1990c61a707c49210c4d5966e4",
-    "/main.d4ace4447e781588.js": "93cd31a781ab4ea5ee421560f62f59ac43175eda",
+    "/index.html": "a230385f6e619bad437ac3981da7d4bdf76eb4ff",
+    "/main.4d8230e9d274709b.js": "ebd783ccddba8969f7bed7e7a359bc08308f6059",
     "/manifest.webmanifest": "6bd446cf481e91dc7da6926e0d9b5fb2029c63fa",
     "/polyfills.6b9e5e7ae92fe89b.js": "790c7c0e2224dcc2db3eaf95d1d93546d5c2f3b8",
     "/runtime.7ae29a296d479790.js": "12cfdfd450f222fe2f70ddee2f8c81d4e8b4d5e7",
