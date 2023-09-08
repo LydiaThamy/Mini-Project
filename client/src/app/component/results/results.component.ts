@@ -14,7 +14,7 @@ export class ResultsComponent implements OnChanges, OnDestroy {
 
   @Input() category!: string
   @Input() search!: Search
-  // region?: string
+  @Output() selectedBizId = new Subject<number>()
 
   sub$!: Subscription
   businesses!: Business[]
@@ -74,7 +74,8 @@ export class ResultsComponent implements OnChanges, OnDestroy {
   }
 
   searchBusiness(id: number): void {
-    this.router.navigate(['/business', id])
+    this.selectedBizId.next(id)
+    // this.router.navigate(['/business', id])
   }
 
   ngOnDestroy(): void {

@@ -1,3 +1,6 @@
+<!-- logo -->
+<app-logo></app-logo>
+
 <!-- search bar -->
 <div class="bar">
     <form [formGroup]="searchForm" #formDirective="ngForm" (ngSubmit)="searchKeyword(searchForm, formDirective)">
@@ -22,7 +25,7 @@
             <div class="category">
                 <h3>Category</h3>
                 <span *ngFor="let c of categories; let i=index">
-                      <input type="checkbox" [id]="c + i" [value]="c" (change)="checkCategory($event)">
+                      <input type="checkbox" [id]="c + i" [value]="c" (change)="checkCategory(c)" [checked]="selectCategoryCheckbox(c)">
                       <label [for]="c + i"></label>{{c}}
                   </span>
             </div>
@@ -30,7 +33,7 @@
             <div class="region">
                 <h3>Location</h3>
                 <span *ngFor="let r of regions; let i=index">
-                    <input type="checkbox" [id]="r + i" [value]="r" (change)="checkRegion($event)">
+                    <input type="checkbox" [id]="r + i" [value]="r" (change)="checkRegion(r)" [checked]="selectRegionCheckbox(r)">
                     <label [for]="r + i">{{r | titlecase}}</label>
                   </span>
             </div>
@@ -40,9 +43,9 @@
     </form>
 </div>
 
-<!-- categories -->
-<div *ngFor="let c of categories" class="categories" id="c">
-    <button (click)="searchCategory(c)">
-        {{c | titlecase}}
-    </button>
-</div>
+<!-- cart -->
+<p routerLink="/cart">Cart</p>
+
+<!-- login -->
+<p routerLink="/login">Login</p>
+

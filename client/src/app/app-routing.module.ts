@@ -6,7 +6,10 @@ import { BusinessComponent } from './component/business/business.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'business/:id', component: BusinessComponent},
+  {path: 'cart', component: CartComponent},
+  {path: 'checkout', component: CheckoutComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'create-account', component: CreateAccountComponent},
   {path: '**', component: ErrorComponent, pathMatch: 'full'}
 ];
 

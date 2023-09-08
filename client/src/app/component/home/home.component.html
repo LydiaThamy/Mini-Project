@@ -1,11 +1,25 @@
 <!-- header -->
 <app-header 
-(selectedCategory)="changeCategory($event)" 
 (search)="searchKeyword($event)"
 ></app-header>
 
-<!-- searches -->
-<app-results 
+<!-- categories -->
+<div *ngFor="let c of categories" class="categories" id="c">
+    <button (click)="changeCategory(c)">
+        {{c | titlecase}}
+    </button>
+</div>
+
+<!-- results -->
+<app-results *ngIf="inspectBusiness == false" 
+(selectedBizId)="selectBusiness($event)"
 [category]="selectedCategory" 
 [search]="searchTerms"
 ></app-results>
+
+<div *ngIf="inspectBusiness == true">
+    <p (click)="inspectBusiness = false">Back to Results</p>
+    <app-business
+    [businessId]="bizId"
+    ></app-business>
+</div>
