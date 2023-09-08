@@ -1,6 +1,7 @@
 package mini_project.server.controller;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +45,13 @@ public class ShophouseController {
         return ResponseEntity.ok(json);
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<String> getBusinessesByCategory(@PathVariable String category) {
+    @GetMapping("/businesses")
+    public ResponseEntity<String> getAllBusinesses() {
+        return ResponseEntity.ok(service.getAllBusinesses().toString());
+    }
+
+    @GetMapping("/businesses/category")
+    public ResponseEntity<String> getBusinessesByCategory(@RequestParam String category) {
 
         Optional<JsonArray> result = service.getBusinessesByCategory(category);
         if (result.isEmpty())
@@ -51,10 +60,11 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/businesses")
+    @GetMapping("/businesses/keyword")
     public ResponseEntity<String> getBusinesses(@ModelAttribute Search search) {
+        System.out.println("Search: " + search.toString());
 
-        Optional<JsonArray> result = service.getBusinesses(search);
+        Optional<JsonArray> result = service.getBusinessesByKeyword(search);
 
         if (result.isEmpty())
             return ResponseEntity.notFound().build();

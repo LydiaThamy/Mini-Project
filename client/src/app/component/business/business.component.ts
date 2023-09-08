@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy, Input, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from 'app/service/client.service';
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { Business } from 'app/interface/Business';
 import { } from 'googlemaps';
 import { Service } from 'app/interface/Service';
@@ -15,7 +15,8 @@ import { Review } from 'app/interface/Review';
 export class BusinessComponent implements OnInit, OnDestroy {
 
   biz!: Business
-  businessId: number = this.route.snapshot.params['id']
+  @Input() businessId!: number
+  @Output() returnResults = new Subject<boolean>()
 
   svcs: Service[] = []
   rvws: Review[] = []
@@ -23,6 +24,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
   biz$!: Subscription
   svc$!: Subscription
   rvw$!: Subscription
+  crt$!: Subscription
 
   add$!: Subscription
   @ViewChild('map') mapElement: any;
@@ -31,30 +33,15 @@ export class BusinessComponent implements OnInit, OnDestroy {
     lng: 0
   }
 
-  cart: number[] = []
-
-  constructor(private route: ActivatedRoute, private service: ClientService) { }
+  constructor(private service: ClientService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getBusinessById()
+    this.biz$ = this.getBusinessById()
 
   }
 
-  initMap(): void {
-
-    let map = new google.maps.Map(
-      document.getElementById('map') as HTMLElement,
-      { zoom: 17, center: this.address } as google.maps.MapOptions
-    )
-
-    let marker = new google.maps.Marker({
-      position: this.address,
-      map: map
-    })
-  }
-
-  getBusinessById(): void {
-    this.biz$ = this.service.getBusinessById(this.businessId)
+  getBusinessById(): Subscription {
+    return this.service.getBusinessById(this.businessId)
       .subscribe({
         next: e => {
           this.biz = {
@@ -66,11 +53,14 @@ export class BusinessComponent implements OnInit, OnDestroy {
             website: e['website'],
             logo: e['logo']
           }
-        },
-        complete: () => {
+
           this.getServicesByBusinessId()
           this.getReviewsByBusinessId()
           this.getGeocodedAddress()
+        },
+        error: () => {
+          alert("No such business ID")
+          this.router.navigate(['/'])
         }
       })
   }
@@ -79,7 +69,6 @@ export class BusinessComponent implements OnInit, OnDestroy {
     this.add$ = this.service.getGeocode(this.biz.address)
       .subscribe({
         next: data => {
-          console.log(JSON.stringify(data))
             // this.address.lat = data.features[0].properties.lat as number,
             //   this.address.lng = data.features[0].properties.lon as number
             this.address.lat = data.results[0].geometry.location.lat as number,
@@ -88,6 +77,19 @@ export class BusinessComponent implements OnInit, OnDestroy {
             this.initMap()
         }
       })
+  }
+  
+  initMap(): void {
+
+    let map = new google.maps.Map(
+      document.getElementById('map') as HTMLElement,
+      { zoom: 17, center: this.address } as google.maps.MapOptions
+    )
+
+    let marker = new google.maps.Marker({
+      position: this.address,
+      map: map
+    })
   }
 
   getServicesByBusinessId(): void {
@@ -123,14 +125,29 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   addToCart(serviceId: number) {
-    this.cart.push(serviceId)
     // call server to add cart details to cart
+    this.crt$ = this.service.addToCart(serviceId)
+    .subscribe({
+      next: () => alert("Added to cart"),
+      error: (e) => alert(JSON.stringify(e))
+    })
   }
 
   ngOnDestroy(): void {
+    if (this.biz$ !== undefined)
     this.biz$.unsubscribe()
+
+    if (this.add$ !== undefined)
     this.add$.unsubscribe()
+  
+    if (this.svc$ !== undefined)
     this.svc$.unsubscribe()
+  
+    if (this.rvw$ !== undefined)
     this.rvw$.unsubscribe()
+  
+    if (this.crt$ !== undefined)
+    this.crt$.unsubscribe()
   }
+
 }

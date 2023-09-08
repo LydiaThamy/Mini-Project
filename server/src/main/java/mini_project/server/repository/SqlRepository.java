@@ -25,14 +25,16 @@ public class SqlRepository {
     public static final String GET_ADDRESSES_SQL_BY_KEYWORD = "select distinct address from business where address like ?";
     // category
     public static final String GET_CATEGORIES_SQL = "select distinct category from business";
+
+    public static final String GET_ALL_BUSINESSES_SQL = "select * from business order by customer_count desc";
     // search by category
-    public static final String GET_BUSINESSES_SQL_BY_CATEGORY = "select * from business where category = ?";
+    public static final String GET_BUSINESSES_SQL_BY_CATEGORY = "select * from business where category = ? order by customer_count desc";
     // search by keyword
-    public static final String GET_BUSINESSES_SQL = "select * from business where business_name like ? or address like ?";
+    public static final String GET_BUSINESSES_SQL_BY_KEYWORD = "select * from business where";
     // get business by id
     public static final String GET_BUSINESS_SQL_BY_ID = "select * from business where business_id = ?";
-    public static final String GET_SERVICES_SQL_BY_BUSINESS_ID = "select * from service where business_id = ?";
-    public static final String GET_REVIEWS_SQL_BY_BUSINESS_ID = "select * from review where business_id = ?";
+    public static final String GET_SERVICES_SQL_BY_BUSINESS_ID = "select * from service where business_id = ? order by price desc";
+    public static final String GET_REVIEWS_SQL_BY_BUSINESS_ID = "select * from review where business_id = ? order by review_date desc";
 
     public List<String> autocompleteKeyword(String keyword) {
 
@@ -56,6 +58,10 @@ public class SqlRepository {
         return template.queryForList(GET_CATEGORIES_SQL, String.class);
     }
 
+    public List<Business> getAllBusinesses() {
+        return template.query(GET_ALL_BUSINESSES_SQL, new BeanPropertyRowMapper<>(Business.class));
+    }
+
     public Optional<List<Business>> getBusinessesByCategory(String category) {
 
         List<Business> result;
@@ -69,27 +75,56 @@ public class SqlRepository {
         return Optional.of(result);
     }
 
-    public Optional<List<Business>> getBusinesses(Search search) {
+    public Optional<List<Business>> getBusinessesByKeyword(Search search) {
 
-        StringBuilder sqlBuilder = new StringBuilder(GET_BUSINESSES_SQL); 
-        
+        StringBuilder sqlBuilder = new StringBuilder(GET_BUSINESSES_SQL_BY_KEYWORD);
+
         String keyword = "%" + search.getKeyword() + "%";
         String[] category = search.getCategory();
         String[] region = search.getRegion();
 
-        // if (search.getCategory().length > 0) {
-           for (String c:category) {
-            sqlBuilder.append(" and category = " + c);
-           }
-        // }
+        if (category.length > 0) {
+            sqlBuilder.append(" category in (");
 
-        // if (search.getRegion().length > 0) {
-           for (String r:region) {
-            sqlBuilder.append(" and region = " + r);
-           }
-        // }
-        
-        List<Business> result = template.query(sqlBuilder.toString(), new BeanPropertyRowMapper<>(Business.class), keyword, keyword);
+            System.out.println("Category: ");
+            for (String c : category) {
+                System.out.print(c + ", ");
+                sqlBuilder.append("'" + c + "', ");
+            }
+            Integer length = sqlBuilder.length();
+            sqlBuilder.delete(length - 2, length);
+            sqlBuilder.append(")");
+        }
+
+        if (region.length > 0) {
+
+            if (category.length == 0) {
+                sqlBuilder.append(" region in (");
+            } else {
+                sqlBuilder.append(" and region in (");
+            }
+
+            System.out.println("Region: ");
+            for (String r : region) {
+                System.out.print(r + ", ");
+                sqlBuilder.append("'" + r + "', ");
+            }
+            Integer length = sqlBuilder.length();
+            sqlBuilder.delete(length - 2, length);
+            sqlBuilder.append(")");
+        }
+
+        if (category.length > 0 || region.length > 0) {
+            sqlBuilder.append(" and (business_name like ? or address like ?)");
+        } else {
+            sqlBuilder.append(" business_name like ? or address like ?");
+        }
+
+
+        System.out.println(sqlBuilder.toString());
+        List<Business> result = template.query(sqlBuilder.append(" order by customer_count desc").toString(),
+                new BeanPropertyRowMapper<>(Business.class),
+                keyword, keyword);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -99,8 +134,7 @@ public class SqlRepository {
 
     public Optional<Business> getBusinessById(Integer id) {
         return Optional.ofNullable(
-            template.query(GET_BUSINESS_SQL_BY_ID, new BeanPropertyRowMapper<>(Business.class), id).get(0)
-        );
+                template.query(GET_BUSINESS_SQL_BY_ID, new BeanPropertyRowMapper<>(Business.class), id).get(0));
     }
 
     public List<Service> getServicesByBusinessId(Integer id) {

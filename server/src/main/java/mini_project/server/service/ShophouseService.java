@@ -2,6 +2,7 @@ package mini_project.server.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.bson.Document;
@@ -19,6 +20,7 @@ import mini_project.server.model.Search;
 import mini_project.server.repository.GeoapifyRepository;
 import mini_project.server.repository.GoogleRepository;
 import mini_project.server.repository.MongoRespository;
+import mini_project.server.repository.RedisRepository;
 import mini_project.server.repository.SqlRepository;
 
 @Service
@@ -30,11 +32,14 @@ public class ShophouseService {
     @Autowired
     private GoogleRepository googleRepo;
 
-    @Autowired
-    private GeoapifyRepository geoapifyRepo;
+    // @Autowired
+    // private GeoapifyRepository geoapifyRepo;
+
+    // @Autowired
+    // private MongoRespository mongoRepo;
 
     @Autowired
-    private MongoRespository mongoRepo;
+    private RedisRepository redisRepo;
 
     public JsonArray autocompleteKeyword(String keyword) {
 
@@ -57,9 +62,29 @@ public class ShophouseService {
         return json.build();
     }
 
-    public Optional<JsonArray> getBusinesses(Search search) {
+    public JsonArray getAllBusinesses() {
 
-        Optional<List<Business>> result = sqlRepo.getBusinesses(search);
+        List<Business> businesses = sqlRepo.getAllBusinesses();
+
+        JsonArrayBuilder json = Json.createArrayBuilder();
+        for (Business b : businesses)
+            json.add(
+                    Json.createObjectBuilder()
+                            .add("businessId", b.getBusinessId())
+                            .add("businessName", b.getBusinessName())
+                            .add("address", b.getAddress())
+                            .add("phone", b.getPhone())
+                            .add("email", b.getEmail())
+                            .add("website", b.getWebsite())
+                            .add("logo", b.getLogo())
+                            .build());
+
+        return json.build();
+    }
+
+    public Optional<JsonArray> getBusinessesByKeyword(Search search) {
+
+        Optional<List<Business>> result = sqlRepo.getBusinessesByKeyword(search);
         if (result.isEmpty())
             return Optional.empty();
         List<Business> businesses = result.get();
@@ -171,26 +196,48 @@ public class ShophouseService {
         return googleRepo.getGeocode(address);
     }
 
-    public Optional<JsonObject> getCart(String customerId) {
-        Optional<Document> result = mongoRepo.getCart(customerId);
+    public void addToCart(String customerId, String serviceId) {
+        redisRepo.addToCart(customerId, serviceId);
+    }
+
+    public Optional<JsonArray> getCart(String customerId) {
+        Optional<Map<Object, Object>> result = redisRepo.getCart(customerId);
+
         if (result.isEmpty())
             return Optional.empty();
 
-        Document d = result.get();
-        List<Document> items = d.getList("items", Document.class);
+        JsonArrayBuilder json = Json.createArrayBuilder();
+        result.get().forEach((key, value) -> 
+            json.add(
+                Json.createObjectBuilder()
+                .add(key.toString(), value.toString())
+                .build()
+                )
+        );
 
-        JsonArrayBuilder jArr = Json.createArrayBuilder();
-        for (Document i : items)
-            jArr.add(
-                    Json.createObjectBuilder()
-                            .add("serviceId", i.getString("service_id"))
-                            .add("quantity", i.getInteger("quantity"))
-                            .build());
-
-        return Optional.of(Json.createObjectBuilder()
-                .add("cId", customerId)
-                .add("items", jArr.build())
-                .build());
+        return Optional.of(json.build());
     }
+
+    // public Optional<JsonObject> getCart(String customerId) {
+    //     Optional<Document> result = mongoRepo.getCart(customerId);
+    //     if (result.isEmpty())
+    //         return Optional.empty();
+
+    //     Document d = result.get();
+    //     List<Document> items = d.getList("items", Document.class);
+
+    //     JsonArrayBuilder jArr = Json.createArrayBuilder();
+    //     for (Document i : items)
+    //         jArr.add(
+    //                 Json.createObjectBuilder()
+    //                         .add("serviceId", i.getString("service_id"))
+    //                         .add("quantity", i.getInteger("quantity"))
+    //                         .build());
+
+    //     return Optional.of(Json.createObjectBuilder()
+    //             .add("cId", customerId)
+    //             .add("items", jArr.build())
+    //             .build());
+    // }
 
 }
