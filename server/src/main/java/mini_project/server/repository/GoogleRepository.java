@@ -16,15 +16,22 @@ public class GoogleRepository {
 
     public ResponseEntity<String> getGeocode(String address) {
 
+        System.out.println(address);
+        System.out.println(address.toLowerCase());
+
         String url = UriComponentsBuilder
             .fromUriString("https://maps.googleapis.com/maps/api/geocode/json")
-            .queryParam("address", address)
+            .queryParam("address", address.toLowerCase())
             .queryParam("key", apiKey)
             .toUriString();
 
-        RequestEntity req = RequestEntity.get(url).build();
+        System.out.println(url);
+
+        RequestEntity<Void> req = RequestEntity.get(url).build();
         RestTemplate template = new RestTemplate();
 
-        return template.exchange(req, String.class);
+        System.out.println(template.getForEntity(url, String.class));
+        return template.getForEntity(url, String.class);
+        // return template.exchange(req, String.class);
     }    
 }
