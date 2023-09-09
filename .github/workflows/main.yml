@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-         
+
       - name: Use Node 19
         uses: actions/setup-node@v1
         with:
@@ -23,16 +23,6 @@ jobs:
       - name: Deploy
         run: railway up
         env:
-          GEOAPIFY_GEOCODING_API_KEY: ${{ secrets.GEOAPIFY_GEOCODING_API_KEY }}
-          GOOGLE_GEOCODING_API_KEY: ${{ secrets.GOOGLE_GEOCODING_API_KEY }}
-          NIXPACKS_JDK_VERSION: ${{ secrets.NIXPACKS_JDK_VERSION }}
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATA_MONGODB_URI: ${{ secrets.SPRING_DATA_MONGODB_URI }}
-          SPRING_DATA_REDIS_CLIENT_TYPE: ${{ secrets.SPRING_DATA_REDIS_CLIENT_TYPE }}
-          SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST }}
-          SPRING_DATA_REDIS_PASSWORD: ${{ secrets.SPRING_DATA_REDIS_PASSWORD }}
-          SPRING_DATA_REDIS_PORT: ${{ secrets.SPRING_DATA_REDIS_PORT }}
-          SPRING_DATA_REDIS_USER: ${{ secrets.SPRING_DATA_REDIS_USER }}
         with:
           service: "github-actions"
