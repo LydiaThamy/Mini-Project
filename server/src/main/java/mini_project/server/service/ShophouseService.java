@@ -202,14 +202,24 @@ public class ShophouseService {
             return null;
 
         JsonArrayBuilder json = Json.createArrayBuilder();
-        result.get().forEach((key, value) -> 
-            json.add(
-                Json.createObjectBuilder()
-                .add(key.toString(), value.toString())
-                .build()
-                )
-        );
+        result.get().forEach((key, value) -> {
+
+            // get business name, service title from sql repo
+            Map<String, Object> names = sqlRepo.getCartByServiceId(key.toString());
+
+            // create json
+            json.add(Json.createObjectBuilder()
+                            .add("serviceId", key.toString())
+                            .add("quantity", value.toString())
+                            .add("businessName", names.get("business_name").toString())
+                            .add("title", names.get("title").toString())
+                            .build());
+        });
 
         return Optional.of(json.build());
+    }
+
+    public void updateCart(String customerId, List<Map<String, String>> cart) {
+        redisRepo.updateCart(customerId, cart);
     }
 }

@@ -4,9 +4,24 @@
 <div class="cart" *ngIf="cart.length > 0; else empty">
     <div *ngFor="let item of cart as Item" id="item.serviceId">
         <table>
+            <thead>
+                <td>Business</td>
+                <td>Service</td>
+                <td>Quantity</td>
+            </thead>
             <tr>
-                <td>{{item.serviceId}}</td>
-                <td>{{item.quantity}}</td>
+                <td>{{item.businessName}}</td>
+                <td>{{item.title}}</td>
+                <td>
+                    <!-- edit -->
+                    <button type="button" (click)="minusItem(item.serviceId)">-</button>
+                    {{item.quantity}}
+                    <button type="button" (click)="addItem(item.serviceId)">+</button>
+                </td>
+                <td>
+                    <!-- delete -->
+                    <button type="button" (click)="deleteItem(item.serviceId)">Delete</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -15,6 +30,10 @@
 <!-- checkout -->
 <button routerLink="/checkout">checkout</button>
 
+<ng-template #loading>
+    Loading...
+</ng-template>
+
 <ng-template #empty>
-    <h2>Your cart is empty. Add something to it now!</h2>
+    <h2 *ngIf="loadComplete; else loading">Your cart is empty. Add something to it now!</h2>
 </ng-template>

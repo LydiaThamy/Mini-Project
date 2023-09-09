@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class CartComponent implements OnInit, OnDestroy {
 
+  loadComplete: boolean = false
   cart: Item[] = []
   sub$!: Subscription
   constructor(private service: ClientService) { }
@@ -23,19 +24,49 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe({
         next: data => {
           data.forEach((e: any) => {
-            Object.keys(e).forEach((key: any) => {
-              this.cart.push({
-                serviceId: key,
-                quantity: e[key]
-              } as Item)
-            });
+            this.cart.push({
+              serviceId: e.serviceId,
+              quantity: e.quantity,
+              title: e.title,
+              businessName: e.businessName
+            } as Item)
           });
         },
-        error: e => alert(JSON.stringify(e))
+        // error: () => this.getCart(),
+        complete: () => {this.loadComplete = true}
       })
   }
 
+  minusItem(id: number) {
+    const idx: number = this.cart.findIndex(
+      (i: Item) => i.serviceId == id)
+    this.cart[idx].quantity--
+
+    // delete if quantity is 0
+    if (this.cart[idx].quantity == 0)
+      this.deleteItem(id)
+  }
+
+  addItem(id: number) {
+    const idx: number = this.cart.findIndex(
+      (i: Item) => i.serviceId == id)
+    this.cart[idx].quantity++
+  }
+
+  deleteItem(id: number) {
+    const idx: number = this.cart.findIndex(
+      (i: Item) => i.serviceId == id)
+    this.cart.splice(idx, 1)
+
+    // delete on database?
+  }
+  
   ngOnDestroy(): void {
-    this.sub$.unsubscribe()
+    // update cart
+    this.sub$ = this.service.updateCart(this.cart)
+      .subscribe({
+        complete: () => this.sub$.unsubscribe()
+      })
+    
   }
 }

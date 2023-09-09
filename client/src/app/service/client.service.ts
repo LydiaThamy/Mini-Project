@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs';
 import { Search } from '../interface/Search';
 import { ulid } from 'ulid'
+import { Item } from 'app/interface/Item';
 
 @Injectable({
   providedIn: 'root'
@@ -38,11 +39,16 @@ export class ClientService {
     return cId
   }
 
-  addToCart(serviceId: number): Observable<any> {
+  addCart(serviceId: number): Observable<any> {
     const item: any = {
       serviceId: serviceId
     }
-    return this.http.post(`/api/shophouse/add-to-cart/${this.customerId}`, item)
+    return this.http.post(`/api/shophouse/cart/add/${this.customerId}`, {serviceId: serviceId})
+    // return this.http.post(`/api/shophouse/cart/add/${this.customerId}`, item)
+  }
+
+  updateCart(cart: Item[]) {
+    return this.http.put(`/api/shophouse/cart/update/${this.customerId}`, cart)
   }
 
   getCart(): Observable<any> {

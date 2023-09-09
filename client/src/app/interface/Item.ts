@@ -1,4 +1,6 @@
 export interface Item {
     serviceId: number,
-    quantity: number
+    quantity: number,
+    businessName: string,
+    title: string
 }

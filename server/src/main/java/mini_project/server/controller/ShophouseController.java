@@ -1,5 +1,6 @@
 package mini_project.server.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -141,16 +143,28 @@ public class ShophouseController {
     @GetMapping("/cart/{customerId}")
     public ResponseEntity<String> getCart(@PathVariable String customerId) {
         Optional<JsonArray> result = service.getCart(customerId);
+
+        if (result == null)
+            return ResponseEntity.internalServerError().build();
+
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
 
-            return ResponseEntity.ok(result.get().toString());
+        return ResponseEntity.ok(result.get().toString());
     }
 
-    @PostMapping("/add-to-cart/{customerId}")
-    public ResponseEntity<String> updateCart(@PathVariable String customerId,
+    @PostMapping("/cart/add/{customerId}")
+    public ResponseEntity<String> addCart(@PathVariable String customerId,
             @RequestBody Map<String, String> payload) {
         service.addToCart(customerId, payload.get("serviceId"));
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/cart/update/{customerId}")
+    public ResponseEntity<String> updateCart(@PathVariable String customerId,
+            @RequestBody List<Map<String, String>> payload) {
+        service.updateCart(customerId, payload);
+        return ResponseEntity.ok().build();
+    }
+
 }

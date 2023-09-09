@@ -126,7 +126,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   addToCart(serviceId: number) {
     // call server to add cart details to cart
-    this.crt$ = this.service.addToCart(serviceId)
+    this.crt$ = this.service.addCart(serviceId)
     .subscribe({
       next: () => alert("Added to cart"),
       error: (e) => alert(JSON.stringify(e))
