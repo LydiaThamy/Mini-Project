@@ -1,6 +1,5 @@
 package mini_project.server.controller;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -141,15 +139,17 @@ public class ShophouseController {
     }
 
     @GetMapping("/cart/{customerId}")
-    public ResponseEntity<String> getCartByCustomerId(@PathVariable String customerId) {
+    public ResponseEntity<String> getCart(@PathVariable String customerId) {
         Optional<JsonArray> result = service.getCart(customerId);
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(result.get().toString());
+
+            return ResponseEntity.ok(result.get().toString());
     }
 
     @PostMapping("/add-to-cart/{customerId}")
-    public ResponseEntity<String> updateCart(@PathVariable String customerId, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateCart(@PathVariable String customerId,
+            @RequestBody Map<String, String> payload) {
         service.addToCart(customerId, payload.get("serviceId"));
         return ResponseEntity.ok().build();
     }

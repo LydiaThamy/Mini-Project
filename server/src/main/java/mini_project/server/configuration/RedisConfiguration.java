@@ -1,17 +1,13 @@
 package mini_project.server.configuration;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -54,9 +50,6 @@ public class RedisConfiguration {
         r.setKeySerializer(new StringRedisSerializer());
         r.setHashKeySerializer(new StringRedisSerializer());
         r.setHashValueSerializer(new StringRedisSerializer());
-
-        // RedisSerializer<Object> objSerializer = new JdkSerializationRedisSerializer(getClass().getClassLoader());
-        // r.setHashValueSerializer(objSerializer);
 
         return r;
     }

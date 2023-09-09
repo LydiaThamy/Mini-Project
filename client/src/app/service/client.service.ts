@@ -39,11 +39,9 @@ export class ClientService {
   }
 
   addToCart(serviceId: number): Observable<any> {
-    // const url: string = `/api/shophouse/add-to-cart/${this.customerId}`
     const item: any = {
       serviceId: serviceId
     }
-
     return this.http.post(`/api/shophouse/add-to-cart/${this.customerId}`, item)
   }
 

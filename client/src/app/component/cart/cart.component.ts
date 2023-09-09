@@ -12,16 +12,27 @@ export class CartComponent implements OnInit, OnDestroy {
 
   cart: Item[] = []
   sub$!: Subscription
-  constructor(private service: ClientService){}
+  constructor(private service: ClientService) { }
 
   ngOnInit(): void {
+    this.getCart()
+  }
+
+  getCart(): void {
     this.sub$ = this.service.getCart()
-      .subscribe((data) => 
-          this.cart.push({
-            serviceId: data.serviceId as number,
-            quantity: data.quantity as number
-          } as Item)
-      )
+      .subscribe({
+        next: data => {
+          data.forEach((e: any) => {
+            Object.keys(e).forEach((key: any) => {
+              this.cart.push({
+                serviceId: key,
+                quantity: e[key]
+              } as Item)
+            });
+          });
+        },
+        error: e => alert(JSON.stringify(e))
+      })
   }
 
   ngOnDestroy(): void {

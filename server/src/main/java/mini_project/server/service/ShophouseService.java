@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
@@ -17,9 +15,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
-import mini_project.server.repository.GeoapifyRepository;
 import mini_project.server.repository.GoogleRepository;
-import mini_project.server.repository.MongoRespository;
 import mini_project.server.repository.RedisRepository;
 import mini_project.server.repository.SqlRepository;
 
@@ -202,9 +198,8 @@ public class ShophouseService {
 
     public Optional<JsonArray> getCart(String customerId) {
         Optional<Map<Object, Object>> result = redisRepo.getCart(customerId);
-
         if (result.isEmpty())
-            return Optional.empty();
+            return null;
 
         JsonArrayBuilder json = Json.createArrayBuilder();
         result.get().forEach((key, value) -> 
@@ -217,27 +212,4 @@ public class ShophouseService {
 
         return Optional.of(json.build());
     }
-
-    // public Optional<JsonObject> getCart(String customerId) {
-    //     Optional<Document> result = mongoRepo.getCart(customerId);
-    //     if (result.isEmpty())
-    //         return Optional.empty();
-
-    //     Document d = result.get();
-    //     List<Document> items = d.getList("items", Document.class);
-
-    //     JsonArrayBuilder jArr = Json.createArrayBuilder();
-    //     for (Document i : items)
-    //         jArr.add(
-    //                 Json.createObjectBuilder()
-    //                         .add("serviceId", i.getString("service_id"))
-    //                         .add("quantity", i.getInteger("quantity"))
-    //                         .build());
-
-    //     return Optional.of(Json.createObjectBuilder()
-    //             .add("cId", customerId)
-    //             .add("items", jArr.build())
-    //             .build());
-    // }
-
 }

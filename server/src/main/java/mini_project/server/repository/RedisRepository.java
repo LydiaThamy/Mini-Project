@@ -1,8 +1,6 @@
 package mini_project.server.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -37,10 +35,10 @@ public class RedisRepository {
             return Optional.empty();
 
         Map<Object, Object> cart = new HashMap<>();
-
         Set<Object> keys = template.opsForHash().keys(customerId);
-        for (Object k: keys)
+        for (Object k: keys) {
             cart.put(k, template.opsForHash().get(customerId, k));            
+        }
 
         return Optional.of(cart);
     }
