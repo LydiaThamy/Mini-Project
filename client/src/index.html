@@ -11,10 +11,16 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
+  <!-- allow for google api calls -->
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <!-- google oAuth -->
+  <meta name="google-signin-client_id" content="743739211062-0rb9gkmss4mh15r3neuc8o6vbpcuelgo.apps.googleusercontent.com">
 </head>
 <body class="mat-typography">
   <app-root></app-root>
+  <!-- google oAuth -->
+  <script src="https://apis.google.com/js/api.js"></script>
+  <!-- google maps -->
   <script async="" defer="" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAL5a61uSmr8n1NUDjgfvw6WcvHLVy_T_Y"></script>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

@@ -19,6 +19,7 @@ import { LoginComponent } from './component/login/login.component';
 import { CreateAccountComponent } from './component/create-account/create-account.component';
 import { LogoComponent } from './component/logo/logo.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
+import { AccountComponent } from './component/account/account.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CheckoutComponent } from './component/checkout/checkout.component';
     CreateAccountComponent,
     LogoComponent,
     CheckoutComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
