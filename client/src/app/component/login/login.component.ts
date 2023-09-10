@@ -1,3 +1,6 @@
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ClientService } from 'app/service/client.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,8 +11,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
+  githubUrl: string = '/oauth2/authorization/github'
   loginForm!: FormGroup
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.createForm()

@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <h1>Please login before checking out your cart</h1>
-<div class="login">
+<!-- <div class="login">
 
     <form [formGroup]="loginForm">
         <table>
@@ -15,7 +15,20 @@
             </tr>
         </table>
     </form>
+</div> -->
+<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
 
-    Or signin below
-    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+<div class="container unauthenticated">
+    Or signin below with GitHub: 
+    <a [href]="githubUrl">click here</a>
 </div>
+<div class="container authenticated" style="display:none">
+    Logged in as: <span id="user"></span>
+</div>
+<script type="text/javascript">
+    $.get("/user", function(data) {
+        $("#user").html(data.name);
+        $(".unauthenticated").hide()
+        $(".authenticated").show()
+    });
+</script>
