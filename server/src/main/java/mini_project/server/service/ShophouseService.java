@@ -16,6 +16,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
+import mini_project.server.model.User;
 import mini_project.server.repository.GoogleRepository;
 import mini_project.server.repository.RedisRepository;
 import mini_project.server.repository.SqlRepository;
@@ -224,20 +225,32 @@ public class ShophouseService {
         redisRepo.updateCart(customerId, cart);
     }
 
-    public Optional<JsonObject> saveUser(OAuth2User principal) {
+    public Optional<JsonObject> saveUser(User user) {
+    // public Optional<JsonObject> saveUser(OAuth2User principal) {
 
-        String userId = principal.getAttribute("id");
-        String username = principal.getAttribute("login");
-        String email = principal.getAttribute("email");
+        // String userId = principal.getAttribute("id");
+        // String username = principal.getAttribute("login");
+        // String email = principal.getAttribute("email");
 
-        if (sqlRepo.saveUser(userId, email, username) == 0)
+        if (sqlRepo.saveUser(user) == 0)
+        // if (sqlRepo.saveUser(userId, email, username) == 0)
             return Optional.empty();
 
         return Optional.of(
                 Json.createObjectBuilder()
-                        .add("userId", userId)
-                        .add("username", username)
-                        .add("email", email)
+                        .add("userId", user.getUserId())
+                        .add("username", user.getUsername())
+                        .add("email", user.getEmail())
                         .build());
     }
+
+    public Optional<User> getUser(String userId) {
+    // public Optional<JsonObject> getUser(String userId) {
+
+        Optional<User> result = sqlRepo.getUser(userId);
+
+        return result;
+    }
+
+
 }

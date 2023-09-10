@@ -1,8 +1,8 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ClientService } from 'app/service/client.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ClientService } from 'app/service/client.service';
 
 @Component({
   selector: 'app-login',
@@ -16,14 +16,22 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    this.createForm()
+    // this.createForm()
   }
 
-  createForm(): void {
-    this.loginForm = this.fb.group({
-      username: this.fb.control<string>('', [Validators.required]),
-      password: this.fb.control<string>('', [Validators.required]),
-    })
+  // createForm(): void {
+  //   this.loginForm = this.fb.group({
+  //     username: this.fb.control<string>('', [Validators.required]),
+  //     password: this.fb.control<string>('', [Validators.required]),
+  //   })
+  // }
+
+  login(): void {
+    const clientId = 'c8885ae2376e95046357';
+    const redirectUri = encodeURIComponent('');
+    const authEndpoint = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
+    
+    window.location.href = authEndpoint;
   }
 
   // onSignIn(googleUser: any) {
@@ -35,19 +43,18 @@ export class LoginComponent implements OnInit {
     
   // }
 
-  ngOnDestroy(): void {
-    this.service.getUser()
-    .subscribe({
-      next: data => {
-        this.service.user = {
-          userId: data.userId,
-          username: data.username,
-          email: data.email
-        }
+  // ngOnDestroy(): void {
+  //   this.service.getUser()
+  //   .subscribe({
+  //     next: data => {
+  //       this.service.user = {
+  //         userId: data.userId,
+  //         username: data.username,
+  //         email: data.email
+  //       }
         
-        sessionStorage.setItem("user", JSON.stringify(this.service.user))
-      }
-    })
-
-  }
+  //       sessionStorage.setItem("user", JSON.stringify(this.service.user))
+  //     }
+  //   })
+  // }
 }

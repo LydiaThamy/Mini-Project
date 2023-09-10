@@ -8,12 +8,13 @@ import { CartComponent } from './component/cart/cart.component';
 // import { CreateAccountComponent } from './component/create-account/create-account.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { ConfirmationComponent } from './component/confirmation/confirmation.component';
+import { authGuardFactory } from './auth.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'cart', component: CartComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'checkout', component: CheckoutComponent},
+  {path: 'checkout', component: CheckoutComponent, canActivate: [authGuardFactory]},
   {path: 'confirmation', component: ConfirmationComponent},
   // {path: 'create-account', component: CreateAccountComponent},
   {path: '**', component: ErrorComponent, pathMatch: 'full'}

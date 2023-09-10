@@ -21,6 +21,8 @@ import { LogoComponent } from './component/logo/logo.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { AccountComponent } from './component/account/account.component';
 import { ConfirmationComponent } from './component/confirmation/confirmation.component';
+import { Router } from '@angular/router';
+import { authGuardFactory } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,14 @@ import { ConfirmationComponent } from './component/confirmation/confirmation.com
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [ClientService],
+  providers: [
+    ClientService,
+    { 
+      provide: 'canActivateCheckout', 
+      useFactory: authGuardFactory, 
+      deps: [Router]
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

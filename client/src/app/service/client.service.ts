@@ -111,6 +111,10 @@ export class ClientService {
     return this.http.get("/api/shophouse/geocode", { params: httpParams })
   }
 
+  authenticateUser(): Observable<any> {
+    return this.http.get("/api/shophouse/authenticate")
+  }
+
   getUser(): Observable<any> {
     return this.http.get("/api/shophouse/user")
   }

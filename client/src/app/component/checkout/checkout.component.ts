@@ -12,29 +12,22 @@ import { ClientService } from 'app/service/client.service';
 })
 export class CheckoutComponent {
 
-  user!: User
 
   stripePromise = loadStripe(environment.stripe)
   payment: any
 
   constructor(private service: ClientService, private http: HttpClient) {}
 
-  // ngOnInit(): void {
-  //   this.getUser()
-  // }
+  ngOnInit(): void {
+    this.getToken()
+  }
 
-  // getUser(): void {
-  //   this.service.getUser()
-  //   .subscribe({
-  //     next: data => {
-  //       this.user = {
-  //         userId: data.userId,
-  //         username: data.username,
-  //         email: data.email
-  //       }
-  //     }
-  //   })
-  // }
+  getToken(): void {
+    this.service.authenticateUser()
+      .subscribe({
+        next: data => localStorage.setItem("token", data as string)
+      })
+  }
 
   // here we create a payment object
   createPayment() {
