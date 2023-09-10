@@ -31,4 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
 application.properties
+private.pem
+private.pem.pub
+public.pem
