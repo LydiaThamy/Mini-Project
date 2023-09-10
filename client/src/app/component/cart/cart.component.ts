@@ -57,8 +57,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const idx: number = this.cart.findIndex(
       (i: Item) => i.serviceId == id)
     this.cart.splice(idx, 1)
-
-    // delete on database?
   }
   
   ngOnDestroy(): void {
