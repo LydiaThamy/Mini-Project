@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Search } from '../interface/Search';
 import { ulid } from 'ulid'
 import { Item } from 'app/interface/Item';
+import { User } from 'app/interface/User';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { Item } from 'app/interface/Item';
 export class ClientService {
 
   customerId: string
+  user!: User
 
   constructor(private http: HttpClient) {
     this.customerId = this.getCustomerId()

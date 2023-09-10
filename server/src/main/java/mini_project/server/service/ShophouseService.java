@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
@@ -209,11 +210,11 @@ public class ShophouseService {
 
             // create json
             json.add(Json.createObjectBuilder()
-                            .add("serviceId", key.toString())
-                            .add("quantity", value.toString())
-                            .add("businessName", names.get("business_name").toString())
-                            .add("title", names.get("title").toString())
-                            .build());
+                    .add("serviceId", key.toString())
+                    .add("quantity", value.toString())
+                    .add("businessName", names.get("business_name").toString())
+                    .add("title", names.get("title").toString())
+                    .build());
         });
 
         return Optional.of(json.build());
@@ -221,5 +222,22 @@ public class ShophouseService {
 
     public void updateCart(String customerId, List<Map<String, String>> cart) {
         redisRepo.updateCart(customerId, cart);
+    }
+
+    public Optional<JsonObject> saveUser(OAuth2User principal) {
+
+        String userId = principal.getAttribute("id");
+        String username = principal.getAttribute("login");
+        String email = principal.getAttribute("email");
+
+        if (sqlRepo.saveUser(userId, email, username) == 0)
+            return Optional.empty();
+
+        return Optional.of(
+                Json.createObjectBuilder()
+                        .add("userId", userId)
+                        .add("username", username)
+                        .add("email", email)
+                        .build());
     }
 }

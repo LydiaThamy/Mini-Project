@@ -39,6 +39,8 @@ public class SqlRepository {
     
     public static final String GET_CART_SQL_BY_SERVICE_ID = "select b.business_name, s.title from service as s join business as b on b.business_id = s.business_id where s.service_id = ?";
 
+    public static final String INSERT_NEW_USER="insert into user values (?, ?, ?)";
+
     public List<String> autocompleteKeyword(String keyword) {
 
         String wildcard = "%" + keyword + "%";
@@ -150,6 +152,10 @@ public class SqlRepository {
 
     public Map<String, Object> getCartByServiceId(String serviceId) {
         return template.queryForMap(GET_CART_SQL_BY_SERVICE_ID, serviceId);
+    }
+
+    public Integer saveUser(String userId, String email, String username) {
+        return template.update(INSERT_NEW_USER, userId, username, email);
     }
 
 }

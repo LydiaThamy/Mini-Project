@@ -35,4 +35,19 @@ export class LoginComponent implements OnInit {
     
   // }
 
+  ngOnDestroy(): void {
+    this.service.getUser()
+    .subscribe({
+      next: data => {
+        this.service.user = {
+          userId: data.userId,
+          username: data.username,
+          email: data.email
+        }
+        
+        sessionStorage.setItem("user", JSON.stringify(this.service.user))
+      }
+    })
+
+  }
 }
