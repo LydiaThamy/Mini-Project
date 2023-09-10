@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Repository
 public class GoogleRepository {
 
-    @Value("${google.geocoding.api.key}")
+    @Value("${google.geocode.key}")
     private String apiKey;
 
     public String getGeocode(String address) throws IOException, InterruptedException {

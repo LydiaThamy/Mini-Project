@@ -14,7 +14,7 @@
 // @Repository
 // public class GeoapifyRepository {
 
-//     @Value("${geoapify.geocoding.api.key}")
+//     @Value("${geoapify.geocode.key}")
 //     private String apiKey;
 
 //     public String getGeocode(String address) throws IOException, InterruptedException {
