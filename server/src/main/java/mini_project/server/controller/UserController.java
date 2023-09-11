@@ -1,10 +1,14 @@
 package mini_project.server.controller;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,26 +26,37 @@ import mini_project.server.service.UserService;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    
-  @Autowired
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private TokenService tokenService;
 
-    @GetMapping("/authenticate")
-    public ResponseEntity<String> authenticateUser(@RequestParam String code)
+    @GetMapping("/auth2")
+    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+        System.out.println(principal.toString());
+        return Collections.singletonMap("login", principal.getAttribute("login"));
+    }
+
+    @GetMapping("/authorise")
+    public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
+    // public ResponseEntity<String> authenticateUser(@RequestParam String code)
             throws IOException, AccessTokenException, UserAccessException {
 
         // extract access token from GitHub
-        String accessToken = userService.getAccessToken(code);
+        // String accessToken = userService.getAccessToken(code);
+        // System.out.println("access token: " + accessToken);
 
         // Fetch the user's GitHub data using the access token
-        User user = userService.getUserFromGithub(accessToken);
+        // User user = userService.getUserFromGithub(accessToken);
+        // System.out.println("User: " + user);
+        User user = new User(principal.getAttribute("id").toString(), principal.getAttribute("login"), principal.getAttribute("email"));
 
         // Generate a JWT for this user
         // String jwt = jwtService.generateToken(user);
         String jwt = tokenService.generateToken(user.getUserId());
+        System.out.println("jwt token: " + jwt);
 
         // Redirect to the checkout page with the JWT
         return ResponseEntity.ok(
@@ -60,7 +75,8 @@ public class UserController {
 
     @GetMapping("/{token}")
     public ResponseEntity<String> getUser(@PathVariable String token) {
-    // public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User principal) {
+        // public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User
+        // principal) {
 
         Optional<String> userId = tokenService.getUserId(token);
 

@@ -10,20 +10,28 @@ import { Subscription } from 'rxjs';
 })
 export class AuthoriseComponent implements OnInit {
 
-  constructor(private service: UserService, private router: Router) {}
+  constructor(private service: UserService, private router: Router) { }
 
   ngOnInit(): void {
     const sub$: Subscription = this.service.authenticateUser()
-    .subscribe({
-      next: data => {
-        console.log("authenticating user...")
-        console.log(JSON.stringify(data))
-        localStorage.setItem("userId", data.userId as string)
-        localStorage.setItem("token", data.token as string)
-        this.router.navigate(['/checkout'])
-      },
-      error: () => this.router.navigate(['/login']),
-      complete: () => sub$.unsubscribe()
-    })
+      .subscribe({
+        next: data => {
+          console.log("authorise user...")
+          console.log(JSON.stringify(data))
+
+          if (data.token && data.userId) {
+            localStorage.setItem("userId", data.userId as string)
+            localStorage.setItem("token", data.token as string)
+          }
+
+          console.log("navigating to checkout...")
+          this.router.navigate(['/checkout'])
+        },
+        error: (e) => {
+          console.log(JSON.stringify(e))
+          this.router.navigate(['/login'])
+        },
+        complete: () => sub$.unsubscribe()
+      })
   }
 }

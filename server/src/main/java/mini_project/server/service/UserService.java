@@ -83,6 +83,7 @@ public class UserService {
                 .post(GITHUB_TOKEN_ENDPOINT)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .body(requestPayload);
+        System.out.println("Request entity for access token call: " + req);
 
         // Exchange the code for access token
         ResponseEntity<String> response = restTemplate.exchange(req, String.class);
