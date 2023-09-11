@@ -36,9 +36,16 @@ export class CartService {
     const httpParams: HttpParams = new HttpParams()
       .set("customerId", this.service.customerId)
 
-    const sub$: Subscription = this.http.delete(`/delete/${serviceId}`, {params: httpParams})
+    const sub$: Subscription = this.http.delete(`/api/cart/delete/${serviceId}`, {params: httpParams})
     .subscribe({
       complete: () => sub$.unsubscribe()
     })
+  }
+
+  getItem(serviceId: string): Observable<any> {
+    const httpParams: HttpParams = new HttpParams()
+      .set("customerId", this.service.customerId)
+
+    return this.http.get(`/api/cart/item/${serviceId}`, {params: httpParams})
   }
 }

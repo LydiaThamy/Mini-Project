@@ -1,6 +1,6 @@
 import { CartService } from 'app/service/cart.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'app/environment/environment';
 import { User } from 'app/interface/User';
@@ -14,16 +14,34 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnDestroy {
 
-  constructor(private service: ClientService, private cartSvc: CartService, private http: HttpClient, private aRoute: ActivatedRoute) { }
+  constructor(private service: ClientService, private cartSvc: CartService, private aRoute: ActivatedRoute) { }
 
   // cart: Item[] = []
-  item: Item = this.aRoute.snapshot.queryParams['item'] as Item
+  serviceId: string = this.aRoute.snapshot.queryParams['serviceId']
+  item!: Item
 
   payment: any
   stripePromise = loadStripe(environment.stripe)
   sub$!: Subscription
+
+  ngOnInit(): void {
+    this.sub$ = this.cartSvc.getItem(this.serviceId)
+      .subscribe({
+        next: e => {
+          console.log(JSON.stringify(e))
+          this.item = {
+            serviceId: e.serviceId,
+            quantity: e.quantity,
+            title: e.title,
+            businessName: e.businessName,
+            price: e.price,
+            logo: e.logo
+          }
+        }
+      })
+  }
 
   // getCart(): void {
   //   this.sub$ = this.cartSvc.getCart()

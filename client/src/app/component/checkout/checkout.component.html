@@ -3,7 +3,7 @@
 <h1>Checkout</h1>
 <button routerLink="/cart">Return to Cart</button>
 
-  <mat-card [class]="item">
+  <mat-card class="item" *ngIf="item !== undefined">
       <mat-card-header>
         <div mat-card-avatar></div>
         <mat-card-title>{{item.title}}</mat-card-title>

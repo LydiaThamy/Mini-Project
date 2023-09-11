@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import mini_project.server.repository.BusinessRepository;
 import mini_project.server.repository.CartRepository;
 
@@ -21,7 +22,7 @@ public class CartService {
 
     @Autowired
     private BusinessRepository bizRepo;
-    
+
     public void addToCart(String customerId, String serviceId) {
         cartRepo.addToCart(customerId, serviceId);
     }
@@ -57,5 +58,21 @@ public class CartService {
 
     public void deleteItem(String customerId, String serviceId) {
         cartRepo.deleteItem(customerId, serviceId);
+    }
+
+    public JsonObject getItem(String customerId, String serviceId) {
+        Integer quantity = cartRepo.getItemQuantity(customerId, serviceId);
+        System.out.println(quantity);
+
+        // get business name, service title from sql repo
+        Map<String, Object> business = bizRepo.getBusinessByServiceId(serviceId);
+        return Json.createObjectBuilder()
+                .add("serviceId", serviceId)
+                .add("quantity", quantity)
+                .add("businessName", business.get("business_name").toString())
+                .add("title", business.get("title").toString())
+                .add("logo", business.get("logo").toString())
+                .add("price", business.get("price").toString())
+                .build();
     }
 }

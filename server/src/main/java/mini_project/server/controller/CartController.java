@@ -58,4 +58,12 @@ public class CartController {
         return ResponseEntity.ok("Item deleted");
     }
 
+    @GetMapping("/item/{serviceId}")
+    public ResponseEntity<String> getItem(@PathVariable String serviceId,
+            @RequestParam String customerId) {
+                System.out.println(cartService.getItem(customerId, serviceId).toString());
+        return ResponseEntity.ok(
+                cartService.getItem(customerId, serviceId).toString());
+    }
+
 }
