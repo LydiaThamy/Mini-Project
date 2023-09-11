@@ -14,12 +14,12 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-export class CheckoutComponent implements OnDestroy {
+export class CheckoutComponent implements OnInit, OnDestroy {
 
   constructor(private service: ClientService, private cartSvc: CartService, private aRoute: ActivatedRoute) { }
 
   // cart: Item[] = []
-  serviceId: string = this.aRoute.snapshot.queryParams['serviceId']
+  serviceId!: string
   item!: Item
 
   payment: any
@@ -27,6 +27,7 @@ export class CheckoutComponent implements OnDestroy {
   sub$!: Subscription
 
   ngOnInit(): void {
+    this.serviceId = this.aRoute.snapshot.queryParams['serviceId']
     this.sub$ = this.cartSvc.getItem(this.serviceId)
       .subscribe({
         next: e => {

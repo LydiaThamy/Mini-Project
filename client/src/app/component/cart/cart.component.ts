@@ -67,14 +67,16 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkout(item: Item): void {
-    this.router.navigate(['/checkout'], { queryParams: { serviceId: item.serviceId } })
-  }
-
-  ngOnDestroy(): void {
     // update cart
     this.sub$ = this.cartSvc.updateCart(this.cart)
       .subscribe({
-        complete: () => this.sub$.unsubscribe()
+        next: (data) => {
+          this.router.navigate(['/checkout'], { queryParams: { serviceId: item.serviceId } })
+        }
       })
+  }
+
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe()
   }
 }

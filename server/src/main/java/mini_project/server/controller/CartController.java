@@ -61,7 +61,9 @@ public class CartController {
     @GetMapping("/item/{serviceId}")
     public ResponseEntity<String> getItem(@PathVariable String serviceId,
             @RequestParam String customerId) {
+                System.out.println("Service ID: " + serviceId);
                 System.out.println(cartService.getItem(customerId, serviceId).toString());
+
         return ResponseEntity.ok(
                 cartService.getItem(customerId, serviceId).toString());
     }
