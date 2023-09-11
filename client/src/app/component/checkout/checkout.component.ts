@@ -17,12 +17,6 @@ export class CheckoutComponent {
 
   constructor(private service: ClientService, private http: HttpClient) {}
 
-  ngOnInit(): void {
-
-  }
-
-
-
   // here we create a payment object
   createPayment() {
     this.payment = {
