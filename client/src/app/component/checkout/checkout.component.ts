@@ -7,7 +7,7 @@ import { User } from 'app/interface/User';
 import { ClientService } from 'app/service/client.service';
 import { Subscription } from 'rxjs';
 import { Item } from 'app/interface/Item';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
 
-  constructor(private service: ClientService, private cartSvc: CartService, private aRoute: ActivatedRoute) { }
+  constructor(private router: Router, private service: ClientService, private cartSvc: CartService, private aRoute: ActivatedRoute) { }
 
   // cart: Item[] = []
   serviceId!: string
@@ -28,6 +28,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.serviceId = this.aRoute.snapshot.queryParams['serviceId']
+
+    if (this.serviceId === undefined) 
+      this.serviceId = sessionStorage.getItem("serviceId") as string
+    
+    if (this.serviceId === null)
+      this.router.navigate(['/cart'])
+
+    this.getItem()
+  }
+
+  getItem(): void {
     this.sub$ = this.cartSvc.getItem(this.serviceId)
       .subscribe({
         next: e => {

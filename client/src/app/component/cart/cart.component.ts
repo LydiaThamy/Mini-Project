@@ -68,6 +68,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   checkout(item: Item): void {
     // update cart
+    sessionStorage.setItem("serviceId", item.serviceId.toString())
     this.sub$ = this.cartSvc.updateCart(this.cart)
       .subscribe({
         next: (data) => {
