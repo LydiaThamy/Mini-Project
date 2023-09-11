@@ -1,1 +1,4 @@
-<p>confirmation works!</p>
+<app-header></app-header>
+<h1>Order Confirmed</h1>
+{{business.businessName}} appreciates your order!
+If you have any questions, please email <a [href]="'mailto:' + business.email">{{business.email}}</a>.

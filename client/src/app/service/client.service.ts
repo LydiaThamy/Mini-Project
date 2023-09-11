@@ -13,9 +13,14 @@ export class ClientService {
 
   customerId: string
   user!: User
+  checkoutItem!: Item
 
   constructor(private http: HttpClient) {
     this.customerId = this.getCustomerId()
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem("token")
   }
 
   getCustomerId(): string {

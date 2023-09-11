@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
+import mini_project.server.repository.BusinessRepository;
 import mini_project.server.repository.CartRepository;
 
 @Service
@@ -17,6 +18,9 @@ public class CartService {
 
     @Autowired
     private CartRepository cartRepo;
+
+    @Autowired
+    private BusinessRepository bizRepo;
     
     public void addToCart(String customerId, String serviceId) {
         cartRepo.addToCart(customerId, serviceId);
@@ -31,14 +35,16 @@ public class CartService {
         result.get().forEach((key, value) -> {
 
             // get business name, service title from sql repo
-            Map<String, Object> names = cartRepo.getCartByServiceId(key.toString());
+            Map<String, Object> business = bizRepo.getBusinessByServiceId(key.toString());
 
             // create json
             json.add(Json.createObjectBuilder()
                     .add("serviceId", key.toString())
                     .add("quantity", value.toString())
-                    .add("businessName", names.get("business_name").toString())
-                    .add("title", names.get("title").toString())
+                    .add("businessName", business.get("business_name").toString())
+                    .add("title", business.get("title").toString())
+                    .add("logo", business.get("logo").toString())
+                    .add("price", business.get("price").toString())
                     .build());
         });
 
@@ -47,5 +53,9 @@ public class CartService {
 
     public void updateCart(String customerId, List<Map<String, String>> cart) {
         cartRepo.updateCart(customerId, cart);
+    }
+
+    public void deleteItem(String customerId, String serviceId) {
+        cartRepo.deleteItem(customerId, serviceId);
     }
 }

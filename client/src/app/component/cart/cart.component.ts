@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Item } from 'app/interface/Item';
 import { CartService } from 'app/service/cart.service';
 import { ClientService } from 'app/service/client.service';
@@ -15,14 +16,14 @@ export class CartComponent implements OnInit, OnDestroy {
   loadComplete: boolean = false
 
   cart: Item[] = []
-  constructor(private service: CartService) { }
+  constructor(private cartSvc: CartService, private clientSvc: ClientService, private router: Router) { }
 
   ngOnInit(): void {
     this.getCart()
   }
 
   getCart(): void {
-    this.sub$ = this.service.getCart()
+    this.sub$ = this.cartSvc.getCart()
       .subscribe({
         next: data => {
           data.forEach((e: any) => {
@@ -62,10 +63,14 @@ export class CartComponent implements OnInit, OnDestroy {
       (i: Item) => i.serviceId == id)
     this.cart.splice(idx, 1)
   }
+
+  checkout(item: Item): void {
+    this.router.navigate(['/checkout'], {queryParams: {item: item}})
+  }
   
   ngOnDestroy(): void {
     // update cart
-    this.sub$ = this.service.updateCart(this.cart)
+    this.sub$ = this.cartSvc.updateCart(this.cart)
       .subscribe({
         complete: () => this.sub$.unsubscribe()
       })

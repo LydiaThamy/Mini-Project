@@ -2,6 +2,7 @@ package mini_project.server.repository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,9 @@ public class BusinessRepository {
     public static final String GET_BUSINESS_SQL_BY_ID = "select * from business where business_id = ?";
     public static final String GET_SERVICES_SQL_BY_BUSINESS_ID = "select * from service where business_id = ? order by price desc";
     public static final String GET_REVIEWS_SQL_BY_BUSINESS_ID = "select * from review where business_id = ? order by review_date desc";
-    
+    // for cart    
+    public static final String GET_CART_SQL_BY_SERVICE_ID = "select b.business_name, b.logo, b.email, s.title, s.price from service as s join business as b on b.business_id = s.business_id where s.service_id = ?";
+
     public List<String> autocompleteKeyword(String keyword) {
 
         String wildcard = "%" + keyword + "%";
@@ -143,6 +146,10 @@ public class BusinessRepository {
 
     public List<Review> getReviewsByBusinessId(Integer id) {
         return template.query(GET_REVIEWS_SQL_BY_BUSINESS_ID, new BeanPropertyRowMapper<>(Review.class), id);
+    }
+
+    public Map<String, Object> getBusinessByServiceId(String serviceId) {
+        return template.queryForMap(GET_CART_SQL_BY_SERVICE_ID, serviceId);
     }
 
 }

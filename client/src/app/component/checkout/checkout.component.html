@@ -1,14 +1,23 @@
+<app-logo></app-logo>
+
 <h1>Checkout</h1>
-<mat-card class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar></div>
-      <mat-card-title>Iphone X</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="assets/images/iphone.jpg" />
-  
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="pay()">
-        Buy it for $999
-      </button>
-    </mat-card-actions>
-  </mat-card>
+<button routerLink="/cart">Return to Cart</button>
+
+  <mat-card [class]="item">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>{{item.title}}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image [src]="item.logo" width="100px">
+      <mat-card-content>
+        By {{item.businessName | titlecase}}
+        Quantity: {{item.quantity}}
+        Price: ${{item.price}}
+      </mat-card-content>
+    </mat-card>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="pay()">
+          Make Payment
+        </button>
+      </mat-card-actions>

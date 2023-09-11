@@ -24,11 +24,15 @@
                     <button type="button" (click)="deleteItem(item.serviceId)">Delete</button>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <!-- checkout -->
+                    <button (click)="checkout(item)">Buy</button>
+                </td>
+            </tr>
         </table>
     </div>
     
-    <!-- checkout -->
-    <button routerLink="/checkout">checkout</button>
 </div>
 
 <div class="cart" *ngIf="cart.length == 0 && loadComplete == true">

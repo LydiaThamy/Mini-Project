@@ -1,11 +1,11 @@
 export interface Business{
 
-    businessId: number,
+    businessId?: number,
     businessName: string,
-    address: string,
-    phone: string,
+    address?: string,
+    phone?: string,
     email: string,
-    website: string,
-    logo: string
+    website?: string,
+    logo?: string
     
 }

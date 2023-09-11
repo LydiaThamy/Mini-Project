@@ -35,8 +35,7 @@ export class ResultsComponent implements OnChanges, OnDestroy {
     this.businesses = []
 
     this.sub$ = this.service.getAllBusinesses()
-      .subscribe(data => this.addBusiness(data)
-    )
+      .subscribe(data => this.addBusiness(data))
   }
 
   getBusinessesByCategory(): void {
@@ -45,8 +44,8 @@ export class ResultsComponent implements OnChanges, OnDestroy {
     this.sub$ = this.service.getBusinessesByCategory(this.category)
       .subscribe({
         next: data => this.addBusiness(data),
-    complete: () => {this.category = ''}
-    })
+        complete: () => { this.category = '' }
+      })
   }
 
   getBusinessesByKeyword(): void {
@@ -55,7 +54,7 @@ export class ResultsComponent implements OnChanges, OnDestroy {
     this.sub$ = this.service.getBusinessesByKeyword(this.search)
       .subscribe({
         next: data => this.addBusiness(data),
-        complete: () => {this.search = {}}
+        complete: () => { this.search = {} }
       })
   }
 
@@ -73,8 +72,9 @@ export class ResultsComponent implements OnChanges, OnDestroy {
     })
   }
 
-  searchBusiness(id: number): void {
-    this.selectedBizId.next(id)
+  searchBusiness(id: number | undefined): void {
+    if (id !== undefined)
+      this.selectedBizId.next(id)
     // this.router.navigate(['/business', id])
   }
 

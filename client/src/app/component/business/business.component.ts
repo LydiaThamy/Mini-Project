@@ -68,6 +68,10 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getGeocodedAddress(): void {
+    
+    if (this.biz.address == null)
+      this.biz.address = ''
+
     this.add$ = this.service.getGeocode(this.biz.address)
       .subscribe({
         next: data => {

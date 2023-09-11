@@ -1,6 +1,7 @@
 package mini_project.server.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ import mini_project.server.repository.BusinessRepository;
 public class BusinessService {
 
     @Autowired
-    private BusinessRepository sqlRepo;
+    private BusinessRepository bizRepo;
 
     public JsonArray autocompleteKeyword(String keyword) {
 
-        List<String> autocomplete = sqlRepo.autocompleteKeyword(keyword);
+        List<String> autocomplete = bizRepo.autocompleteKeyword(keyword);
 
         JsonArrayBuilder json = Json.createArrayBuilder();
         for (String c : autocomplete)
@@ -33,7 +34,7 @@ public class BusinessService {
 
     public JsonArray getCategories() {
 
-        List<String> categories = sqlRepo.getCategories();
+        List<String> categories = bizRepo.getCategories();
         JsonArrayBuilder json = Json.createArrayBuilder();
         for (String c : categories)
             json.add(c);
@@ -43,7 +44,7 @@ public class BusinessService {
 
     public JsonArray getAllBusinesses() {
 
-        List<Business> businesses = sqlRepo.getAllBusinesses();
+        List<Business> businesses = bizRepo.getAllBusinesses();
 
         JsonArrayBuilder json = Json.createArrayBuilder();
         for (Business b : businesses)
@@ -63,7 +64,7 @@ public class BusinessService {
 
     public Optional<JsonArray> getBusinessesByKeyword(Search search) {
 
-        Optional<List<Business>> result = sqlRepo.getBusinessesByKeyword(search);
+        Optional<List<Business>> result = bizRepo.getBusinessesByKeyword(search);
         if (result.isEmpty())
             return Optional.empty();
         List<Business> businesses = result.get();
@@ -86,7 +87,7 @@ public class BusinessService {
 
     public Optional<JsonArray> getBusinessesByCategory(String category) {
 
-        Optional<List<Business>> result = sqlRepo.getBusinessesByCategory(category);
+        Optional<List<Business>> result = bizRepo.getBusinessesByCategory(category);
         if (result.isEmpty())
             return Optional.empty();
         List<Business> businesses = result.get();
@@ -109,7 +110,7 @@ public class BusinessService {
 
     public Optional<JsonObject> getBusinessById(Integer id) {
 
-        Optional<Business> result = sqlRepo.getBusinessById(id);
+        Optional<Business> result = bizRepo.getBusinessById(id);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -131,7 +132,7 @@ public class BusinessService {
 
     public Optional<JsonArray> getServicesByBusinessId(Integer id) {
 
-        List<mini_project.server.model.Service> result = sqlRepo.getServicesByBusinessId(id);
+        List<mini_project.server.model.Service> result = bizRepo.getServicesByBusinessId(id);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -151,7 +152,7 @@ public class BusinessService {
 
     public Optional<JsonArray> getReviewsByBusinessId(Integer id) {
 
-        List<Review> result = sqlRepo.getReviewsByBusinessId(id);
+        List<Review> result = bizRepo.getReviewsByBusinessId(id);
 
         if (result.isEmpty())
             return Optional.empty();
@@ -168,5 +169,13 @@ public class BusinessService {
                     .build());
 
         return Optional.of(json.build());
+    }
+
+    public JsonObject getBusinessByServiceId(String serviceId) {
+        Map<String, Object> business = bizRepo.getBusinessByServiceId(serviceId);
+        return Json.createObjectBuilder()
+            .add("email", business.get("email").toString())
+            .add("businessName", business.get("businessName").toString())
+            .build();
     }
 }
