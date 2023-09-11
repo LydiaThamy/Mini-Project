@@ -20,6 +20,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.exception.AccessTokenException;
 import mini_project.server.exception.UserAccessException;
 import mini_project.server.model.User;
+import mini_project.server.repository.UserRepository;
 import mini_project.server.service.TokenService;
 import mini_project.server.service.UserService;
 
@@ -46,6 +47,12 @@ public class UserController {
         // User user = userService.getUserFromGithub(accessToken);
         // System.out.println("User: " + user);
         User user = new User(principal.getAttribute("id").toString(), principal.getAttribute("login"), principal.getAttribute("email"));
+
+        // Check if the user exists in your DB, if not, create them
+        Optional<User> existingUser = userService.getUser(user.getUserId());
+        if (existingUser.isEmpty()) {
+            userService.saveUser(user);
+        }
 
         // Generate a JWT for this user
         // String jwt = jwtService.generateToken(user);

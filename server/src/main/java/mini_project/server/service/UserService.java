@@ -37,7 +37,7 @@ public class UserService {
     @Value("${spring.security.oauth2.client.registration.github.clientSecret}")
     private String githubClientSecret;
 
-    private static final String GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token";
+    // private static final String GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token";
 
     @Autowired
     private UserRepository userRepo;
@@ -63,48 +63,45 @@ public class UserService {
 
     public Optional<User> getUser(String userId) {
         // public Optional<JsonObject> getUser(String userId) {
-
-        Optional<User> result = userRepo.getUser(userId);
-
-        return result;
+        return userRepo.getUser(userId);
     }
 
-    @Transactional(rollbackFor = { AccessTokenException.class })
-    public String getAccessToken(String code) throws IOException, AccessTokenException {
-        RestTemplate restTemplate = new RestTemplate();
+    // @Transactional(rollbackFor = { AccessTokenException.class })
+    // public String getAccessToken(String code) throws IOException, AccessTokenException {
+    //     RestTemplate restTemplate = new RestTemplate();
 
-        // Prepare the request payload for GitHub token endpoint
-        MultiValueMap<String, String> requestPayload = new LinkedMultiValueMap<>();
-        requestPayload.add("client_id", githubClientId);
-        requestPayload.add("client_secret", githubClientSecret);
-        requestPayload.add("code", code);
+    //     // Prepare the request payload for GitHub token endpoint
+    //     MultiValueMap<String, String> requestPayload = new LinkedMultiValueMap<>();
+    //     requestPayload.add("client_id", githubClientId);
+    //     requestPayload.add("client_secret", githubClientSecret);
+    //     requestPayload.add("code", code);
 
-        RequestEntity<MultiValueMap<String, String>> req = RequestEntity
-                .post(GITHUB_TOKEN_ENDPOINT)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .body(requestPayload);
-        System.out.println("Request entity for access token call: " + req);
+    //     RequestEntity<MultiValueMap<String, String>> req = RequestEntity
+    //             .post(GITHUB_TOKEN_ENDPOINT)
+    //             .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+    //             .body(requestPayload);
+    //     System.out.println("Request entity for access token call: " + req);
 
-        // Exchange the code for access token
-        ResponseEntity<String> response = restTemplate.exchange(req, String.class);
+    //     // Exchange the code for access token
+    //     ResponseEntity<String> response = restTemplate.exchange(req, String.class);
 
-        if (response.getStatusCode() != HttpStatus.OK)
-            throw new AccessTokenException(response.getBody().toString());
+    //     if (response.getStatusCode() != HttpStatus.OK)
+    //         throw new AccessTokenException(response.getBody().toString());
 
-        String accessToken;
-        try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
-            JsonReader reader = Json.createReader(is);
-            JsonObject data = reader.readObject();
-            accessToken = data.getString("access_token");
-        }
+    //     String accessToken;
+    //     try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
+    //         JsonReader reader = Json.createReader(is);
+    //         JsonObject data = reader.readObject();
+    //         accessToken = data.getString("access_token");
+    //     }
 
-        return accessToken;
+    //     return accessToken;
 
-        // ResponseEntity<String> response =
-        // restTemplate.postForEntity(GITHUB_TOKEN_ENDPOINT, requestPayload,
-        // String.class);
-        // return extractAccessToken(response.getBody());
-    }
+    //     // ResponseEntity<String> response =
+    //     // restTemplate.postForEntity(GITHUB_TOKEN_ENDPOINT, requestPayload,
+    //     // String.class);
+    //     // return extractAccessToken(response.getBody());
+    // }
 
     // private String extractAccessToken(String responseBody) throws IOException {
     // ObjectMapper mapper = new ObjectMapper();
@@ -113,7 +110,8 @@ public class UserService {
     // }
 
     @Transactional(rollbackFor = { UserAccessException.class })
-    public User getUserFromGithub(String accessToken) throws IOException, UserAccessException {
+    public User getUserFromGithub(String userId) throws IOException, UserAccessException {
+    // public User getUserFromGithub(String accessToken) throws IOException, UserAccessException {
         RestTemplate restTemplate = new RestTemplate();
 
         // Fetch the user's GitHub data using the access token
