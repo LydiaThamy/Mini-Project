@@ -109,44 +109,44 @@ public class UserService {
     // return rootNode.path("access_token").asText();
     // }
 
-    @Transactional(rollbackFor = { UserAccessException.class })
-    public User getUserFromGithub(String userId) throws IOException, UserAccessException {
-    // public User getUserFromGithub(String accessToken) throws IOException, UserAccessException {
-        RestTemplate restTemplate = new RestTemplate();
+    // @Transactional(rollbackFor = { UserAccessException.class })
+    // public User getUserFromGithub(String userId) throws IOException, UserAccessException {
+    // // public User getUserFromGithub(String accessToken) throws IOException, UserAccessException {
+    //     RestTemplate restTemplate = new RestTemplate();
 
-        // Fetch the user's GitHub data using the access token
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+    //     // Fetch the user's GitHub data using the access token
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.setBearerAuth(accessToken);
+    //     HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("https://api.github.com/user", HttpMethod.GET, entity,
-                String.class);
+    //     ResponseEntity<String> response = restTemplate.exchange("https://api.github.com/user", HttpMethod.GET, entity,
+    //             String.class);
 
-        if (response.getStatusCode() != HttpStatus.OK)
-            throw new UserAccessException(response.getBody().toString());
+    //     if (response.getStatusCode() != HttpStatus.OK)
+    //         throw new UserAccessException(response.getBody().toString());
 
-        User user = new User();
+    //     User user = new User();
 
-        try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
-            JsonReader reader = Json.createReader(is);
-            JsonObject data = reader.readObject();
-            user.setUsername(data.getString("login"));
-            user.setUserId(data.getString("id"));
-            user.setEmail(data.getString("email"));
-        }
+    //     try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
+    //         JsonReader reader = Json.createReader(is);
+    //         JsonObject data = reader.readObject();
+    //         user.setUsername(data.getString("login"));
+    //         user.setUserId(data.getString("id"));
+    //         user.setEmail(data.getString("email"));
+    //     }
 
-        // Check if the user exists in your DB, if not, create them
-        Optional<User> existingUser = getUser(user.getUserId());
-        if (existingUser.isEmpty()) {
-            saveUser(user);
-        }
+    //     // Check if the user exists in your DB, if not, create them
+    //     Optional<User> existingUser = getUser(user.getUserId());
+    //     if (existingUser.isEmpty()) {
+    //         saveUser(user);
+    //     }
 
-        return user;
+    //     return user;
 
-        // parse the user data
-        // String githubId = parseGithubId(userResponse.getBody());
-        // String githubName = parseGithubName(userResponse.getBody());
-    }
+    //     // parse the user data
+    //     // String githubId = parseGithubId(userResponse.getBody());
+    //     // String githubName = parseGithubName(userResponse.getBody());
+    // }
 
     // private String parseGithubId(String userJson) throws IOException {
     // ObjectMapper mapper = new ObjectMapper();
