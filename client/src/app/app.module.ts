@@ -20,8 +20,6 @@ import { LogoComponent } from './component/logo/logo.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { AccountComponent } from './component/account/account.component';
 import { ConfirmationComponent } from './component/confirmation/confirmation.component';
-import { Router } from '@angular/router';
-import { authGuard } from './auth.guard';
 import { AuthoriseComponent } from './component/authorise/authorise.component';
 import { CartService } from './service/cart.service';
 import { UserService } from './service/user.service';
@@ -63,11 +61,6 @@ import { BusinessService } from './service/business.service';
     CartService,
     UserService,
     BusinessService,
-    { 
-      provide: 'canActivateCheckout', 
-      useFactory: authGuard, 
-      deps: [Router]
-  }
   ],
   bootstrap: [AppComponent]
 })
