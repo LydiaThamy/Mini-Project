@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'checkout', component: CheckoutComponent, canActivate: [authGuard]},
   {path: 'confirmation', component: ConfirmationComponent},
   // {path: 'create-account', component: CreateAccountComponent},
-  {path: '**', component: ErrorComponent, pathMatch: 'full'}
+  {path: '**', component: HomeComponent, pathMatch: 'full'}
 ];
 
 @NgModule({
