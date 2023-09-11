@@ -37,7 +37,7 @@ public class TokenService {
     public Optional<String> getUserId(String token) {
         try {
             return Optional.of(
-                jwtDecoder.decode(token).getClaim("userId"));
+                jwtDecoder.decode(token).getClaim("sub"));
         } catch (JwtException e) {
             return Optional.empty();
         }

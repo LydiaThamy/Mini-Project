@@ -35,9 +35,13 @@ export class ConfirmationComponent implements OnDestroy {
           username: data.username,
           email: data.email
         }
+
+        console.log(JSON.stringify(this.user))
+        
         this.deleteItem()
         this.getBusiness()
-      }
+      },
+      error: () => localStorage.removeItem("token")
     })
   }
     // remove item from cart

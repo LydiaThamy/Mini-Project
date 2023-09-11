@@ -20,7 +20,6 @@ import jakarta.json.JsonObject;
 import mini_project.server.exception.AccessTokenException;
 import mini_project.server.exception.UserAccessException;
 import mini_project.server.model.User;
-import mini_project.server.repository.UserRepository;
 import mini_project.server.service.TokenService;
 import mini_project.server.service.UserService;
 
@@ -79,6 +78,12 @@ public class UserController {
         // public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User
         // principal) {
 
+            System.out.println("Token: " + token);
+            if (token.equals("null")) {
+                System.out.println("token is null... sending back to client...");
+                ResponseEntity.badRequest().body("token invalid");
+            }
+
         Optional<String> userId = tokenService.getUserId(token);
 
         if (userId.isEmpty())
@@ -94,6 +99,8 @@ public class UserController {
                 .add("username", user.get().getUsername())
                 .add("email", user.get().getEmail())
                 .build();
+
+        System.out.println(json.toString());
 
         return ResponseEntity.ok(json.toString());
     }
