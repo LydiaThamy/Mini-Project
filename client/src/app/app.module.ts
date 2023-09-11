@@ -57,6 +57,7 @@ import { authGuardFactory } from './auth.guard';
   ],
   providers: [
     ClientService,
+    CartService,
     { 
       provide: 'canActivateCheckout', 
       useFactory: authGuardFactory, 

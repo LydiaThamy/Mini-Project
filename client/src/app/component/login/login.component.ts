@@ -9,15 +9,15 @@ import { ClientService } from 'app/service/client.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   githubUrl: string = '/oauth2/authorization/github'
-  loginForm!: FormGroup
-  constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
+  // loginForm!: FormGroup
+  // constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
 
-  ngOnInit(): void {
-    // this.createForm()
-  }
+  // ngOnInit(): void {
+  //   // this.createForm()
+  // }
 
   // createForm(): void {
   //   this.loginForm = this.fb.group({
@@ -26,13 +26,13 @@ export class LoginComponent implements OnInit {
   //   })
   // }
 
-  login(): void {
-    const clientId = 'c8885ae2376e95046357';
-    const redirectUri = encodeURIComponent('');
-    const authEndpoint = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
+  // login(): void {
+  //   const clientId = 'c8885ae2376e95046357';
+  //   const redirectUri = encodeURIComponent('');
+  //   const authEndpoint = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
     
-    window.location.href = authEndpoint;
-  }
+  //   window.location.href = authEndpoint;
+  // }
 
   // onSignIn(googleUser: any) {
   //   var profile = googleUser.getBasicProfile();

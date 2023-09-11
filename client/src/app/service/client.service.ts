@@ -41,22 +41,6 @@ export class ClientService {
     return cId
   }
 
-  addCart(serviceId: number): Observable<any> {
-    const item: any = {
-      serviceId: serviceId
-    }
-    return this.http.post(`/api/shophouse/cart/add/${this.customerId}`, {serviceId: serviceId})
-    // return this.http.post(`/api/shophouse/cart/add/${this.customerId}`, item)
-  }
-
-  updateCart(cart: Item[]) {
-    return this.http.put(`/api/shophouse/cart/update/${this.customerId}`, cart)
-  }
-
-  getCart(): Observable<any> {
-    return this.http.get(`/api/shophouse/cart/${this.customerId}`)
-  }
-
   getCategories(): Observable<any> {
     return this.http.get("/api/shophouse/categories")
   }
@@ -111,16 +95,8 @@ export class ClientService {
     return this.http.get("/api/shophouse/geocode", { params: httpParams })
   }
 
-  authenticateUser(): Observable<any> {
-    return this.http.get("/api/shophouse/authenticate")
-  }
-
-  getUser(): Observable<any> {
-    return this.http.get("/api/shophouse/user")
-  }
-
   makePayment(payment: any): Observable<any> {
-    return this.http.post("/api/shophouse/payment", payment)
+    return this.http.post("/api/payment/", payment)
   }
 
 }

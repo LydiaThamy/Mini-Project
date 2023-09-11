@@ -23,7 +23,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 @Configuration
-public class LoginConfiguration {
+public class UserConfiguration {
 
     @Value("${rsa.public.key}")
     private RSAPublicKey rsaPublicKey;

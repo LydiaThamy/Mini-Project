@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -16,9 +14,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
-import mini_project.server.model.User;
 import mini_project.server.repository.GoogleRepository;
-import mini_project.server.repository.RedisRepository;
 import mini_project.server.repository.SqlRepository;
 
 @Service
@@ -29,15 +25,6 @@ public class ShophouseService {
 
     @Autowired
     private GoogleRepository googleRepo;
-
-    // @Autowired
-    // private GeoapifyRepository geoapifyRepo;
-
-    // @Autowired
-    // private MongoRespository mongoRepo;
-
-    @Autowired
-    private RedisRepository redisRepo;
 
     public JsonArray autocompleteKeyword(String keyword) {
 
@@ -193,64 +180,5 @@ public class ShophouseService {
         // return geoapifyRepo.getGeocode(address);
         return googleRepo.getGeocode(address);
     }
-
-    public void addToCart(String customerId, String serviceId) {
-        redisRepo.addToCart(customerId, serviceId);
-    }
-
-    public Optional<JsonArray> getCart(String customerId) {
-        Optional<Map<Object, Object>> result = redisRepo.getCart(customerId);
-        if (result.isEmpty())
-            return null;
-
-        JsonArrayBuilder json = Json.createArrayBuilder();
-        result.get().forEach((key, value) -> {
-
-            // get business name, service title from sql repo
-            Map<String, Object> names = sqlRepo.getCartByServiceId(key.toString());
-
-            // create json
-            json.add(Json.createObjectBuilder()
-                    .add("serviceId", key.toString())
-                    .add("quantity", value.toString())
-                    .add("businessName", names.get("business_name").toString())
-                    .add("title", names.get("title").toString())
-                    .build());
-        });
-
-        return Optional.of(json.build());
-    }
-
-    public void updateCart(String customerId, List<Map<String, String>> cart) {
-        redisRepo.updateCart(customerId, cart);
-    }
-
-    public Optional<JsonObject> saveUser(User user) {
-    // public Optional<JsonObject> saveUser(OAuth2User principal) {
-
-        // String userId = principal.getAttribute("id");
-        // String username = principal.getAttribute("login");
-        // String email = principal.getAttribute("email");
-
-        if (sqlRepo.saveUser(user) == 0)
-        // if (sqlRepo.saveUser(userId, email, username) == 0)
-            return Optional.empty();
-
-        return Optional.of(
-                Json.createObjectBuilder()
-                        .add("userId", user.getUserId())
-                        .add("username", user.getUsername())
-                        .add("email", user.getEmail())
-                        .build());
-    }
-
-    public Optional<User> getUser(String userId) {
-    // public Optional<JsonObject> getUser(String userId) {
-
-        Optional<User> result = sqlRepo.getUser(userId);
-
-        return result;
-    }
-
 
 }

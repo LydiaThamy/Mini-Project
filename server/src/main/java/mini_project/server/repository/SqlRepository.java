@@ -14,7 +14,6 @@ import mini_project.server.model.Business;
 import mini_project.server.model.Review;
 import mini_project.server.model.Search;
 import mini_project.server.model.Service;
-import mini_project.server.model.User;
 
 @Repository
 public class SqlRepository {
@@ -38,11 +37,6 @@ public class SqlRepository {
     public static final String GET_SERVICES_SQL_BY_BUSINESS_ID = "select * from service where business_id = ? order by price desc";
     public static final String GET_REVIEWS_SQL_BY_BUSINESS_ID = "select * from review where business_id = ? order by review_date desc";
     
-    public static final String GET_CART_SQL_BY_SERVICE_ID = "select b.business_name, s.title from service as s join business as b on b.business_id = s.business_id where s.service_id = ?";
-
-    public static final String INSERT_NEW_USER="insert into user values (?, ?, ?)";
-    public static final String GET_USER_BY_ID="select * from user where user_id = ?";
-
     public List<String> autocompleteKeyword(String keyword) {
 
         String wildcard = "%" + keyword + "%";
@@ -152,17 +146,6 @@ public class SqlRepository {
         return template.query(GET_REVIEWS_SQL_BY_BUSINESS_ID, new BeanPropertyRowMapper<>(Review.class), id);
     }
 
-    public Map<String, Object> getCartByServiceId(String serviceId) {
-        return template.queryForMap(GET_CART_SQL_BY_SERVICE_ID, serviceId);
-    }
 
-    public Integer saveUser(User user) {
-    // public Integer saveUser(String userId, String email, String username) {
-        return template.update(INSERT_NEW_USER, user.getUserId(), user.getUsername(), user.getEmail());
-    }
-
-    public Optional<User> getUser(String userId) {
-        return Optional.of(template.queryForObject(GET_USER_BY_ID, User.class, userId));
-    }
 
 }
