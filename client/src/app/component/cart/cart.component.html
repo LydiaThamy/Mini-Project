@@ -1,7 +1,8 @@
 <app-header></app-header>
 
 <h1>Shopping Cart</h1>
-<div class="cart" *ngIf="cart.length > 0; else empty">
+
+<div class="cart" *ngIf="cart.length > 0">
     <div *ngFor="let item of cart as Item" id="item.serviceId">
         <table>
             <thead>
@@ -25,15 +26,19 @@
             </tr>
         </table>
     </div>
+    
+    <!-- checkout -->
+    <button routerLink="/checkout">checkout</button>
 </div>
 
-<!-- checkout -->
-<button routerLink="/login">checkout</button>
+<div class="cart" *ngIf="cart.length == 0 && loadComplete == true">
+    <h2>Your cart is empty. Add something to it now!</h2>
+</div>
 
-<ng-template #loading>
+<div class="loading" *ngIf="loadComplete == false">
     Loading...
-</ng-template>
+</div>
 
-<ng-template #empty>
-    <h2 *ngIf="loadComplete; else loading">Your cart is empty. Add something to it now!</h2>
-</ng-template>
+<!-- <ng-template #loading>
+Items loading...
+</ng-template> -->

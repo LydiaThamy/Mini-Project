@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Item } from 'app/interface/Item';
+import { CartService } from 'app/service/cart.service';
 import { ClientService } from 'app/service/client.service';
 import { Subscription } from 'rxjs';
 
@@ -10,10 +11,11 @@ import { Subscription } from 'rxjs';
 })
 export class CartComponent implements OnInit, OnDestroy {
 
-  loadComplete: boolean = false
-  cart: Item[] = []
   sub$!: Subscription
-  constructor(private service: ClientService) { }
+  loadComplete: boolean = false
+
+  cart: Item[] = []
+  constructor(private service: CartService) { }
 
   ngOnInit(): void {
     this.getCart()
@@ -31,9 +33,11 @@ export class CartComponent implements OnInit, OnDestroy {
               businessName: e.businessName
             } as Item)
           });
+          this.loadComplete = true
         },
-        // error: () => this.getCart(),
-        complete: () => {this.loadComplete = true}
+        error: (e) => {
+          this.loadComplete = true
+        }
       })
   }
 
@@ -65,6 +69,5 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe({
         complete: () => this.sub$.unsubscribe()
       })
-    
   }
 }
