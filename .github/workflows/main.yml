@@ -2,7 +2,7 @@ name: Deploy to Railway
 
 on:
   push:
-    branches: [route-debug]
+    branches: [main]
 
 jobs:
   deploy:
