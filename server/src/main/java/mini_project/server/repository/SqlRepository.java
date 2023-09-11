@@ -2,7 +2,6 @@ package mini_project.server.repository;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
