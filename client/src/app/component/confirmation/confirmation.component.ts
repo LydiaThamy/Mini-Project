@@ -7,6 +7,7 @@ import { UserService } from 'app/service/user.service';
 import { BusinessService } from 'app/service/business.service';
 import { Subscription } from 'rxjs';
 import { Business } from 'app/interface/Business';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirmation',
@@ -17,41 +18,46 @@ export class ConfirmationComponent implements OnDestroy {
 
   user!: User
   sub$!: Subscription
-  item!: Item
+  serviceId!: string
   business!: Business
 
-  constructor(private userSvc: UserService, private clientSvc: ClientService, private bizSvc: BusinessService, private cartSvc: CartService) {}
+  constructor(private userSvc: UserService, private router: Router, private bizSvc: BusinessService, private cartSvc: CartService) { }
 
   ngOnInit(): void {
-    this.getUser()
+    this.serviceId = sessionStorage.getItem("serviceId") as string
+    
+    if (!this.serviceId) {
+      this.router.navigate(['/'])
+      console.log(this.serviceId)
+
+    } else {
+      this.getUser()
+    }
   }
 
   getUser(): void {
     this.sub$ = this.userSvc.getUser()
-    .subscribe({
-      next: data => {
-        this.user = {
-          userId: data.userId,
-          username: data.username,
-          email: data.email
-        }
+      .subscribe({
+        next: data => {
+          this.user = {
+            userId: data.userId,
+            username: data.username,
+            email: data.email
+          }
 
-        console.log(JSON.stringify(this.user))
-        
-        this.deleteItem()
-        this.getBusiness()
-      },
-      error: () => localStorage.removeItem("token")
-    })
+          this.deleteItem()
+          this.getBusiness()
+        },
+        error: () => localStorage.removeItem("token")
+      })
   }
-    // remove item from cart
-    deleteItem() {
-      this.item = this.clientSvc.checkoutItem
-      this.cartSvc.deleteItem(this.item.serviceId)
-    }
-  
-    getBusiness(): void {
-      this.sub$ = this.bizSvc.getBusinessByServiceId(this.item.serviceId)
+  // remove item from cart
+  deleteItem() {
+    this.cartSvc.deleteItem(this.serviceId)
+  }
+
+  getBusiness(): void {
+    this.sub$ = this.bizSvc.getBusinessByServiceId(this.serviceId)
       .subscribe({
         next: data => {
           this.business = {
@@ -60,7 +66,7 @@ export class ConfirmationComponent implements OnDestroy {
           }
         }
       })
-    }
+  }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe()

@@ -173,6 +173,7 @@ public class BusinessService {
 
     public JsonObject getBusinessByServiceId(String serviceId) {
         Map<String, Object> business = bizRepo.getBusinessByServiceId(serviceId);
+        System.out.println(business.toString());
         return Json.createObjectBuilder()
             .add("email", business.get("email").toString())
             .add("businessName", business.get("businessName").toString())

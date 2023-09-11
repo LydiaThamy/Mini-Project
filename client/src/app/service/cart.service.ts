@@ -32,7 +32,7 @@ export class CartService {
     return this.http.get(`/api/cart/${this.customerId}`)
   }
 
-  deleteItem(serviceId: number): void {
+  deleteItem(serviceId: string): void {
     const httpParams: HttpParams = new HttpParams()
       .set("customerId", this.service.customerId)
 

@@ -58,7 +58,7 @@ export class BusinessService {
     return this.http.get(`/api/business/${id}/reviews`)
   }
 
-  getBusinessByServiceId(serviceid: number): Observable<any> {
+  getBusinessByServiceId(serviceid: string): Observable<any> {
   return this.http.get(`/api/business/service/${serviceid}`)
   }
 }
