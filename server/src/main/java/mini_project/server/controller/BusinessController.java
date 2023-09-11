@@ -14,14 +14,14 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import mini_project.server.model.Search;
-import mini_project.server.service.ShophouseService;
+import mini_project.server.service.BusinessService;
 
 @RestController
-@RequestMapping("/api/shophouse")
-public class ShophouseController {
+@RequestMapping("/api/business")
+public class BusinessController {
 
     @Autowired
-    private ShophouseService service;
+    private BusinessService service;
 
     @GetMapping("/categories")
     public ResponseEntity<String> getCategories() {
@@ -39,12 +39,12 @@ public class ShophouseController {
         return ResponseEntity.ok(json);
     }
 
-    @GetMapping("/businesses")
+    @GetMapping("/")
     public ResponseEntity<String> getAllBusinesses() {
         return ResponseEntity.ok(service.getAllBusinesses().toString());
     }
 
-    @GetMapping("/businesses/category")
+    @GetMapping("/category")
     public ResponseEntity<String> getBusinessesByCategory(@RequestParam String category) {
 
         Optional<JsonArray> result = service.getBusinessesByCategory(category);
@@ -54,7 +54,7 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/businesses/keyword")
+    @GetMapping("/keyword")
     public ResponseEntity<String> getBusinesses(@ModelAttribute Search search) {
         System.out.println("Search: " + search.toString());
 
@@ -66,7 +66,7 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{businessId}")
+    @GetMapping("{businessId}")
     public ResponseEntity<String> getBusinessById(@PathVariable String businessId) {
 
         Integer bId;
@@ -85,7 +85,7 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{businessId}/services")
+    @GetMapping("/{businessId}/services")
     public ResponseEntity<String> getServicesByBusinessId(@PathVariable String businessId) {
 
         Integer bId;
@@ -104,7 +104,7 @@ public class ShophouseController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("/business/{businessId}/reviews")
+    @GetMapping("/{businessId}/reviews")
     public ResponseEntity<String> getReviewsByBusinessId(@PathVariable String businessId) {
 
         Integer bId;
@@ -121,17 +121,6 @@ public class ShophouseController {
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(result.get().toString());
-    }
-
-    @GetMapping("/geocode")
-    public ResponseEntity<String> getGeocode(@RequestParam String address) {
-        String result;
-        try {
-            result = service.getGeocode(address);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(result);
     }
 
 }

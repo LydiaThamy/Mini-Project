@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Search } from 'app/interface/Search';
-import { ClientService } from 'app/service/client.service';
+import { BusinessService } from 'app/service/business.service';
 import {  Subscription } from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   inspectBusiness: boolean = false
   bizId!: number
 
-  constructor(private service: ClientService) {}
+  constructor(private service: BusinessService) {}
 
   ngOnInit(): void {
     this.getCategories()

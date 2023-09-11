@@ -41,60 +41,12 @@ export class ClientService {
     return cId
   }
 
-  getCategories(): Observable<any> {
-    return this.http.get("/api/shophouse/categories")
-  }
-
-  autocompleteKeyword(keyword: string): Observable<any> {
-    const httpParams = new HttpParams()
-      .set('keyword', keyword)
-    return this.http.get('/api/shophouse/autocomplete', { params: httpParams })
-  }
-
-  getAllBusinesses(): Observable<any> {
-    return this.http.get("/api/shophouse/businesses")
-  }
-
-  getBusinessesByKeyword(search: Search): Observable<any> {
-
-    let httpParam: HttpParams = new HttpParams()
-
-    if (search.keyword !== undefined)
-      httpParam = httpParam.set('keyword', search.keyword.toString())
-
-    if (search.category !== undefined)
-      httpParam = httpParam.set('category', search.category.toString())
-
-    if (search.region !== undefined)
-      httpParam = httpParam.set('region', search.region.toString())
-
-    return this.http.get('/api/shophouse/businesses/keyword', { params: httpParam })
-  }
-
-  getBusinessesByCategory(category: string): Observable<any> {
-    let httpParam: HttpParams = new HttpParams()
-      .set('category', category)
-    return this.http.get('/api/shophouse/businesses/category', { params: httpParam })
-  }
-
-  getBusinessById(id: number): Observable<any> {
-    return this.http.get(`/api/shophouse/business/${id}`)
-  }
-
-  getServicesByBusinessId(id: number): Observable<any> {
-    return this.http.get(`/api/shophouse/business/${id}/services`)
-  }
-
-  getReviewsByBusinessId(id: number): Observable<any> {
-    return this.http.get(`/api/shophouse/business/${id}/reviews`)
-  }
-
   getGeocode(address: string): Observable<any> {
     const httpParams = new HttpParams()
       .set("address", address)
     return this.http.get("/api/shophouse/geocode", { params: httpParams })
   }
-
+  
   makePayment(payment: any): Observable<any> {
     return this.http.post("/api/payment/", payment)
   }

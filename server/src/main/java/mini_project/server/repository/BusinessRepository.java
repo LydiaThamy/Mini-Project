@@ -15,7 +15,7 @@ import mini_project.server.model.Search;
 import mini_project.server.model.Service;
 
 @Repository
-public class SqlRepository {
+public class BusinessRepository {
 
     @Autowired
     private JdbcTemplate template;
@@ -144,7 +144,5 @@ public class SqlRepository {
     public List<Review> getReviewsByBusinessId(Integer id) {
         return template.query(GET_REVIEWS_SQL_BY_BUSINESS_ID, new BeanPropertyRowMapper<>(Review.class), id);
     }
-
-
 
 }

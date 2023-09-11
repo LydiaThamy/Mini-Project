@@ -1,9 +1,10 @@
+import { ClientService } from 'app/service/client.service';
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { ClientService } from 'app/service/client.service';
 import { Subject, Subscription, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Search } from 'app/interface/Search';
+import { BusinessService } from 'app/service/business.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,8 @@ import { Search } from 'app/interface/Search';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
+  constructor(private service: ClientService, private bizSvc: BusinessService, private fb: FormBuilder, private router: Router) { }
+  
   customerId: string = this.service.customerId
   regions: string[] = ['central', 'east', 'north', 'northeast', 'west']
 
@@ -29,8 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   autocomplete: string[] = []
   categories: string[] = []
 
-  constructor(private service: ClientService, private fb: FormBuilder, private router: Router) { }
-
   ngOnInit(): void {
     this.getCategories()
     this.createForm()
@@ -46,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getCategories(): void {
-    this.sub$ = this.service.getCategories()
+    this.sub$ = this.bizSvc.getCategories()
       .subscribe(data => {
         this.categories = data as string[]
       })
@@ -138,7 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           let keyword: string = ''
           if (value != null)
             keyword = value.toLowerCase()
-          return this.service.autocompleteKeyword(keyword);
+          return this.bizSvc.autocompleteKeyword(keyword);
         })
       )
       .subscribe({
@@ -170,7 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     const searchTerms: Search = { keyword, category, region }
 
-    this.sub$ = this.service.getBusinessesByKeyword(searchTerms)
+    this.sub$ = this.bizSvc.getBusinessesByKeyword(searchTerms)
       .subscribe({
         next: () => {
           this.search.next(searchTerms)

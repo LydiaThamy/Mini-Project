@@ -24,6 +24,8 @@ import { Router } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { AuthoriseComponent } from './component/authorise/authorise.component';
 import { CartService } from './service/cart.service';
+import { UserService } from './service/user.service';
+import { BusinessService } from './service/business.service';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { CartService } from './service/cart.service';
   providers: [
     ClientService,
     CartService,
+    UserService,
+    BusinessService,
     { 
       provide: 'canActivateCheckout', 
       useFactory: authGuard, 

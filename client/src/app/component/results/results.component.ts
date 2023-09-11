@@ -1,9 +1,9 @@
-import { ClientService } from 'app/service/client.service';
-import { Component, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from "rxjs";
 import { Business } from 'app/interface/Business';
 import { Search } from 'app/interface/Search';
+import { BusinessService } from 'app/service/business.service';
 
 @Component({
   selector: 'app-results',
@@ -19,7 +19,7 @@ export class ResultsComponent implements OnChanges, OnDestroy {
   sub$!: Subscription
   businesses!: Business[]
 
-  constructor(private service: ClientService, private router: Router) { }
+  constructor(private service: BusinessService, private router: Router) { }
 
   ngOnChanges(): void {
     if (this.category.length > 0) {
