@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ import jakarta.json.JsonObject;
 import mini_project.server.exception.AccessTokenException;
 import mini_project.server.exception.UserAccessException;
 import mini_project.server.model.User;
-import mini_project.server.service.SecurityTokenService;
+import mini_project.server.service.TokenService;
 import mini_project.server.service.UserService;
 
 @RestController
@@ -28,7 +29,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private SecurityTokenService securityTokenService;
+    private TokenService tokenService;
 
     @GetMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@RequestParam String code)
@@ -42,12 +43,12 @@ public class UserController {
 
         // Generate a JWT for this user
         // String jwt = jwtService.generateToken(user);
-        String jwt = securityTokenService.generateToken(user.getUserId());
+        String jwt = tokenService.generateToken(user.getUserId());
 
         // Redirect to the checkout page with the JWT
         return ResponseEntity.ok(
                 Json.createObjectBuilder()
-                .add("userId", user.getUserId())
+                        .add("userId", user.getUserId())
                         .add("token", jwt)
                         .build().toString());
         // return ResponseEntity.status(HttpStatus.FOUND)
@@ -59,18 +60,24 @@ public class UserController {
         // .build();
     }
 
-    @GetMapping("/")
-    public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User principal) {
-        String userId = principal.getAttribute("id");
-        Optional<User> result = userService.getUser(userId);
+    @GetMapping("/{token}")
+    public ResponseEntity<String> getUser(@PathVariable String token) {
+    // public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User principal) {
 
-        if (result.isEmpty())
+        Optional<String> userId = tokenService.getUserId(token);
+
+        if (userId.isEmpty())
+            return ResponseEntity.badRequest().body("user not found");
+
+        Optional<User> user = userService.getUser(userId.get());
+
+        if (user.isEmpty())
             return ResponseEntity.notFound().build();
 
         JsonObject json = Json.createObjectBuilder()
-                .add("userId", userId)
-                .add("username", result.get().getUsername())
-                .add("email", result.get().getEmail())
+                .add("userId", user.get().getUserId())
+                .add("username", user.get().getUsername())
+                .add("email", user.get().getEmail())
                 .build();
 
         return ResponseEntity.ok(json.toString());
