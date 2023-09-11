@@ -98,9 +98,6 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 -> oauth2
                 .failureUrl("http://localhost:4200/#/login")
                         .defaultSuccessUrl("http://localhost:4200/#/authorise", true));
-                        // .defaultSuccessUrl("http://localhost:4200/#/checkout", true));
-                        // .redirectionEndpoint(redirection -> redirection
-                        // .baseUri("/login/oauth2/callback/**")));
 
         return http.build();
     }

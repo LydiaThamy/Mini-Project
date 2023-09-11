@@ -33,12 +33,6 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    @GetMapping("/auth2")
-    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        System.out.println(principal.toString());
-        return Collections.singletonMap("login", principal.getAttribute("login"));
-    }
-
     @GetMapping("/authorise")
     public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
     // public ResponseEntity<String> authenticateUser(@RequestParam String code)
