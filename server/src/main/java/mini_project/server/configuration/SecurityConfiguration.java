@@ -2,6 +2,11 @@ package mini_project.server.configuration;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.security.KeyFactory;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,14 +27,50 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import jakarta.annotation.PostConstruct;
+
 @Configuration
 public class SecurityConfiguration {
 
+    // @Value("${rsa.public.key}")
+    // private RSAPublicKey rsaPublicKey;
+
+    // @Value("${rsa.private.key}")
+    // private RSAPrivateKey rsaPrivateKey;
+
     @Value("${rsa.public.key}")
-    private RSAPublicKey rsaPublicKey;
+    private String publicKeyString;
 
     @Value("${rsa.private.key}")
+    private String privateKeyString;
+
+    private RSAPublicKey rsaPublicKey;
     private RSAPrivateKey rsaPrivateKey;
+
+    @PostConstruct
+    public void init() {
+        try {
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            // Decoder decoder = Base64.getUrlDecoder();
+            Decoder decoder = Base64.getDecoder();
+
+            // decode public key
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(
+                    decoder.decode(publicKeyString.trim()));
+                    // decoder.decode(publicKeyString.getBytes()));
+            rsaPublicKey = (RSAPublicKey) kf.generatePublic(X509publicKey);
+
+            // decode the base64 private key
+            PKCS8EncodedKeySpec PKCS8privateKey = new PKCS8EncodedKeySpec(
+                    decoder.decode(privateKeyString.trim()));
+                    // decoder.decode(privateKeyString.getBytes()));
+
+            rsaPrivateKey = (RSAPrivateKey) kf.generatePrivate(PKCS8privateKey);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e); // or some other exception handling
+        }
+    }
 
     @Bean
     public JwtEncoder jwtEncoder() {
