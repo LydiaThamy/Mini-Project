@@ -12,22 +12,16 @@ import { ClientService } from 'app/service/client.service';
 })
 export class CheckoutComponent {
 
-
   stripePromise = loadStripe(environment.stripe)
   payment: any
 
   constructor(private service: ClientService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.getToken()
+
   }
 
-  getToken(): void {
-    this.service.authenticateUser()
-      .subscribe({
-        next: data => localStorage.setItem("token", data as string)
-      })
-  }
+
 
   // here we create a payment object
   createPayment() {
@@ -52,7 +46,7 @@ export class CheckoutComponent {
 
     this.service.makePayment(this.payment)
       .subscribe((data: any) => {
-        if (stripe != null)
+        while (stripe == null) {}
         // I use stripe to redirect To Checkout page of Stripe platform
         stripe.redirectToCheckout({
           sessionId: data.id,

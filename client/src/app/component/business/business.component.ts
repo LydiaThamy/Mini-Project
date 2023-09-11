@@ -6,6 +6,7 @@ import { Business } from 'app/interface/Business';
 import { } from 'googlemaps';
 import { Service } from 'app/interface/Service';
 import { Review } from 'app/interface/Review';
+import { CartService } from 'app/service/cart.service';
 
 @Component({
   selector: 'app-business',
@@ -33,7 +34,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
     lng: 0
   }
 
-  constructor(private service: ClientService, private router: Router) { }
+  constructor(private clientSvc: ClientService, private router: Router, private cartSvc: CartService) { }
 
   ngOnInit(): void {
     this.biz$ = this.getBusinessById()
@@ -41,7 +42,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getBusinessById(): Subscription {
-    return this.service.getBusinessById(this.businessId)
+    return this.clientSvc.getBusinessById(this.businessId)
       .subscribe({
         next: e => {
           this.biz = {
@@ -66,7 +67,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getGeocodedAddress(): void {
-    this.add$ = this.service.getGeocode(this.biz.address)
+    this.add$ = this.clientSvc.getGeocode(this.biz.address)
       .subscribe({
         next: data => {
             // this.address.lat = data.features[0].properties.lat as number,
@@ -93,7 +94,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getServicesByBusinessId(): void {
-    this.svc$ = this.service.getServicesByBusinessId(this.businessId)
+    this.svc$ = this.clientSvc.getServicesByBusinessId(this.businessId)
       .subscribe({
         next: (data) => {
           data.forEach((e: any) => {
@@ -109,7 +110,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   getReviewsByBusinessId(): void {
-    this.rvw$ = this.service.getReviewsByBusinessId(this.businessId)
+    this.rvw$ = this.clientSvc.getReviewsByBusinessId(this.businessId)
       .subscribe({
         next: (data) =>
           data.forEach((e: any) => {
@@ -126,7 +127,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   addToCart(serviceId: number) {
     // call server to add cart details to cart
-    this.crt$ = this.service.addCart(serviceId)
+    this.crt$ = this.cartSvc.addCart(serviceId)
     .subscribe({
       next: () => alert("Added to cart"),
       error: (e) => alert(JSON.stringify(e))

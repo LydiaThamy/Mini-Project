@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from 'app/interface/User';
-import { ClientService } from 'app/service/client.service';
+import { UserService } from 'app/service/user.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -11,7 +11,7 @@ export class ConfirmationComponent {
 
   user!: User
 
-  constructor(private service: ClientService) {}
+  constructor(private service: UserService) {}
 
   ngOnInit(): void {
     this.getUser()
