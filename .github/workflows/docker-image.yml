@@ -28,6 +28,7 @@ jobs:
       run: npm i -g @railway/cli
 
     - name: Deploy
-      run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+      run: railway up
       env:
+        service: "github actions w docker"
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
