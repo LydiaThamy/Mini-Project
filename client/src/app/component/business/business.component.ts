@@ -8,6 +8,7 @@ import { Service } from 'app/interface/Service';
 import { Review } from 'app/interface/Review';
 import { CartService } from 'app/service/cart.service';
 import { BusinessService } from 'app/service/business.service';
+import {MatSnackBar, MatSnackBarRef, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-business',
@@ -16,7 +17,9 @@ import { BusinessService } from 'app/service/business.service';
 })
 export class BusinessComponent implements OnInit, OnDestroy {
 
-  constructor(private bizSvc: BusinessService, private cartSvc: CartService, private service: ClientService, private router: Router) { }
+  constructor(private bizSvc: BusinessService, private cartSvc: CartService, private service: ClientService, private router: Router, private _snackBar: MatSnackBar) { }
+
+  durationInSeconds = 5;
 
   biz!: Business
   @Input() businessId!: number
@@ -134,8 +137,8 @@ export class BusinessComponent implements OnInit, OnDestroy {
     // call server to add cart details to cart
     this.crt$ = this.cartSvc.addCart(serviceId)
       .subscribe({
-        next: () => alert("Added to cart"),
-        error: (e) => alert(JSON.stringify(e))
+        next: () => this._snackBar.open("Added to cart"),
+        error: (e) => this._snackBar.open(JSON.stringify(e))
       })
   }
 
