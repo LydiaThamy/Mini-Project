@@ -1,25 +1,25 @@
-package mini_project.server;
+// package mini_project.server;
 
-// import java.util.List;
+// // import java.util.List;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.web.filter.ForwardedHeaderFilter;
+// import org.springframework.boot.web.servlet.FilterRegistrationBean;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.core.Ordered;
+// import org.springframework.web.filter.ForwardedHeaderFilter;
 
-import jakarta.servlet.DispatcherType;
+// import jakarta.servlet.DispatcherType;
 
-@Configuration
-public class ForwardedHeaderFilterFile {
+// @Configuration
+// public class ForwardedHeaderFilterFile {
     
-    @Bean
-    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
-        ForwardedHeaderFilter filter = new ForwardedHeaderFilter();
-        FilterRegistrationBean<ForwardedHeaderFilter> registration = new FilterRegistrationBean<>(filter);
-        registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC, DispatcherType.ERROR);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        // registration.setUrlPatterns(List.of("/absoluteURLWithFilter"));
-        return registration;
-    }
-}
+//     @Bean
+//     public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
+//         ForwardedHeaderFilter filter = new ForwardedHeaderFilter();
+//         FilterRegistrationBean<ForwardedHeaderFilter> registration = new FilterRegistrationBean<>(filter);
+//         registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC, DispatcherType.ERROR);
+//         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+//         // registration.setUrlPatterns(List.of("/absoluteURLWithFilter"));
+//         return registration;
+//     }
+// }
