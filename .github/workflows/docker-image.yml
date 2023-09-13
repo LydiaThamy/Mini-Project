@@ -27,7 +27,7 @@ jobs:
 
     - name: Push Docker Image
       run:
-        docker push lydiathamy/shophouse:$(date +%s)
+        docker push ${{ secrets.DOCKER_USERNAME }}/shophouse
 
     - name: Use Node 19
       uses: actions/setup-node@v1
