@@ -2,9 +2,9 @@ name: Docker Deploy to Railway
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "spp" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "sop" ]
 
 jobs:
 
