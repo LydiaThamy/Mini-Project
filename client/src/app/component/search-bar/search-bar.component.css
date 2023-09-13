@@ -27,4 +27,8 @@
 ::ng-deep .mat-autocomplete-panel{
     background-color: white;
     border-radius: 10px;    
-  }
+}
+
+#search {
+    width: 30px;
+}

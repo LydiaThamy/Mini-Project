@@ -17,6 +17,7 @@ export class SearchBarComponent implements OnInit, OnDestroy{
   customerId: string = this.service.customerId
   regions: string[] = ['central', 'east', 'north', 'northeast', 'west']
 
+  over: boolean = false;
   
   categoryForm: FormArray = new FormArray<FormControl<string>>([])
   regionForm: FormArray = new FormArray<FormControl<string>>([])

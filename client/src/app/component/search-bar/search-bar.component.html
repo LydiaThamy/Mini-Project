@@ -14,7 +14,8 @@
         
         <!-- filter -->
         <img id="filter-button" src="/assets/icons/filter.png" (click)="changeFilter()">
-        <button type="submit">Search</button>
+        <button type="submit">
+            <img id="search" routerLink="/cart" [src]="over ? '/assets/icons/search.png' : '/assets/icons/search_hover.png'" (mouseover)="over = true" (mouseout)="over = false"></button>
     </form>
 </div>
 

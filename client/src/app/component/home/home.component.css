@@ -21,6 +21,7 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
 .category-icon:hover{
     width: 30px;
     position: relative;
