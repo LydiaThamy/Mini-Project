@@ -60,13 +60,13 @@ public class SecurityConfiguration {
             // decode public key
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(
                     decoder.decode(publicKeyString.trim()));
-                    // decoder.decode(publicKeyString.getBytes()));
+            // decoder.decode(publicKeyString.getBytes()));
             rsaPublicKey = (RSAPublicKey) kf.generatePublic(X509publicKey);
 
             // decode the base64 private key
             PKCS8EncodedKeySpec PKCS8privateKey = new PKCS8EncodedKeySpec(
                     decoder.decode(privateKeyString.trim()));
-                    // decoder.decode(privateKeyString.getBytes()));
+            // decoder.decode(privateKeyString.getBytes()));
 
             rsaPrivateKey = (RSAPrivateKey) kf.generatePrivate(PKCS8privateKey);
 
@@ -94,14 +94,18 @@ public class SecurityConfiguration {
 
         RequestMatcher checkoutMatcher = new AntPathRequestMatcher("/checkout/**");
 
-        http.csrf(csrf -> csrf.disable())
+        http
+                .csrf(csrf -> csrf.disable())
+                .requiresChannel()
+                .anyRequest().requiresSecure()
+                .and()
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(checkoutMatcher).authenticated()
-    
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                .failureUrl("%s/#/login".formatted(baseUrl))
-                        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true));
+                        .failureUrl("%s/#/login".formatted(baseUrl))
+                        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
+                .sessionManagement().sessionFixation().none();
 
         return http.build();
     }
