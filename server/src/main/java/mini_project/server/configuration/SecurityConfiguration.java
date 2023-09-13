@@ -94,14 +94,18 @@ public class SecurityConfiguration {
 
         RequestMatcher checkoutMatcher = new AntPathRequestMatcher("/checkout/**");
 
-        http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests((authz) -> authz
-        .requestMatchers(checkoutMatcher).authenticated()
-        .anyRequest().permitAll())
-        .oauth2Login(oauth2 -> oauth2
-        .failureUrl("%s/#/login".formatted(baseUrl))
-        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
-        .sessionManagement().sessionFixation().none();
+        http
+                .csrf(csrf -> csrf.disable())
+                .requiresChannel()
+                .anyRequest().requiresSecure()
+                .and()
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers(checkoutMatcher).authenticated()
+                        .anyRequest().permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .failureUrl("%s/#/login".formatted(baseUrl))
+                        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
+                .sessionManagement().sessionFixation().none();
 
         return http.build();
     }
