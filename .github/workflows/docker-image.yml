@@ -19,6 +19,11 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag lydiathamy/shophouse:$(date +%s)
 
+    - name: Push Docker Image
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push lydiathamy/shophouse:$(date +%s)
+
     - name: Use Node 19
       uses: actions/setup-node@v1
       with:
@@ -28,8 +33,6 @@ jobs:
       run: npm i -g @railway/cli
 
     - name: Deploy
-      run: |
-      railway link ${{ secrets.RAILWAY_SERVICE_ID }}
-      railway up
+      run: railway up -s ${{ secrets.RAILWAY_SERVICE_ID }}
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
