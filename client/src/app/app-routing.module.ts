@@ -15,7 +15,7 @@ const routes: Routes = [
   {path: 'authorise', component: AuthoriseComponent, title: 'Authenticating'},
   {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuardService], title: 'Checkout'},
   {path: 'confirmation', component: ConfirmationComponent, title: 'Order Confirmed'},
-  {path: '**', redirectTo:'/', pathMatch: 'full'}
+  {path: '**', redirectTo:'/authorise', pathMatch: 'full'}
 ];
 
 @NgModule({
