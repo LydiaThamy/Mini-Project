@@ -39,7 +39,11 @@ public class UserController {
     // public ResponseEntity<String> authenticateUser(@RequestParam String code)
             throws IOException, AccessTokenException, UserAccessException {
 
-                System.out.println("%s/#/authorise".formatted(baseUrl));
+                if (principal == null) {
+                    System.out.println("%s/#/authorise".formatted(baseUrl));
+                    return ResponseEntity.badRequest().build();
+                }
+
         // extract access token from GitHub
         // String accessToken = userService.getAccessToken(code);
         // System.out.println("access token: " + accessToken);
