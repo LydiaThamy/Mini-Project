@@ -11,7 +11,7 @@ import { ClientService } from 'app/service/client.service';
 })
 export class LoginComponent {
 
-  githubUrl: string = '/oauth2/authorization/github'
+  githubUrl: string = '/#/oauth2/authorization/github'
   // loginForm!: FormGroup
   // constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
 

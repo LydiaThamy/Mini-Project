@@ -97,6 +97,7 @@ public class SecurityConfiguration {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(checkoutMatcher).authenticated()
+    
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                 .failureUrl("%s/login".formatted(baseUrl))
