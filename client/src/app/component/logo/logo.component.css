@@ -1,0 +1,16 @@
+div {
+    position: relative;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+span {
+    font-family: 'Aboreto';
+    font-size: 30px;
+    font-weight: 100px;
+}
+
+img {
+    height: 80px;
+}

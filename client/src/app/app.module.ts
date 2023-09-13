@@ -23,6 +23,7 @@ import { AuthoriseComponent } from './component/authorise/authorise.component';
 import { CartService } from './service/cart.service';
 import { UserService } from './service/user.service';
 import { BusinessService } from './service/business.service';
+import { SearchBarComponent } from './component/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { BusinessService } from './service/business.service';
     CheckoutComponent,
     ConfirmationComponent,
     AuthoriseComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,

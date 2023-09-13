@@ -1,0 +1,30 @@
+.bar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(245 245 245);
+    padding: 0px 20px 0px 20px;
+}
+
+.hover {
+    background-color: rgb(236 236 236);
+}
+
+#filter-button {
+    width: 25px;
+    height: 25px;
+}
+
+#filter-button:hover {
+    width: 30px;
+    height: 30px;
+}
+
+.filter {
+    left: 80%;
+}
+
+::ng-deep .mat-autocomplete-panel{
+    background-color: white;
+    border-radius: 10px;    
+  }

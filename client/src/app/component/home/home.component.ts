@@ -14,9 +14,11 @@ export class HomeComponent implements OnInit {
   searchTerms: Search = {}
   categories: string[] = []
   sub$!: Subscription
-
+  
   inspectBusiness: boolean = false
   bizId!: number
+
+  over!: boolean[];
 
   constructor(private service: BusinessService) {}
 
@@ -38,6 +40,8 @@ export class HomeComponent implements OnInit {
     this.sub$ = this.service.getCategories()
       .subscribe(data => {
         this.categories = data as string[]
+        this.over = new Array(this.categories.length);
+        this.over.fill(false);
       })
   }
 
@@ -45,5 +49,4 @@ export class HomeComponent implements OnInit {
     this.bizId = id
     this.inspectBusiness = !this.inspectBusiness
   }
-  
 }

@@ -1,0 +1,29 @@
+.head {
+    position: fixed;
+    background-color: white;
+    width: 100%;
+}
+
+.categories {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+}
+
+.category {
+    flex-direction: column;
+    justify-items: center;
+}
+
+.category-icon {
+    width: 30px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.category-icon:hover{
+    width: 30px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}

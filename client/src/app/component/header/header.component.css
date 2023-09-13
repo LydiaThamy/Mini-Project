@@ -1,0 +1,12 @@
+div {
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+}
+
+#cart {
+    width: 30px;
+    position: absolute;
+    top:15px;
+    right: 30px;
+}
