@@ -18,7 +18,6 @@ import { CartComponent } from './component/cart/cart.component';
 import { LoginComponent } from './component/login/login.component';
 import { LogoComponent } from './component/logo/logo.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
-import { AccountComponent } from './component/account/account.component';
 import { ConfirmationComponent } from './component/confirmation/confirmation.component';
 import { AuthoriseComponent } from './component/authorise/authorise.component';
 import { CartService } from './service/cart.service';
@@ -37,7 +36,6 @@ import { BusinessService } from './service/business.service';
     LoginComponent,
     LogoComponent,
     CheckoutComponent,
-    AccountComponent,
     ConfirmationComponent,
     AuthoriseComponent,
   ],
