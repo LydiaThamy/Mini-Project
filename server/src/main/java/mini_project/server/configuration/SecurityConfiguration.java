@@ -27,6 +27,8 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import jakarta.annotation.PostConstruct;
 
 @Configuration
@@ -96,6 +98,7 @@ public class SecurityConfiguration {
 
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(withDefaults())
                 // .requiresChannel()
                 // .anyRequest().requiresSecure()
                 // .and()
