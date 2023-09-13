@@ -38,6 +38,9 @@ public class SecurityConfiguration {
     // @Value("${rsa.private.key}")
     // private RSAPrivateKey rsaPrivateKey;
 
+    @Value("${base.url}")
+    private String baseUrl;
+
     @Value("${rsa.public.key}")
     private String publicKeyString;
 
@@ -96,8 +99,8 @@ public class SecurityConfiguration {
                         .requestMatchers(checkoutMatcher).authenticated()
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                .failureUrl("http://localhost:4200/#/login")
-                        .defaultSuccessUrl("http://localhost:4200/#/authorise", true));
+                .failureUrl("%s/login".formatted(baseUrl))
+                        .defaultSuccessUrl("%s/authorise".formatted(baseUrl), true));
 
         return http.build();
     }

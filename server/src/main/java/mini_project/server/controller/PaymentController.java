@@ -29,6 +29,9 @@ public class PaymentController {
         PaymentController.stripeSecretKey = key;
     }
 
+    @Value("${base.url}")
+    private String baseUrl;
+
     private static void init() {
         Stripe.apiKey = stripeSecretKey;
     }
@@ -47,9 +50,9 @@ public class PaymentController {
         SessionCreateParams params = SessionCreateParams.builder()
                 // We will use the credit card payment method
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                .setMode(SessionCreateParams.Mode.PAYMENT).setSuccessUrl(payment.getSuccessUrl())
-                .setCancelUrl(
-                        payment.getCancelUrl())
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl("%s/confirmation".formatted(baseUrl))
+                .setCancelUrl("%s/checkout".formatted(baseUrl))
                 .addLineItem(
                         SessionCreateParams.LineItem.builder().setQuantity(payment.getQuantity())
                                 .setPriceData(

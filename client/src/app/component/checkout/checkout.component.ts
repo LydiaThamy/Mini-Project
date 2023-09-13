@@ -85,8 +85,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       // amount on cents *10 => to be on dollar
       amount: this.item.price * 10,
       quantity: this.item.quantity,
-      successUrl: 'http://localhost:4200/#/confirmation',
-      cancelUrl: 'http://localhost:4200/#/checkout',
+      // successUrl: `${environment.baseUrl}/confirmation`,
+      // cancelUrl: `${environment.baseUrl}/checkout`,
     }
 
     // let lineItems: any[] = []
