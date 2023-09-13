@@ -32,7 +32,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.serviceId === undefined) 
       this.serviceId = sessionStorage.getItem("serviceId") as string
     
-    if (this.serviceId === null)
+    if (!this.serviceId)
       this.router.navigate(['/cart'])
 
     this.getItem()

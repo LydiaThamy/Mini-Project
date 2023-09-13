@@ -54,6 +54,7 @@ export class ConfirmationComponent implements OnDestroy {
   // remove item from cart
   deleteItem() {
     this.cartSvc.deleteItem(this.serviceId)
+    sessionStorage.removeItem("serviceId")
   }
 
   getBusiness(): void {
