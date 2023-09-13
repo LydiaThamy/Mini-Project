@@ -9,13 +9,13 @@ import { ConfirmationComponent } from './component/confirmation/confirmation.com
 import { AuthGuardService } from './service/auth-guard.service';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'cart', component: CartComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'authorise', component: AuthoriseComponent},
-  {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuardService]},
-  {path: 'confirmation', component: ConfirmationComponent},
-  {path: '**', component: HomeComponent, pathMatch: 'full'}
+  {path: '', component: HomeComponent, title: 'ShopHouse'},
+  {path: 'cart', component: CartComponent, title: 'Cart'},
+  {path: 'login', component: LoginComponent, title: 'Login'},
+  {path: 'authorise', component: AuthoriseComponent, title: 'Authenticating'},
+  {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuardService], title: 'Checkout'},
+  {path: 'confirmation', component: ConfirmationComponent, title: 'Order Confirmed'},
+  {path: '**', redirectTo:'/', pathMatch: 'full'}
 ];
 
 @NgModule({
