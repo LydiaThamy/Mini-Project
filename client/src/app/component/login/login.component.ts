@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from 'app/environment/environment';
 import { ClientService } from 'app/service/client.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { ClientService } from 'app/service/client.service';
 })
 export class LoginComponent {
 
-  githubUrl: string = '/oauth2/authorization/github'
+  githubUrl: string = `${environment.baseUrl}/oauth2/authorization/github`
   // loginForm!: FormGroup
   // constructor(private fb: FormBuilder, private service: ClientService, private http: HttpClient, private router: Router) { }
 

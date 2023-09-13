@@ -5,6 +5,7 @@ import { Search } from '../interface/Search';
 import { ulid } from 'ulid'
 import { Item } from 'app/interface/Item';
 import { User } from 'app/interface/User';
+import { environment } from 'app/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -49,11 +50,11 @@ export class ClientService {
   getGeocode(address: string): Observable<any> {
     const httpParams = new HttpParams()
       .set("address", address)
-    return this.http.get("/api/shophouse/geocode", { params: httpParams })
+    return this.http.get(`${environment.baseUrl}/api/shophouse/geocode`, { params: httpParams })
   }
   
   makePayment(payment: any): Observable<any> {
-    return this.http.post("/api/payment/", payment)
+    return this.http.post(`${environment.baseUrl}/api/payment/`, payment)
   }
 
 }
