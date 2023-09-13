@@ -1,18 +1,16 @@
 package mini_project.server.controller;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.Json;
@@ -33,11 +31,15 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Value("${base.url}")
+    private String baseUrl;
+
     @GetMapping("/authorise")
     public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
     // public ResponseEntity<String> authenticateUser(@RequestParam String code)
             throws IOException, AccessTokenException, UserAccessException {
 
+                System.out.println("%s/#/authorise".formatted(baseUrl));
         // extract access token from GitHub
         // String accessToken = userService.getAccessToken(code);
         // System.out.println("access token: " + accessToken);
