@@ -1,30 +1,12 @@
 package mini_project.server.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
-import mini_project.server.exception.AccessTokenException;
-import mini_project.server.exception.UserAccessException;
 import mini_project.server.model.User;
 import mini_project.server.repository.UserRepository;
 

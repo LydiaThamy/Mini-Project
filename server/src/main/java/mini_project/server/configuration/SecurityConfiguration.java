@@ -96,16 +96,17 @@ public class SecurityConfiguration {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .requiresChannel()
-                .anyRequest().requiresSecure()
-                .and()
+                // .requiresChannel()
+                // .anyRequest().requiresSecure()
+                // .and()
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(checkoutMatcher).authenticated()
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .failureUrl("%s/#/login".formatted(baseUrl))
                         .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
-                .sessionManagement().sessionFixation().none();
+                // .sessionManagement().sessionFixation().none()
+                ;
 
         return http.build();
     }
