@@ -19,11 +19,15 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag lydiathamy/shophouse:$(date +%s)
 
-    - name: Push Docker Image
+    - name: Login to Docker Hub
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        echo $DOCKER_TOKEN | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker login --username ${{ secrets.DOCKER_USERNAME }}
+        echo $DOCKER_TOKEN
+
+    - name: Push Docker Image
+      run:
         docker push lydiathamy/shophouse:$(date +%s)
 
     - name: Use Node 19
