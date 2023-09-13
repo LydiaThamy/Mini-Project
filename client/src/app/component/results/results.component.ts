@@ -79,6 +79,7 @@ export class ResultsComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.sub$ !== undefined)
     this.sub$.unsubscribe()
   }
 

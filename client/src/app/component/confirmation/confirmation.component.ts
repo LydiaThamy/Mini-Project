@@ -70,6 +70,7 @@ export class ConfirmationComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.sub$ !== undefined)
     this.sub$.unsubscribe()
   }
 }
