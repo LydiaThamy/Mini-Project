@@ -100,8 +100,8 @@ public class SecurityConfiguration {
     
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                .failureUrl("%s/login".formatted(baseUrl))
-                        .defaultSuccessUrl("%s/authorise".formatted(baseUrl), true));
+                .failureUrl("%s/#/login".formatted(baseUrl))
+                        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true));
 
         return http.build();
     }

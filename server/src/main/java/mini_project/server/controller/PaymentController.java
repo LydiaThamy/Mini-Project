@@ -51,8 +51,8 @@ public class PaymentController {
                 // We will use the credit card payment method
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("%s/confirmation".formatted(baseUrl))
-                .setCancelUrl("%s/checkout".formatted(baseUrl))
+                .setSuccessUrl("%s/#/confirmation".formatted(baseUrl))
+                .setCancelUrl("%s/#/checkout".formatted(baseUrl))
                 .addLineItem(
                         SessionCreateParams.LineItem.builder().setQuantity(payment.getQuantity())
                                 .setPriceData(
