@@ -1,10 +1,12 @@
 package mini_project.server.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -31,18 +33,18 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    @Value("${base.url}")
+    @Value("${frontend.base.url}")
     private String baseUrl;
 
     @GetMapping("/authorise")
     public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
-    // public ResponseEntity<String> authenticateUser(@RequestParam String code)
+            // public ResponseEntity<String> authenticateUser(@RequestParam String code)
             throws IOException, AccessTokenException, UserAccessException {
 
-                if (principal == null) {
-                    System.out.println("%s/#/authorise".formatted(baseUrl));
-                    return ResponseEntity.badRequest().build();
-                }
+        if (principal == null) {
+            System.out.println("is null".formatted(baseUrl));
+            return ResponseEntity.badRequest().build();
+        }
 
         // extract access token from GitHub
         // String accessToken = userService.getAccessToken(code);
@@ -51,7 +53,8 @@ public class UserController {
         // Fetch the user's GitHub data using the access token
         // User user = userService.getUserFromGithub(accessToken);
         // System.out.println("User: " + user);
-        User user = new User(principal.getAttribute("id").toString(), principal.getAttribute("login"), principal.getAttribute("email"));
+        User user = new User(principal.getAttribute("id").toString(), principal.getAttribute("login"),
+                principal.getAttribute("email"));
 
         // Check if the user exists in your DB, if not, create them
         Optional<User> existingUser = userService.getUser(user.getUserId());
@@ -66,17 +69,17 @@ public class UserController {
 
         // Redirect to the checkout page with the JWT
         return ResponseEntity.ok(
-                Json.createObjectBuilder()
-                        .add("userId", user.getUserId())
-                        .add("token", jwt)
-                        .build().toString());
+        Json.createObjectBuilder()
+        .add("userId", user.getUserId())
+        .add("token", jwt)
+        .build().toString());
         // return ResponseEntity.status(HttpStatus.FOUND)
-        // .location(URI.create("http://localhost:4200/#/checkout"))
-        // // .location(URI.create("http://localhost:4200/checkout?token=" + jwt))
-        // .body(Json.createObjectBuilder()
-        // .add("token", jwt)
-        // .build().toString());
-        // .build();
+        //         .location(URI.create("%s/authorise".formatted(baseUrl)))
+        //         // .location(URI.create("http://localhost:4200/checkout?token=" + jwt))
+        //         .body(Json.createObjectBuilder()
+        //                 .add("token", jwt)
+        //                 .add("userId", user.getUserId())
+        //                 .build().toString());
     }
 
     @GetMapping("/{token}")
@@ -84,11 +87,11 @@ public class UserController {
         // public ResponseEntity<String> getUser(@AuthenticationPrincipal OAuth2User
         // principal) {
 
-            System.out.println("Token: " + token);
-            if (token.equals("null")) {
-                System.out.println("token is null... sending back to client...");
-                ResponseEntity.badRequest().body("token invalid");
-            }
+        System.out.println("Token: " + token);
+        if (token.equals("null")) {
+            System.out.println("token is null... sending back to client...");
+            ResponseEntity.badRequest().body("token invalid");
+        }
 
         Optional<String> userId = tokenService.getUserId(token);
 

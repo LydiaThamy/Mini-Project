@@ -4,4 +4,5 @@ export const environment = {
     github: 'c8885ae2376e95046357',
     // baseUrl: 'https://cors-server.up.railway.app'
     baseUrl: 'http://localhost:4200'
+    // baseUrl: 'http://localhost:8080'
 }

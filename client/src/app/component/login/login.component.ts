@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'app/environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -6,5 +7,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  githubUrl: string = `http://localhost:8080/oauth2/authorization/github` // TODO change back
+  githubUrl: string = `${environment.baseUrl}/oauth2/authorization/github`
+  
+  // private userService = inject(UserService);
+  // private router = inject(Router);
+  // githubUrl: string = `${environment.baseUrl}/oauth2/authorization/github`
+
+  // onClick() {
+  //   this.userService.authenticateUser()
+  //   .pipe(first())
+  //   .subscribe({
+  //     next: data => { 
+  //       console.log(data)
+  //       return this.router.navigate(['/checkout'])
+  //      },
+  //     error: err => {
+  //       console.error(err)
+  //      }
+  //   })
+  // }
 }

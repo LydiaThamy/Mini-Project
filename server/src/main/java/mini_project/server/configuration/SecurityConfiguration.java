@@ -1,10 +1,10 @@
 package mini_project.server.configuration;
 
+import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.security.KeyFactory;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
     // @Value("${rsa.private.key}")
     // private RSAPrivateKey rsaPrivateKey;
 
-    @Value("${base.url}")
+    @Value("${frontend.base.url}")
     private String baseUrl;
 
     @Value("${rsa.public.key}")
@@ -99,7 +99,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://sg.shop-house.club"));
+        configuration.setAllowedOrigins(List.of("*", "http://localhost:4200", "https://sg.shop-house.club"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -138,12 +138,12 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 // .userDetailsService(authService)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                // .oauth2Login(oauth2 -> oauth2
-                //         .failureUrl("%s/#/login".formatted(baseUrl))
-                //         .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2Login(oauth2 -> oauth2
+                        .failureUrl("%s/login".formatted(baseUrl))
+                        .defaultSuccessUrl("%s/authorise".formatted(baseUrl), true))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
