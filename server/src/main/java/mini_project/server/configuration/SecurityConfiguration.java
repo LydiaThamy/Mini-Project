@@ -139,10 +139,10 @@ public class SecurityConfiguration {
                 )
                 // .userDetailsService(authService)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .oauth2Login(oauth2 -> oauth2
-                        .failureUrl("%s/#/login".formatted(baseUrl))
-                        .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
-                // .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                // .oauth2Login(oauth2 -> oauth2
+                //         .failureUrl("%s/#/login".formatted(baseUrl))
+                //         .defaultSuccessUrl("%s/#/authorise".formatted(baseUrl), true))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .build();
