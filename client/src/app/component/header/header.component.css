@@ -1,12 +1,56 @@
-div {
-    position: fixed;
-    top: 0px;
+.head {
     width: 100vw;
+    display: inline-block;
+    background-color: white;
+}
+
+.bar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    /* margin-bottom: -20px; */
+    padding-left: 10px;
+    padding-right: 10px;
+    transform: translateX(-50%);
+    background-color: rgb(245 245 245);
+    border-radius: 30px;
+    /* padding: 0px 20px 0px 20px; */
+}
+
+.bar:hover {
+    background-color: rgb(236 236 236);
+}
+
+button {
+    border: 0px;
+    background-color: none;
+}
+
+button:hover {
+    background-color: rgb(236 236 236);
+}
+
+#filter-image {
+    width: 35px;
+    height: 35px;
+}
+
+::ng-deep .mat-autocomplete-panel{
+    /* background-color: white; */
+    border-radius: 10px;    
+}
+
+#submit-button {
+    margin-top: 20px;
+}
+
+#search {
+    width: 50px;
 }
 
 #cart {
-    width: 30px;
+    width: 50px;
     position: absolute;
-    top:15px;
-    right: 30px;
+    top:25px;
+    right: 35px;
 }

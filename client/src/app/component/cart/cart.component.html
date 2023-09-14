@@ -1,8 +1,12 @@
-<app-header></app-header>
+<div class="cart">
 
+    <div class="header">
+        <app-header></app-header>
+    </div>
+    
 <h1>Shopping Cart</h1>
 
-<div class="cart" *ngIf="cart.length > 0">
+<div class="items" *ngIf="cart.length > 0">
     <div *ngFor="let item of cart as Item" id="item.serviceId">
         <table>
             <thead>
@@ -44,5 +48,6 @@
 </div>
 
 <!-- <ng-template #loading>
-Items loading...
+    Items loading...
 </ng-template> -->
+</div>

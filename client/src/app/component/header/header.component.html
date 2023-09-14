@@ -1,8 +1,61 @@
-<div>
+<div class="head">
     <!-- logo -->
     <app-logo></app-logo>
-    
+
+    <!-- search bar -->
+    <!-- <app-search-bar id="search-bar" (search)="searchKeyword($event)"></app-search-bar> -->
+    <div class="bar">
+        <form [formGroup]="searchForm" #formDirective="ngForm" (ngSubmit)="searchKeyword(searchForm, formDirective)"
+            autocomplete="on">
+            <mat-form-field class="keyword">
+                <mat-label>Keyword</mat-label>
+                <input type="text" placeholder="Search for a business or an address" aria-label="Search" matInput
+                    formControlName="keyword" [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let a of autocomplete" [value]="a">
+                        {{a}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <!-- filter button -->
+            <button class="button" id="filter-button" (click)="changeFilter()">
+                <img id="filter-image" routerLink="/cart"
+                    [src]="overFilter ? '/assets/icons/filter_hover.png' : '/assets/icons/filter.png'"
+                    (mouseover)="overFilter = true" (mouseout)="overFilter = false">
+            </button>
+
+            <!-- search button -->
+            <button type="submit" class="button" id="submit-button">
+                <img id="search" routerLink="/cart"
+                    [src]="overSearch ? '/assets/icons/search.png' : '/assets/icons/search_hover.png'"
+                    (mouseover)="overSearch = true" (mouseout)="overSearch = false">
+            </button>
+        </form>
+    </div>
+
+    <!-- filter box -->
+    <div class="filter" *ngIf="openFilter == true">
+        <div class="category">
+            <h3>Category</h3>
+            <span *ngFor="let c of categories; let i=index">
+                <input type="checkbox" [id]="c + i" [value]="c" (change)="checkCategory(c)"
+                    [checked]="selectCategoryCheckbox(c)">
+                <label [for]="c + i"></label>{{c}}
+            </span>
+        </div>
+
+        <div class="region">
+            <h3>Location</h3>
+            <span *ngFor="let r of regions; let i=index">
+                <input type="checkbox" [id]="r + i" [value]="r" (change)="checkRegion(r)"
+                    [checked]="selectRegionCheckbox(r)">
+                <label [for]="r + i">{{r | titlecase}}</label>
+            </span>
+        </div>
+    </div>
+
     <!-- cart -->
-        <img id="cart" routerLink="/cart" [src]="over ? '/assets/icons/cart.png' : '/assets/icons/cart_hover.png'" (mouseover)="over = true" (mouseout)="over = false">
-    <!-- <img src="/assets/icons/cart.png" id="cart" routerLink="/cart"> -->
+    <img id="cart" routerLink="/cart" [src]="overCart ? '/assets/icons/cart.png' : '/assets/icons/cart_hover.png'"
+        (mouseover)="overCart = true" (mouseout)="overCart = false">
 </div>

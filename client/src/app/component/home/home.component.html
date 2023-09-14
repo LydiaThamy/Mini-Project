@@ -1,13 +1,9 @@
 <div class="head">
     <!-- header -->
     <div class="header">
-        <app-header></app-header>
+        <app-header (search)="searchKeyword($event)"></app-header>
     </div>
-
-    <!-- search bar -->
-    <div class="search-bar">
-        <app-search-bar id="search-bar" (search)="searchKeyword($event)"></app-search-bar>
-    </div>
+    <!-- <app-header></app-header> -->
 
     <!-- categories -->
         <div class="categories">

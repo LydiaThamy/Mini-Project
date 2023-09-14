@@ -1,9 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { environment } from 'app/environment/environment';
-import { ClientService } from 'app/service/client.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -11,5 +6,5 @@ import { ClientService } from 'app/service/client.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  githubUrl: string = `${environment.baseUrl}/oauth2/authorization/github`
+  githubUrl: string = `http://localhost:8080/oauth2/authorization/github` // TODO change back
 }

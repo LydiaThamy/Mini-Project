@@ -11,12 +11,16 @@ import {  Subscription } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   selectedCategory: string = ''
-  searchTerms: Search = {}
+ 
   categories: string[] = []
   sub$!: Subscription
   
   inspectBusiness: boolean = false
   bizId!: number
+
+  searchTerms: Search = {}
+
+  
 
   over!: boolean[];
 
@@ -31,11 +35,6 @@ export class HomeComponent implements OnInit {
     this.selectedCategory = category
   }
 
-  searchKeyword(search: Search) {
-    this.inspectBusiness = false
-    this.searchTerms = search
-  }
-
   getCategories(): void {
     this.sub$ = this.service.getCategories()
       .subscribe(data => {
@@ -48,5 +47,10 @@ export class HomeComponent implements OnInit {
   selectBusiness(id: number): void {
     this.bizId = id
     this.inspectBusiness = !this.inspectBusiness
+  }
+
+  searchKeyword(search: Search) {
+    this.inspectBusiness = false
+    this.searchTerms = search
   }
 }
