@@ -1,13 +1,11 @@
-import { CartService } from 'app/service/cart.service';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { environment } from 'app/environment/environment';
-import { User } from 'app/interface/User';
+import { Item } from 'app/interface/Item';
+import { CartService } from 'app/service/cart.service';
 import { ClientService } from 'app/service/client.service';
 import { Subscription } from 'rxjs';
-import { Item } from 'app/interface/Item';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -85,8 +83,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       // amount on cents *10 => to be on dollar
       amount: this.item.price * 10,
       quantity: this.item.quantity,
-      // successUrl: `${environment.baseUrl}/confirmation`,
-      // cancelUrl: `${environment.baseUrl}/checkout`,
+      // successUrl: `/confirmation`,
+      // cancelUrl: `/checkout`,
     }
 
     // let lineItems: any[] = []

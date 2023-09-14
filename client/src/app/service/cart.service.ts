@@ -2,9 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Item } from 'app/interface/Item';
 import { Observable, Subscription } from 'rxjs';
-import { ulid } from 'ulid';
 import { ClientService } from './client.service';
-import { environment } from 'app/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,23 +19,23 @@ export class CartService {
     const item: any = {
       serviceId: serviceId
     }
-    return this.http.post(`${environment.baseUrl}/api/cart/add/${this.customerId}`, { serviceId: serviceId })
+    return this.http.post(`/api/cart/add/${this.customerId}`, { serviceId: serviceId })
     // return this.http.post(`/api/shophouse/cart/add/${this.customerId}`, item)
   }
 
   updateCart(cart: Item[]) {
-    return this.http.put(`${environment.baseUrl}/api/cart/update/${this.customerId}`, cart)
+    return this.http.put(`/api/cart/update/${this.customerId}`, cart)
   }
 
   getCart(): Observable<any> {
-    return this.http.get(`${environment.baseUrl}/api/cart/${this.customerId}`)
+    return this.http.get(`/api/cart/${this.customerId}`)
   }
 
   deleteItem(serviceId: string): void {
     const httpParams: HttpParams = new HttpParams()
       .set("customerId", this.service.customerId)
 
-    const sub$: Subscription = this.http.delete(`${environment.baseUrl}/api/cart/delete/${serviceId}`, {params: httpParams})
+    const sub$: Subscription = this.http.delete(`/api/cart/delete/${serviceId}`, {params: httpParams})
     .subscribe({
       complete: () => sub$.unsubscribe()
     })
@@ -47,6 +45,6 @@ export class CartService {
     const httpParams: HttpParams = new HttpParams()
       .set("customerId", this.service.customerId)
 
-    return this.http.get(`${environment.baseUrl}/api/cart/item/${serviceId}`, {params: httpParams})
+    return this.http.get(`/api/cart/item/${serviceId}`, {params: httpParams})
   }
 }
