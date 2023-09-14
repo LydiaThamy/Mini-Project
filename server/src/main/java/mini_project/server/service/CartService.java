@@ -60,19 +60,21 @@ public class CartService {
         cartRepo.deleteItem(customerId, serviceId);
     }
 
-    public JsonObject getItem(String customerId, String serviceId) {
-        Integer quantity = cartRepo.getItemQuantity(customerId, serviceId);
-        System.out.println(quantity);
+    public Optional<JsonObject> getItem(String customerId, String serviceId) {
+        Optional<Integer> quantity = cartRepo.getItemQuantity(customerId, serviceId);
+
+        if (quantity.isEmpty())
+            return Optional.empty();
 
         // get business name, service title from sql repo
         Map<String, Object> business = bizRepo.getBusinessByServiceId(serviceId);
-        return Json.createObjectBuilder()
+        return Optional.of(Json.createObjectBuilder()
                 .add("serviceId", serviceId)
-                .add("quantity", quantity)
+                .add("quantity", quantity.get())
                 .add("businessName", business.get("business_name").toString())
                 .add("title", business.get("title").toString())
                 .add("logo", business.get("logo").toString())
                 .add("price", business.get("price").toString())
-                .build();
+                .build());
     }
 }

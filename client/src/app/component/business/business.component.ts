@@ -132,10 +132,10 @@ export class BusinessComponent implements OnInit, OnDestroy {
   }
 
   addToCart(serviceId: number) {
+    this._snackBar.open("Added to cart")
     // call server to add cart details to cart
     this.crt$ = this.cartSvc.addCart(serviceId)
       .subscribe({
-        next: () => this._snackBar.open("Added to cart"),
         error: (e) => this._snackBar.open(JSON.stringify(e))
       })
   }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import mini_project.server.service.CartService;
 
 @RestController
@@ -61,11 +62,13 @@ public class CartController {
     @GetMapping("/item/{serviceId}")
     public ResponseEntity<String> getItem(@PathVariable String serviceId,
             @RequestParam String customerId) {
-                System.out.println("Service ID: " + serviceId);
-                System.out.println(cartService.getItem(customerId, serviceId).toString());
 
-        return ResponseEntity.ok(
-                cartService.getItem(customerId, serviceId).toString());
+        Optional<JsonObject> json = cartService.getItem(customerId, serviceId);
+
+        if (json.isEmpty())
+        return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(json.get().toString());
     }
 
 }

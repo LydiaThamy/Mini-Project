@@ -58,7 +58,7 @@ public class CartRepository {
         redisTemplate.opsForHash().delete(customerId, serviceId);
     }
 
-    public Integer getItemQuantity(String customerId, String serviceId) {
-        return Integer.parseInt(redisTemplate.opsForHash().get(customerId, serviceId).toString());
+    public Optional<Integer> getItemQuantity(String customerId, String serviceId) {
+        return Optional.ofNullable(Integer.parseInt(redisTemplate.opsForHash().get(customerId, serviceId).toString()));
     }
 }
