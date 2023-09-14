@@ -45,7 +45,7 @@ public class SecurityConfiguration {
     // @Value("${rsa.private.key}")
     // private RSAPrivateKey rsaPrivateKey;
 
-    @Value("${frontend.base.url}")
+    @Value("${base.url}")
     private String baseUrl;
 
     @Value("${rsa.public.key}")

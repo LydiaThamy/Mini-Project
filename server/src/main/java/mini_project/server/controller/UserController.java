@@ -33,7 +33,7 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    @Value("${frontend.base.url}")
+    @Value("${base.url}")
     private String baseUrl;
 
     @GetMapping("/authorise")
