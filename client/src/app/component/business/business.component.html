@@ -1,6 +1,17 @@
-<div class="business" *ngIf="biz !== undefined">
+<div class="body">    
+    <div class="business" *ngIf="biz !== undefined">
+
     <h1>{{biz.businessName}}</h1>
-    <img [src]="biz.logo" width="300px">
+
+    <div class="images">
+        <!-- <div class="address" *ngIf="biz !== undefined"> -->
+        <!-- <h2>Location</h2> -->
+        <img [src]="biz.logo" width="300px">
+        <div id="map"></div>
+        <!-- </div> -->
+    </div>
+
+    <p>Address: {{biz.address}}</p>
     <p>Phone: {{biz.phone}}</p>
     <p>Email: {{biz.email}}</p>
 </div>
@@ -43,9 +54,4 @@
         </table>
     </div>
 </div>
-
-<div class="address" *ngIf="biz !== undefined">
-    <h2>Location</h2>
-    <p>Address: {{biz.address}}</p>
-    <div id="map"></div>
 </div>

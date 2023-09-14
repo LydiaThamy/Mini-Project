@@ -1,4 +1,33 @@
+.business {
+    margin: 10px 0px;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+
+.images {
+    display: flex;
+    justify-content: space-around;
+}
+
 #map {
-    width: 100%;
-    height: 400px;
+    width: 48vw;
+    height: 30vw;
+    border-radius: 10px;
+}
+
+img {
+    width: 48vw;
+    height: 30vw;
+    border-radius: 10px;
+}
+
+.services {
+    font-family: 'Nunito', sans-serif;
+
+}
+
+.reviews {
+    font-family: 'Nunito', sans-serif;
+
 }
