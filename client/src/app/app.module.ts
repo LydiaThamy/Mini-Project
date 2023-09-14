@@ -23,6 +23,11 @@ import { AuthoriseComponent } from './component/authorise/authorise.component';
 import { CartService } from './service/cart.service';
 import { UserService } from './service/user.service';
 import { BusinessService } from './service/business.service';
+import {JwtModule} from "@auth0/angular-jwt";
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -52,7 +57,13 @@ import { BusinessService } from './service/business.service';
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:8080', 'sg.shop-house.club'],
+      },
+    }),
   ],
   providers: [
     ClientService,
@@ -62,4 +73,6 @@ import { BusinessService } from './service/business.service';
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }

@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -36,6 +36,38 @@ public class UserController {
     @Value("${base.url}")
     private String baseUrl;
 
+    @GetMapping("/login")
+    public ResponseEntity<String> loginUser(Authentication authentication) {
+        System.out.println("logged in successfully as %s".formatted(authentication.getName()));
+        String jwt = tokenService.generateToken(authentication);
+        return ResponseEntity.ok(
+                Json.createObjectBuilder()
+                        .add("userId", authentication.getName())
+                        .add("token", jwt)
+                        .build().toString());
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(User user) {
+        Optional<JsonObject> newUser = userService.saveUser(user);
+        if (newUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(newUser.get().toString());
+        }
+        return ResponseEntity.internalServerError().build();
+    }
+
+    @GetMapping("/password")
+    public ResponseEntity<String> password(@RequestParam String pw) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return ResponseEntity.ok(
+            Json.createObjectBuilder()
+            .add("password", passwordEncoder.encode(pw))
+            .build()
+            .toString()
+        );
+    }
+
     @GetMapping("/authorise")
     public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
             // public ResponseEntity<String> authenticateUser(@RequestParam String code)
@@ -53,8 +85,10 @@ public class UserController {
         // Fetch the user's GitHub data using the access token
         // User user = userService.getUserFromGithub(accessToken);
         // System.out.println("User: " + user);
-        User user = new User(principal.getAttribute("id").toString(), principal.getAttribute("login"),
-                principal.getAttribute("email"));
+                User user = new User();
+        user.setUserId(principal.getAttribute("id").toString());
+        user.setUsername(principal.getAttribute("login"));
+        user.setUsername(principal.getAttribute("email"));
 
         // Check if the user exists in your DB, if not, create them
         Optional<User> existingUser = userService.getUser(user.getUserId());
@@ -64,14 +98,13 @@ public class UserController {
 
         // Generate a JWT for this user
         // String jwt = jwtService.generateToken(user);
-        String jwt = tokenService.generateToken(user.getUserId());
-        System.out.println("jwt token: " + jwt);
+//        String jwt = tokenService.generateToken(user.getUserId());
+//        System.out.println("jwt token: " + jwt);
 
         // Redirect to the checkout page with the JWT
         return ResponseEntity.ok(
         Json.createObjectBuilder()
         .add("userId", user.getUserId())
-        .add("token", jwt)
         .build().toString());
         // return ResponseEntity.status(HttpStatus.FOUND)
         //         .location(URI.create("%s/authorise".formatted(baseUrl)))

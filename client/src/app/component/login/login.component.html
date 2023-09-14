@@ -1,8 +1,9 @@
 <app-header></app-header>
 
 <div class="login">
+    <h1>Please login before checking out your cart</h1>
 
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
         <table>
             <tr>
                 <td>Username:</td>
@@ -12,10 +13,13 @@
                 <td>Password:</td>
                 <td><input type="text" formControlName="password"></td>
             </tr>
+            <tr>
+                <td></td>
+                <td style="text-align: end;"><button type="submit">Login</button></td>
+            </tr>
         </table>
     </form>
 
-    <h1>Please login before checking out your cart</h1>
     <!-- <div class="container unauthenticated"> -->
         <div class="btn-auth" (click)="navigate()">
             <img src="/assets/icons/auth-icons.png">
