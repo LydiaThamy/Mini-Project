@@ -1,0 +1,22 @@
+.results {
+    display: flex;
+    align-items: spread;
+    flex-wrap: wrap;
+}
+
+.business {
+    width:30vw;
+    max-height: 40vw;
+    overflow: hidden;
+}
+
+.image {
+    max-height: 20vw;
+    max-width: 30vw;
+    overflow: hidden;
+}
+
+img {
+    border-radius: 10px;
+}
+

@@ -1,23 +1,45 @@
-<app-logo></app-logo>
+<div class="head">
+  <app-logo></app-logo>
+  <!-- cart -->
+  <img id="cart" routerLink="/cart" [src]="overCart ? '/assets/icons/cart.png' : '/assets/icons/cart_hover.png'"
+    (mouseover)="overCart = true" (mouseout)="overCart = false">
+</div>
 
-<h1>Checkout</h1>
-<button routerLink="/cart">Return to Cart</button>
+<div class="checkout">
+  <!-- <h1>Checkout</h1> -->
 
   <mat-card class="item" *ngIf="item !== undefined">
-      <mat-card-header>
-        <div mat-card-avatar></div>
-        <mat-card-title>{{item.title}}</mat-card-title>
-      </mat-card-header>
-      <img mat-card-image [src]="item.logo" width="100px">
-      <mat-card-content>
-        By {{item.businessName | titlecase}}
-        Quantity: {{item.quantity}}
-        Price: ${{item.price}}
-      </mat-card-content>
-    </mat-card>
+    <mat-card-header>
+      <mat-card-title>{{item.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <tr>
+          <td colspan="2" style="text-align: center;">
+            By {{item.businessName | titlecase}}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <img mat-card-image [src]="item.logo" width="100px">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Price: ${{item.price}}
+          </td>
+          <td style="text-align: end;">
+            Quantity: {{item.quantity}}
+          </td>
+        </tr>
+      </table>
+    </mat-card-content>
 
-      <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="pay()">
-          Make Payment
-        </button>
-      </mat-card-actions>
+  </mat-card>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="pay()">
+      Make Payment
+    </button>
+  </mat-card-actions>
+</div>

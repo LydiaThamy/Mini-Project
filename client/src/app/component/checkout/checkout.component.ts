@@ -19,6 +19,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   // cart: Item[] = []
   serviceId!: string
   item!: Item
+  
+  overCart: boolean = false;
 
   payment: any
   stripePromise = loadStripe(environment.stripe)

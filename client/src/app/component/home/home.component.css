@@ -1,3 +1,7 @@
+.home {
+    display: block;
+}
+
 .head {
     position: fixed;
     background-color: white;
@@ -7,7 +11,7 @@
 .categories {
     display: flex;
     justify-content: space-around;
-    padding-top: 100px;
+    margin-top: 150px;
 }
 
 .category {
@@ -23,8 +27,16 @@
 }
 
 .category-icon:hover{
-    width: 30px;
     position: relative;
+    width: 30px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.business-results {
+    position: absolute;
+    width: 100%;
+    top: 230px;
+    left: 10px;
+    z-index:-1;
 }

@@ -34,6 +34,9 @@
         </form>
     </div>
 
+    <!-- cart -->
+        <img id="cart" routerLink="/cart" [src]="overCart ? '/assets/icons/cart.png' : '/assets/icons/cart_hover.png'" (mouseover)="overCart = true" (mouseout)="overCart = false">
+
     <!-- filter box -->
     <div class="filter" *ngIf="openFilter == true">
         <div class="category">
@@ -55,7 +58,4 @@
         </div>
     </div>
 
-    <!-- cart -->
-    <img id="cart" routerLink="/cart" [src]="overCart ? '/assets/icons/cart.png' : '/assets/icons/cart_hover.png'"
-        (mouseover)="overCart = true" (mouseout)="overCart = false">
 </div>

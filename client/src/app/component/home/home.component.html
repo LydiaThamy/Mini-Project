@@ -1,24 +1,32 @@
-<div class="head">
-    <!-- header -->
-    <div class="header">
-        <app-header (search)="searchKeyword($event)"></app-header>
-    </div>
-    <!-- <app-header></app-header> -->
+<div class="home">
+    <div class="head">
+        <!-- header -->
+        <div class="header">
+            <app-header (search)="searchKeyword($event)"></app-header>
+        </div>
+        <!-- <app-header></app-header> -->
 
-    <!-- categories -->
+        <!-- categories -->
         <div class="categories">
             <div *ngFor="let c of categories; let i = index" class="category" (click)="changeCategory(c)">
-                <img class="category-icon" *ngIf="over" [src]="over[i] ? '/assets/icons/' + c + '_hover.png' : '/assets/icons/' + c + '.png'" (mouseover)="over[i] = true" (mouseout)="over[i] = false">
+                <div class="image">
+                    <img class="category-icon" *ngIf="over"
+                    [src]="over[i] ? '/assets/icons/' + c + '_hover.png' : '/assets/icons/' + c + '.png'"
+                    (mouseover)="over[i] = true" (mouseout)="over[i] = false">
+                </div>
                 <p>{{c | titlecase}}</p>
             </div>
         </div>
-</div>
+    </div>
 
-<!-- results -->
-<app-results *ngIf="inspectBusiness == false" (selectedBizId)="selectBusiness($event)" [category]="selectedCategory"
-    [search]="searchTerms"></app-results>
+    <!-- results -->
+    <div class="business-results">
+        <app-results *ngIf="inspectBusiness == false" (selectedBizId)="selectBusiness($event)"
+            [category]="selectedCategory" [search]="searchTerms"></app-results>
 
-<div *ngIf="inspectBusiness == true">
-    <p (click)="inspectBusiness = false">Back to Results</p>
-    <app-business [businessId]="bizId"></app-business>
+        <div *ngIf="inspectBusiness == true">
+            <p (click)="inspectBusiness = false">Back to Results</p>
+            <app-business [businessId]="bizId"></app-business>
+        </div>
+    </div>
 </div>

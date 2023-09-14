@@ -1,0 +1,63 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.head {
+    position: fixed;
+    background-color: white;
+    width: 100%;
+}
+
+#cart {
+    position: fixed;
+    width: 50px;
+    top:25px;
+    right: 35px;
+}
+
+.checkout {
+    position: relative;
+    top: 180px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    /* top: 100px; */
+    font-family: 'Nunito', sans-serif;
+    font-size: 80px;
+    padding-bottom: 20px;
+}
+
+.item {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    width: 500px;
+    height: 400px;
+    align-items: center;
+}
+
+table {
+    width: 400px;
+    font-size: 20px;
+}
+
+mat-card-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+}
+
+img {
+    width: 400px;
+    position: relative;
+    align-self: center;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: 10px;
+    width: 400px;
+    font-size: 20px;
+}
