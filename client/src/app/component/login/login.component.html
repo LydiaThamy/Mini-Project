@@ -1,6 +1,20 @@
 <app-header></app-header>
 
 <div class="login">
+
+    <form [formGroup]="loginForm">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" formControlName="username"></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="text" formControlName="password"></td>
+            </tr>
+        </table>
+    </form>
+
     <h1>Please login before checking out your cart</h1>
     <!-- <div class="container unauthenticated"> -->
         <div class="btn-auth" (click)="navigate()">

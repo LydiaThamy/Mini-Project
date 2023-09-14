@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,11 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
+  loginForm!: FormGroup
   githubUrl: string = `/oauth2/authorization/github`
-  constructor(private router: Router) {}
+  constructor(private router: Router, private fb: FormBuilder) {}
 
   navigate(): void {
     this.router.navigate([this.githubUrl])
+    this.loginForm = this.fb.group({
+      username: this.fb.control<string>('', [Validators.required]),
+      password: this.fb.control<string>('', [Validators.required])
+    })
   }
   // githubUrl: string = `/oauth2/authorization/github`
   
