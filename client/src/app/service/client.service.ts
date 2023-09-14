@@ -48,7 +48,7 @@ export class ClientService {
   getGeocode(address: string): Observable<any> {
     const httpParams = new HttpParams()
       .set("address", address)
-    return this.http.get(`/api/shophouse/geocode`, { params: httpParams })
+    return this.http.get(`/api/geocode/`, { params: httpParams })
   }
   
   makePayment(payment: any): Observable<any> {
