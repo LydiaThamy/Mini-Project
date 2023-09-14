@@ -39,12 +39,12 @@
     
 </div>
 
-<div class="cart" *ngIf="cart.length == 0 && loadComplete == true">
-    <h2>Your cart is empty. Add something to it now!</h2>
+<div class="empty" *ngIf="cart.length == 0 && loadComplete == true">
+    Your cart is empty. Add something to it now!
 </div>
 
 <div class="loading" *ngIf="loadComplete == false">
-    Loading...
+    <img src="/assets/images/loading.gif" alt="Your cart is loading...">
 </div>
 
 <!-- <ng-template #loading>

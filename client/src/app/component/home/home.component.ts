@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Search } from 'app/interface/Search';
 import { BusinessService } from 'app/service/business.service';
 import {  Subscription } from 'rxjs';
@@ -20,13 +21,20 @@ export class HomeComponent implements OnInit {
 
   searchTerms: Search = {}
 
-  
-
   over!: boolean[];
 
-  constructor(private service: BusinessService) {}
+  constructor(private service: BusinessService, private aRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+    if (this.aRoute.snapshot.queryParams['keyword']) {
+      console.log(this.aRoute.snapshot.queryParams)
+      this.searchTerms = {
+        keyword: this.aRoute.snapshot.queryParams['keyword'],
+        category: this.aRoute.snapshot.queryParams['category'],
+        region: this.aRoute.snapshot.queryParams['region']
+      }
+    }
+
     this.getCategories()
     }
 

@@ -78,8 +78,6 @@ export class BusinessComponent implements OnInit, OnDestroy {
     this.add$ = this.service.getGeocode(this.biz.address)
       .subscribe({
         next: data => {
-          // this.address.lat = data.features[0].properties.lat as number,
-          //   this.address.lng = data.features[0].properties.lon as number
           this.address.lat = data.results[0].geometry.location.lat as number,
             this.address.lng = data.results[0].geometry.location.lng as number
 

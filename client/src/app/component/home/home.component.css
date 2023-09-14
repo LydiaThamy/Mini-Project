@@ -6,6 +6,7 @@
     position: fixed;
     background-color: white;
     width: 100%;
+    z-index:1;
 }
 
 .categories {
@@ -36,7 +37,6 @@
 .business-results {
     position: absolute;
     width: 100%;
-    top: 230px;
-    left: 10px;
-    z-index:-1;
+    top: 215px;
+
 }

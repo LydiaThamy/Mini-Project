@@ -1,6 +1,6 @@
 import { Component, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, FormGroupDirective } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Search } from 'app/interface/Search';
 import { BusinessService } from 'app/service/business.service';
 import { ClientService } from 'app/service/client.service';
@@ -16,7 +16,7 @@ export class HeaderComponent {
   overSearch: boolean = false;
   overFilter: boolean = false;
 
-  constructor(private service: ClientService, private bizSvc: BusinessService, private fb: FormBuilder, private router: Router) { }
+  constructor(private service: ClientService, private bizSvc: BusinessService, private fb: FormBuilder, private aRoute: ActivatedRoute, private router: Router) { }
 
   customerId: string = this.service.customerId
   regions: string[] = ['central', 'east', 'north', 'northeast', 'west']
@@ -177,8 +177,12 @@ export class HeaderComponent {
     this.sub$ = this.bizSvc.getBusinessesByKeyword(searchTerms)
       .subscribe({
         next: () => {
-          this.search.next(searchTerms)
-          this.resetForm(formDirective)
+          if (this.router.url !== '/') {
+            this.router.navigate(['/'], {queryParams: {keyword: keyword, category: category, region: region} })
+          } else {
+            this.search.next(searchTerms)
+            this.resetForm(formDirective)
+          }
         },
         error: () => {
           alert('No results found based on your current selection')
@@ -191,7 +195,7 @@ export class HeaderComponent {
     formDirective.resetForm()
     this.categoryFilter = []
     this.regionFilter = []
-    this.changeFilter()
+    this.openFilter = false;
   }
   ngOnDestroy(): void {
     if (this.sub$ !== undefined)

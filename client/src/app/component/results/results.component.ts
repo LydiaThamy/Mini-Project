@@ -73,9 +73,9 @@ export class ResultsComponent implements OnChanges, OnDestroy {
   }
 
   searchBusiness(id: number | undefined): void {
+    console.log(id)
     if (id !== undefined)
       this.selectedBizId.next(id)
-    // this.router.navigate(['/business', id])
   }
 
   ngOnDestroy(): void {

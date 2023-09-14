@@ -1,22 +1,32 @@
 .results {
+    position: relative;
     display: flex;
-    align-items: spread;
+    justify-content: space-around;
     flex-wrap: wrap;
+    font-family: 'Nunito', sans-serif;
 }
 
 .business {
-    width:30vw;
-    max-height: 40vw;
-    overflow: hidden;
+    margin: 15px 10px;
 }
 
 .image {
-    max-height: 20vw;
-    max-width: 30vw;
+    max-height: 180px;
+    max-width: 300vw;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 img {
     border-radius: 10px;
+    height: 180px;
 }
 
+h3 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+}
+
+h3, p, a {
+    margin: 0px 15px;
+}
