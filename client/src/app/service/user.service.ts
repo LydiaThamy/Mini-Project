@@ -22,7 +22,7 @@ export class UserService {
   }
 
   login(user: User): Observable<User> {
-    const authData = btoa(`${user.email}:${user.password}`);
+    const authData = btoa(`${user.username}:${user.password}`);
     const headers = new HttpHeaders().set('Authorization', `Basic ${authData}`);
     return this.http.post<User>(`/api/user/login`, null, { headers });
   }

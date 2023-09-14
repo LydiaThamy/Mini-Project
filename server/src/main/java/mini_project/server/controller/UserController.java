@@ -47,26 +47,25 @@ public class UserController {
                         .build().toString());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(User user) {
-        Optional<JsonObject> newUser = userService.saveUser(user);
-        if (newUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(newUser.get().toString());
-        }
-        return ResponseEntity.internalServerError().build();
-    }
+    // @PostMapping("/register")
+    // public ResponseEntity<String> registerUser(User user) {
+    //     Optional<JsonObject> newUser = userService.saveUser(user);
+    //     if (newUser.isPresent()) {
+    //         return ResponseEntity.status(HttpStatus.CREATED)
+    //                 .body(newUser.get().toString());
+    //     }
+    //     return ResponseEntity.internalServerError().build();
+    // }
 
-    @GetMapping("/password")
-    public ResponseEntity<String> password(@RequestParam String pw) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return ResponseEntity.ok(
-            Json.createObjectBuilder()
-            .add("password", passwordEncoder.encode(pw))
-            .build()
-            .toString()
-        );
-    }
+    // @GetMapping("/password")
+    // public ResponseEntity<String> password(@RequestParam String pw) {
+    //     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    //     return ResponseEntity.ok(
+    //             Json.createObjectBuilder()
+    //                     .add("password", passwordEncoder.encode(pw))
+    //                     .build()
+    //                     .toString());
+    // }
 
     @GetMapping("/authorise")
     public ResponseEntity<String> authoriseUser(@AuthenticationPrincipal OAuth2User principal)
@@ -85,7 +84,7 @@ public class UserController {
         // Fetch the user's GitHub data using the access token
         // User user = userService.getUserFromGithub(accessToken);
         // System.out.println("User: " + user);
-                User user = new User();
+        User user = new User();
         user.setUserId(principal.getAttribute("id").toString());
         user.setUsername(principal.getAttribute("login"));
         user.setUsername(principal.getAttribute("email"));
@@ -98,21 +97,21 @@ public class UserController {
 
         // Generate a JWT for this user
         // String jwt = jwtService.generateToken(user);
-//        String jwt = tokenService.generateToken(user.getUserId());
-//        System.out.println("jwt token: " + jwt);
+        // String jwt = tokenService.generateToken(user.getUserId());
+        // System.out.println("jwt token: " + jwt);
 
         // Redirect to the checkout page with the JWT
         return ResponseEntity.ok(
-        Json.createObjectBuilder()
-        .add("userId", user.getUserId())
-        .build().toString());
+                Json.createObjectBuilder()
+                        .add("userId", user.getUserId())
+                        .build().toString());
         // return ResponseEntity.status(HttpStatus.FOUND)
-        //         .location(URI.create("%s/authorise".formatted(baseUrl)))
-        //         // .location(URI.create("http://localhost:4200/checkout?token=" + jwt))
-        //         .body(Json.createObjectBuilder()
-        //                 .add("token", jwt)
-        //                 .add("userId", user.getUserId())
-        //                 .build().toString());
+        // .location(URI.create("%s/authorise".formatted(baseUrl)))
+        // // .location(URI.create("http://localhost:4200/checkout?token=" + jwt))
+        // .body(Json.createObjectBuilder()
+        // .add("token", jwt)
+        // .add("userId", user.getUserId())
+        // .build().toString());
     }
 
     @GetMapping("/{token}")
