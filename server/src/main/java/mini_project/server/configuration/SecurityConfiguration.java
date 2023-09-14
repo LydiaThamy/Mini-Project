@@ -31,9 +31,6 @@ public class SecurityConfiguration {
     @Autowired
     private AuthService authService;
 
-    @Value("${base.url}")
-    private String baseUrl;
-
     @Value("${secret.key}")
     private String secretKeyString;
 

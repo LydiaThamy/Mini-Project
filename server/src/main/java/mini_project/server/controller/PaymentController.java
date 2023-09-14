@@ -29,7 +29,7 @@ public class PaymentController {
         PaymentController.stripeSecretKey = key;
     }
 
-    @Value("${base.url}")
+    @Value("${frontend.base.url}")
     private String baseUrl;
 
     private static void init() {
