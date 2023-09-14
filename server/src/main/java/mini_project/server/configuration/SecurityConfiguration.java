@@ -2,12 +2,14 @@ package mini_project.server.configuration;
 
 import java.util.List;
 
-import mini_project.server.service.UserService;
+import mini_project.server.service.AuthService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,9 +25,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
+
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Value("${base.url}")
     private String baseUrl;
@@ -54,7 +58,25 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // RequestMatcher checkoutMatcher = new AntPathRequestMatcher("/checkout/**");
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/checkout/**").authenticated()
+                        .requestMatchers("/payment/**").authenticated()
+                        .requestMatchers("/confirmation/**").authenticated()
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                 .userDetailsService(authService)
+                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                // .oauth2Login(oauth2 -> oauth2
+                //         .failureUrl("%s/login".formatted(baseUrl))
+                //         .defaultSuccessUrl("%s/authorise".formatted(baseUrl), true))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(Customizer.withDefaults())
+                .build();
+
+                        // RequestMatcher checkoutMatcher = new AntPathRequestMatcher("/checkout/**");
         
         // http
         //         .csrf(csrf -> csrf.disable())
@@ -72,23 +94,5 @@ public class SecurityConfiguration {
         //         ;
 
         // return http.build();
-
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/checkout/**").authenticated()
-                        .requestMatchers("/payment/**").authenticated()
-                        .requestMatchers("/confirmation/**").authenticated()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                 .userDetailsService(userService)
-                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                // .oauth2Login(oauth2 -> oauth2
-                //         .failureUrl("%s/login".formatted(baseUrl))
-                //         .defaultSuccessUrl("%s/authorise".formatted(baseUrl), true))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
-                .build();
     }
 }

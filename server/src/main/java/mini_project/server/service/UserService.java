@@ -2,14 +2,8 @@ package mini_project.server.service;
 
 import java.util.Optional;
 
-import mini_project.server.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -17,7 +11,7 @@ import mini_project.server.model.User;
 import mini_project.server.repository.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Value("${spring.security.oauth2.client.registration.github.clientId}")
     private String githubClientId;
@@ -31,9 +25,6 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepo;
 
     public Optional<JsonObject> saveUser(User user) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         if (userRepo.saveUser(user) == 0)
             // if (userRepo.saveUser(userId, email, username) == 0)
             return Optional.empty();
@@ -51,14 +42,6 @@ public class UserService implements UserDetailsService {
         return userRepo.getUser(userId);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.getUserByUsername(username);
-        if (user.isPresent()) {
-            return new UserPrincipal(user.get());
-        }
-        throw new UsernameNotFoundException("%s not found".formatted(username));
-    }
 
     // @Transactional(rollbackFor = { AccessTokenException.class })
     // public String getAccessToken(String code) throws IOException, AccessTokenException {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TokenService {
+
     @Autowired
     private JwtDecoder jwtDecoder;
 
@@ -26,7 +27,7 @@ public class TokenService {
     public String generateToken(Authentication authentication) {
         User user = ((UserPrincipal) authentication.getPrincipal()).getUser();
         Instant now = Instant.now();
-    
+
         String token = JWT.create()
                 .withIssuer("shophouse")
                 .withSubject(user.getUserId())

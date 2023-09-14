@@ -1,17 +1,12 @@
 package mini_project.server.controller;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +28,7 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    @Value("${base.url}")
-    private String baseUrl;
-
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> loginUser(Authentication authentication) {
         System.out.println("logged in successfully as %s".formatted(authentication.getName()));
         String jwt = tokenService.generateToken(authentication);
@@ -73,7 +65,6 @@ public class UserController {
             throws IOException, AccessTokenException, UserAccessException {
 
         if (principal == null) {
-            System.out.println("is null".formatted(baseUrl));
             return ResponseEntity.badRequest().build();
         }
 

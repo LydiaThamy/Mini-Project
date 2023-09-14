@@ -6,12 +6,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import mini_project.server.model.User;
 
 @Repository
 public class UserRepository {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JdbcTemplate template;
 
@@ -21,7 +26,9 @@ public class UserRepository {
 
     public Integer saveUser(User user) {
         // public Integer saveUser(String userId, String email, String username) {
-        return template.update(INSERT_NEW_USER, user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return template.update(INSERT_NEW_USER, user.getUserId(), user.getUsername(), user.getPassword(),
+                user.getEmail());
     }
 
     public Optional<User> getUser(String userId) {
