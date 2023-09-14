@@ -66,7 +66,7 @@ public class BusinessController {
         return ResponseEntity.ok(result.get().toString());
     }
 
-    @GetMapping("{businessId}")
+    @GetMapping("/{businessId}")
     public ResponseEntity<String> getBusinessByBusinessId(@PathVariable String businessId) {
 
         Integer bId;
@@ -125,9 +125,13 @@ public class BusinessController {
 
     @GetMapping("/service/{serviceId}")
     public ResponseEntity<String> getBusinessByServiceId(@PathVariable String serviceId) {
-        return ResponseEntity.ok(
-            service.getBusinessByServiceId(serviceId).toString()
-        );
+
+        Optional<JsonObject> json = service.getBusinessByServiceId(serviceId);
+
+        if (json.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(json.get().toString());
     }
 
 }

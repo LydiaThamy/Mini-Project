@@ -171,12 +171,14 @@ public class BusinessService {
         return Optional.of(json.build());
     }
 
-    public JsonObject getBusinessByServiceId(String serviceId) {
+    public Optional<JsonObject> getBusinessByServiceId(String serviceId) {
         Map<String, Object> business = bizRepo.getBusinessByServiceId(serviceId);
-        System.out.println(business.toString());
-        return Json.createObjectBuilder()
+        if (business.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(Json.createObjectBuilder()
             .add("email", business.get("email").toString())
             .add("businessName", business.get("businessName").toString())
-            .build();
+            .build());
     }
 }
