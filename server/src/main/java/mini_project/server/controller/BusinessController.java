@@ -56,7 +56,7 @@ public class BusinessController {
 
     @GetMapping("/keyword")
     public ResponseEntity<String> getBusinesses(@ModelAttribute Search search) {
-        System.out.println("Search: " + search.toString());
+        System.out.println("Search:" + search.toString());
 
         Optional<JsonArray> result = service.getBusinessesByKeyword(search);
 
