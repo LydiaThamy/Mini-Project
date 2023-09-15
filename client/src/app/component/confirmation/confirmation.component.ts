@@ -24,15 +24,15 @@ export class ConfirmationComponent implements OnDestroy {
   constructor(private userSvc: UserService, private router: Router, private bizSvc: BusinessService, private cartSvc: CartService) { }
 
   ngOnInit(): void {
-    this.serviceId = sessionStorage.getItem("serviceId") as string
+    this.serviceId = localStorage.getItem("serviceId") as string
     
-    if (!this.serviceId) {
-      this.router.navigate(['/'])
-      console.log(this.serviceId)
+    // if (!this.serviceId) {
+    //   this.router.navigate(['/'])
+    //   console.log(this.serviceId)
 
-    } else {
+    // } else {
       this.getUser()
-    }
+    // }
   }
 
   getUser(): void {
@@ -54,7 +54,7 @@ export class ConfirmationComponent implements OnDestroy {
   // remove item from cart
   deleteItem() {
     this.cartSvc.deleteItem(this.serviceId)
-    sessionStorage.removeItem("serviceId")
+    localStorage.removeItem("serviceId")
   }
 
   getBusiness(): void {

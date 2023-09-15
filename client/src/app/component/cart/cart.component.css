@@ -1,22 +1,74 @@
 .cart {
-    position: relative;
-    top: 200px;
     display: flex;
     align-items: center;
     justify-items: center;
     flex-direction: column;
-    /* top: 33vw;
-    left: 20%;  */
 }
 
 h1 {
-    /* top: 100px; */
+    position: fixed;
+    top: 170px;
     font-family: 'Nunito', sans-serif;
     font-size: 80px;
-    padding-bottom: 100px;
+    padding-bottom: 50px;
+    background-color: white;
+    width: 100%;
+    z-index: 1;
+    left: 30%;
+    /* transform: translateX(-50%); */
+}
+
+.content {
+    position: absolute;
+    padding-top: 250px;
 }
 
 .empty {
     font-family: 'Nunito', sans-serif;
     font-size: 30px;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vw;
+    min-width: 80vw;
+    justify-content: center;
+  }
+
+  .loading {
+    margin-top: auto;
+  }
+
+  table {
+    font-family: 'Nunito', sans-serif;
+    width: 70vw;
+    text-align: center;
+}
+
+.header {
+    font-size: 40px;
+    font-weight: 500;
+}
+
+td {
+    line-height: 5vw;
+    font-size: 20px;
+}
+
+#logo {
+    height: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#delete-button {
+    background-color: transparent;
+    border: 0px;
+}
+
+#delete {
+    height: 30px;
+    padding-left: 50px;
 }

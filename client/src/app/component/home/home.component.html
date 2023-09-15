@@ -25,7 +25,11 @@
             [category]="selectedCategory" [search]="searchTerms"></app-results>
 
         <div *ngIf="inspectBusiness == true">
-            <p (click)="inspectBusiness = false">Back to Results</p>
+            <p (click)="inspectBusiness = false">
+                <img class="category-icon" *ngIf="over"
+                    [src]="overReturn ? '/assets/icons/hover.png' : '/assets/icons/return_hover.png'"
+                    (mouseover)="overReturn = true" (mouseout)="overReturn = false">
+                back to results</p>
             <app-business [businessId]="bizId"></app-business>
         </div>
     </div>

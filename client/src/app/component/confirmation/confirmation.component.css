@@ -1,0 +1,24 @@
+.head {
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    z-index: 1;
+}
+
+.order {
+    position: absolute;
+    width: 50%;
+    top: 200px;
+    margin-left: 27%;
+    display: flex;
+    justify-content: spread;
+    flex-direction: column;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 80px;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 50px;
+}

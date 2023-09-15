@@ -3,51 +3,60 @@
     <div class="header">
         <app-header></app-header>
     </div>
-    
-<h1>Shopping Cart</h1>
 
-<div class="items" *ngIf="cart.length > 0">
-    <div *ngFor="let item of cart as Item" id="item.serviceId">
-        <table>
-            <thead>
-                <td>Business</td>
-                <td>Service</td>
-                <td>Quantity</td>
-            </thead>
-            <tr>
-                <td>{{item.businessName}}</td>
-                <td>{{item.title}}</td>
-                <td>
-                    <!-- edit -->
-                    <button type="button" (click)="minusItem(item.serviceId)">-</button>
-                    {{item.quantity}}
-                    <button type="button" (click)="addItem(item.serviceId)">+</button>
-                </td>
-                <td>
-                    <!-- delete -->
-                    <button type="button" (click)="deleteItem(item.serviceId)">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <!-- checkout -->
-                    <button (click)="checkout(item)">Buy</button>
-                </td>
-            </tr>
-        </table>
+    <h1>Shopping Cart</h1>
+
+    <div class="content">
+        <div class="items" *ngIf="cart.length > 0">
+                <table>
+                    <thead>
+                        <td class="header"></td>
+                        <td class="header">Business</td>
+                        <td class="header">Service</td>
+                        <td class="header">Quantity</td>
+                    </thead>
+                    <tbody  *ngFor="let item of cart as Item" id="item.serviceId">
+                        <tr>
+                            <td>
+                            <img src="{{item.logo}}" id="logo">
+                        </td>
+                        <td>{{item.businessName}}</td>
+                        <td>{{item.title}}</td>
+                        <td>
+                            <!-- edit -->
+                            <button type="button" (click)="minusItem(item.serviceId)">-</button>
+                            {{item.quantity}}
+                            <button type="button" (click)="addItem(item.serviceId)">+</button>
+                        </td>
+                        <td>
+                            <!-- checkout -->
+                            <button (click)="checkout(item)">
+                                Buy
+                            </button>
+                        </td>
+                        <td>
+                            <!-- delete -->
+                            <button id="delete-button" type="button" (click)="deleteItem(item.serviceId)">
+                                <img id="delete"
+                                    [src]="over ? '/assets/icons/delete_hover.png' : '/assets/icons/delete.png'"
+                                    (mouseover)="over = true" (mouseout)="over = false">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+
+        </div>
+
+        <div class="empty" *ngIf="cart.length == 0 && loadComplete == true">
+            Your cart is empty. Add something to it now!
+        </div>
+
+        <div class="loading" *ngIf="loadComplete == false">
+            <img src="/assets/images/loading.gif" alt="Your cart is loading...">
+        </div>
     </div>
-    
-</div>
-
-<div class="empty" *ngIf="cart.length == 0 && loadComplete == true">
-    Your cart is empty. Add something to it now!
-</div>
-
-<div class="loading" *ngIf="loadComplete == false">
-    <img src="/assets/images/loading.gif" alt="Your cart is loading...">
-</div>
-
-<!-- <ng-template #loading>
+    <!-- <ng-template #loading>
     Items loading...
 </ng-template> -->
 </div>

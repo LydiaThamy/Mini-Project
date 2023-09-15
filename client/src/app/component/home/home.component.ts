@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   searchTerms: Search = {}
 
   over!: boolean[];
+  overReturn = false
 
   constructor(private service: BusinessService, private aRoute: ActivatedRoute) {}
 
