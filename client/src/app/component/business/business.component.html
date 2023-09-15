@@ -16,8 +16,10 @@
     <p>Email: {{biz.email}}</p>
 </div>
 
-<div class="services" *ngIf="svcs.length > 0">
-    <h2>Services</h2>
+<div class="misc">
+
+    <div class="services" *ngIf="svcs.length > 0">
+        <h2>Services</h2>
     <div *ngFor="let s of svcs" [id]="'sId'+ s.serviceId">
         <table>
             <td>
@@ -55,3 +57,4 @@
     </div>
 </div>
 </div>
+    </div>
